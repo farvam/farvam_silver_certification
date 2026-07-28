@@ -8,147 +8,174 @@
 
 <title>FARVAM | Fine Silver Certification</title>
 
-
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 
 body{
 
-    background:#f5f5f5;
+background:#050505;
 
-    font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
+font-family:
+Tahoma,
+Arial,
+sans-serif;
 
-    overflow-x:hidden;
+overflow-x:hidden;
+
+color:white;
 
 }
 
 
-/* ---------- فیلم شروع لوگو ---------- */
-
+/* فیلم شروع */
 
 .intro-video{
 
-    position:fixed;
+position:fixed;
 
-    width:100%;
+top:0;
 
-    height:100dvh;
+left:0;
 
-    top:0;
+width:100%;
 
-    left:0;
+height:100dvh;
 
-    object-fit:contain;
+object-fit:contain;
 
-    background:#000;
+background:#000;
 
-    z-index:100;
+z-index:100;
 
-    animation:
-    introHide 1.8s ease 5s forwards;
+animation:
+introHide 2s ease 5s forwards;
 
 }
-
 
 
 @keyframes introHide{
 
-    from{
+from{
 
-        opacity:1;
+opacity:1;
 
-    }
+}
 
+to{
 
-    to{
+opacity:0;
 
-        opacity:0;
+visibility:hidden;
 
-        visibility:hidden;
-
-    }
+}
 
 }
 
 
 
-/* ---------- بخش محصول ---------- */
-
+/* بخش محصول */
 
 .product-section{
 
 
-    min-height:100dvh;
+min-height:100dvh;
 
 
-    display:flex;
+display:flex;
 
 
-    justify-content:center;
+justify-content:center;
 
 
-    align-items:center;
+align-items:center;
 
 
-    padding:25px;
+padding:25px;
+
+
+background:
+
+radial-gradient(
+
+circle at center,
+
+#1c1608,
+
+#050505 65%
+
+);
 
 
 }
 
+
+
+/* قاب لوکس */
 
 
 .product-frame{
 
 
-    width:88%;
+width:88%;
 
 
-    max-width:420px;
+max-width:420px;
 
 
-    background:
-    linear-gradient(
-    145deg,
-    #ffffff,
-    #eeeeee
-    );
+padding:15px;
 
 
-    border:
-
-    2px solid
-
-    #c7c7c7;
+border-radius:30px;
 
 
-    border-radius:30px;
+background:
+
+linear-gradient(
+
+145deg,
+
+#151515,
+
+#050505
+
+);
 
 
-    padding:15px;
+
+border:
+
+2px solid
+
+#d4af37;
 
 
-    box-shadow:
 
-    0 15px 40px
-
-    rgba(0,0,0,.15);
+box-shadow:
 
 
-    opacity:0;
+0 0 35px
+
+rgba(212,175,55,.35),
 
 
-    animation:
+inset 0 0 20px
 
-    frameShow 1.5s ease 6s forwards;
+rgba(255,255,255,.05);
+
+
+
+opacity:0;
+
+
+animation:
+
+frameShow 1.5s ease 6s forwards;
 
 
 }
@@ -158,79 +185,100 @@ body{
 @keyframes frameShow{
 
 
-    from{
-
-        opacity:0;
-
-        transform:
-        scale(.85)
-        translateY(40px);
-
-    }
+from{
 
 
-    to{
+opacity:0;
 
-        opacity:1;
 
-        transform:
-        scale(1)
-        translateY(0);
+transform:
 
-    }
+scale(.8)
+
+translateY(50px);
 
 
 }
 
+
+to{
+
+
+opacity:1;
+
+
+transform:
+
+scale(1)
+
+translateY(0);
+
+
+}
+
+
+}
+
+
+
+/* فیلم نقره */
 
 
 .product-video{
 
 
-    width:100%;
+width:100%;
 
 
-    height:auto;
+display:block;
 
 
-    max-height:70vh;
+border-radius:22px;
 
 
-    object-fit:contain;
+object-fit:contain;
 
 
-    border-radius:22px;
-
-
-    display:block;
+max-height:70vh;
 
 
 }
 
 
 
-/* ---------- فضای ادامه صفحه ---------- */
+/* بخش بعدی */
 
 
 .next-section{
 
-    height:100vh;
 
-    display:flex;
+height:100vh;
 
-    justify-content:center;
 
-    align-items:center;
+display:flex;
 
-    font-size:30px;
 
-    color:#777;
+justify-content:center;
+
+
+align-items:center;
+
+
+font-size:35px;
+
+
+color:#d4af37;
+
+
+background:#050505;
+
 
 }
 
 
 
 </style>
+
 
 </head>
 
@@ -240,7 +288,8 @@ body{
 
 
 
-<!-- فیلم اول لوگو -->
+<!-- فیلم لوگو -->
+
 
 <video
 
@@ -265,7 +314,7 @@ type="video/mp4">
 
 
 
-<!-- نمایش محصول -->
+<!-- قاب محصول -->
 
 
 <section class="product-section">
@@ -306,12 +355,11 @@ type="video/mp4">
 
 
 
-<!-- بخش بعدی -->
 
 <section class="next-section">
 
 
-FARVAM
+⚜️ FARVAM ⚜️
 
 
 </section>
