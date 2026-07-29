@@ -12,6 +12,8 @@ html{
 
 body{
 
+    overflow-x:hidden;
+
     background:#050505;
 
     color:white;
@@ -115,7 +117,7 @@ opacity:0;
 
 
 #intro{
-
+overflow:hidden;
     position:fixed;
 
     width:100%;
