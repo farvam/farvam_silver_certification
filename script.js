@@ -1,30 +1,28 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
 
-    // برگشت به ابتدای صفحه هنگام ورود
+    // رفتن به ابتدای صفحه بعد از ورود
 
-    window.scrollTo({
-        top:0,
-        behavior:"instant"
-    });
+    setTimeout(function(){
+
+        window.scrollTo(0,0);
+
+    },100);
 
 
 
     // ساخت ذرات طلایی
 
-    const particlesBox =
-    document.getElementById("goldParticles");
+    const particlesBox = document.getElementById("goldParticles");
 
 
     if(particlesBox){
 
 
-        for(let i=0; i<40; i++){
+        for(let i=0; i<50; i++){
 
 
-            let particle =
-            document.createElement("span");
-
+            let particle = document.createElement("span");
 
             particle.className="particle";
 
@@ -43,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
             particlesBox.appendChild(particle);
 
-
         }
 
     }
@@ -52,24 +49,25 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-    // انیمیشن کارت ها هنگام اسکرول
+    // انیمیشن کارت ها
 
 
     const cards =
     document.querySelectorAll(".card");
 
 
-    function showCards(){
+    function checkCards(){
 
 
         cards.forEach(card=>{
 
 
-            let position =
+            let top =
             card.getBoundingClientRect().top;
 
 
-            if(position < window.innerHeight - 100){
+
+            if(top < window.innerHeight - 100){
 
 
                 card.classList.add("show");
@@ -84,93 +82,92 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
+
     window.addEventListener(
-    "scroll",
-    showCards
+        "scroll",
+        checkCards
     );
 
 
-    showCards();
-
-
-
-});
+    checkCards();
 
 
 
 
 
-// استعلام شماره سریال آزمایشی
+    // استعلام سریال
 
 
-document.addEventListener("DOMContentLoaded",()=>{
+    const button =
+    document.getElementById("checkSerial");
 
 
-const button =
-document.getElementById("checkSerial");
+    if(button){
 
 
-if(button){
+        button.addEventListener(
+        "click",
+        function(){
 
 
-button.addEventListener("click",()=>{
-
-
-let serial =
-document.getElementById("serialInput").value.trim();
-
-
-let result =
-document.getElementById("result");
+            let serial =
+            document.getElementById("serialInput").value.trim();
 
 
 
-if(serial==="FS000001"){
-
-
-result.innerHTML=
-`
-<div style="color:#00ff88;text-align:center">
-
-🟢 اصالت محصول تأیید شد
-
-<br><br>
-
-FARVAM FINE SILVER
-
-<br>
-
-عیار 999.9
-
-<br>
-
-100 گرم
-
-</div>
-`;
+            let result =
+            document.getElementById("result");
 
 
 
-}else{
+            if(serial==="FS000001"){
 
 
-result.innerHTML=
-`
-<div style="color:red;text-align:center">
+                result.innerHTML=
+                `
+                <div style="color:#00ff88;text-align:center">
 
-❌ شماره سریال معتبر نیست
+                🟢 اصالت محصول تأیید شد
 
-</div>
-`;
+                <br><br>
 
-}
+                FARVAM FINE SILVER
+
+                <br>
+
+                عیار 999.9
+
+                <br>
+
+                وزن: 100 گرم
+
+                </div>
+                `;
 
 
-});
+            }
+
+            else{
 
 
-}
+                result.innerHTML=
+                `
+                <div style="color:red;text-align:center">
 
+                ❌ شماره سریال معتبر نیست
+
+                </div>
+                `;
+
+
+            }
+
+
+
+        });
+
+
+    }
 
 
 });
