@@ -122,6 +122,91 @@ setTimeout(()=>{
     });
 
 
+// =====================
+// بررسی اصالت محصول
+// =====================
 
+
+const checkButton = document.getElementById("checkSerial");
+
+
+if(checkButton){
+
+
+    checkButton.addEventListener("click", function(){
+
+
+        const serial =
+        document.getElementById("serialInput").value.trim();
+
+
+
+        const result =
+        document.getElementById("result");
+
+
+
+        if(serial === "FS000001"){
+
+
+            result.innerHTML = `
+
+            <div style="
+            color:#00ff88;
+            text-align:center;
+            padding:20px;
+            border:1px solid #00ff88;
+            border-radius:15px;
+            ">
+
+            🟢 اصالت محصول تأیید شد
+
+            <br><br>
+
+            FARVAM FINE SILVER
+
+            <br>
+
+            عیار 999.9
+
+            <br>
+
+            محصول ثبت شده در سیستم FARVAM
+
+            </div>
+
+            `;
+
+
+        }
+
+        else{
+
+
+            result.innerHTML = `
+
+            <div style="
+            color:#ff4444;
+            text-align:center;
+            padding:20px;
+            border:1px solid red;
+            border-radius:15px;
+            ">
+
+            ❌ شماره سریال معتبر نیست
+
+            </div>
+
+            `;
+
+
+        }
+
+
+
+    });
+
+
+}
 
 });
