@@ -132,10 +132,10 @@ if(checkButton && serialInput && result){
 
         try{
 
-
-            const response =
-            await fetch("products.json?v=2");
-
+const response =
+await fetch("products.json", {
+    cache: "no-store"
+});
 
             const products =
             await response.json();
