@@ -1,37 +1,24 @@
 document.addEventListener("DOMContentLoaded", function(){
 
 
-    // برگشت به اول صفحه بعد از ورود
+    // =====================
+    // برگشت به اول صفحه
+    // =====================
 
-  window.history.scrollRestoration = "manual";
-
-
-setTimeout(()=>{
-
-    window.scrollTo({
-        top:0,
-        left:0,
-        behavior:"instant"
-    });
-
-},500);
+    window.history.scrollRestoration = "manual";
 
 
-setTimeout(()=>{
+    setTimeout(()=>{
 
-    window.scrollTo({
-        top:0,
-        left:0,
-        behavior:"instant"
-    });
+        window.scrollTo(0,0);
 
-},2000);
+    },500);
+
 
 
     // =====================
     // ذرات طلایی
     // =====================
-
 
     const particlesBox = document.getElementById("goldParticles");
 
@@ -43,7 +30,6 @@ setTimeout(()=>{
 
 
             let particle = document.createElement("span");
-
 
             particle.classList.add("particle");
 
@@ -62,12 +48,9 @@ setTimeout(()=>{
 
             particlesBox.appendChild(particle);
 
-
         }
 
-
     }
-
 
 
 
@@ -90,9 +73,7 @@ setTimeout(()=>{
 
                 if(entry.isIntersecting){
 
-
                     entry.target.classList.add("show");
-
 
                 }
 
@@ -103,11 +84,8 @@ setTimeout(()=>{
         },
 
         {
-
             threshold:0.3
-
         }
-
 
     );
 
@@ -115,177 +93,110 @@ setTimeout(()=>{
 
     cards.forEach(card=>{
 
-
         observer.observe(card);
-
 
     });
 
 
-// =====================
-// بررسی اصالت محصول
-// =====================
-
-
-const checkButton = document.getElementById("checkSerial");
-
-
-if(checkButton){
-
-
-    checkButton.addEventListener("click", function(){
-
-
-        const serial =
-        document.getElementById("serialInput").value.trim();
 
 
 
-        const result =
-        document.getElementById("result");
+    // =====================
+    // بررسی اصالت محصول
+    // =====================
+
+
+    const checkButton =
+    document.getElementById("checkSerial");
+
+
+    const serialInput =
+    document.getElementById("serialInput");
+
+
+    const result =
+    document.getElementById("result");
 
 
 
-        if(serial === "FS000001"){
+    if(checkButton && serialInput && result){
 
 
-            result.innerHTML = `
 
-            <div style="
-            color:#00ff88;
-            text-align:center;
-            padding:20px;
-            border:1px solid #00ff88;
-            border-radius:15px;
-            ">
-
-            🟢 اصالت محصول تأیید شد
-
-            <br><br>
-
-            FARVAM FINE SILVER
-
-            <br>
-
-            عیار 999.9
-
-            <br>
-
-            محصول ثبت شده در سیستم FARVAM
-
-            </div>
-
-            `;
+        checkButton.addEventListener("click", function(){
 
 
-        }
 
-        else{
-
-
-            result.innerHTML = `
-
-            <div style="
-            color:#ff4444;
-            text-align:center;
-            padding:20px;
-            border:1px solid red;
-            border-radius:15px;
-            ">
-
-            ❌ شماره سریال معتبر نیست
-
-            </div>
-
-            `;
+            let serial =
+            serialInput.value.trim();
 
 
-        }
 
-// =====================
-// FARVAM SERIAL CHECK
-// =====================
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    const btn = document.getElementById("checkSerial");
-
-    const input = document.getElementById("serialInput");
-
-    const result = document.getElementById("result");
+            if(serial === "FS000001"){
 
 
-    if(!btn || !input || !result){
 
-        console.log("Serial elements not found");
+                result.innerHTML = `
 
-        return;
+                <div style="
+                color:#00ff88;
+                text-align:center;
+                padding:20px;
+                border:1px solid #00ff88;
+                border-radius:15px;
+                ">
+
+                🟢 اصالت محصول تأیید شد
+
+                <br><br>
+
+                FARVAM FINE SILVER
+
+                <br>
+
+                عیار 999.9
+
+                <br>
+
+                محصول ثبت شده در سیستم FARVAM
+
+                </div>
+
+                `;
+
+
+
+            }else{
+
+
+
+                result.innerHTML = `
+
+                <div style="
+                color:#ff4444;
+                text-align:center;
+                padding:20px;
+                border:1px solid red;
+                border-radius:15px;
+                ">
+
+                ❌ شماره سریال معتبر نیست
+
+                </div>
+
+                `;
+
+
+            }
+
+
+
+        });
+
+
 
     }
 
 
-    btn.onclick = function(){
-
-
-        let code = input.value.trim();
-
-
-
-        if(code === "FS000001"){
-
-
-            result.innerHTML = `
-
-            <div style="
-            color:#00ff88;
-            text-align:center;
-            margin-top:20px;
-            ">
-
-            🟢 اصالت محصول تأیید شد
-
-            <br><br>
-
-            FARVAM FINE SILVER
-
-            <br>
-
-            عیار 999.9
-
-            </div>
-
-            `;
-
-
-        }else{
-
-
-            result.innerHTML = `
-
-            <div style="
-            color:red;
-            text-align:center;
-            margin-top:20px;
-            ">
-
-            ❌ شماره سریال معتبر نیست
-
-            </div>
-
-            `;
-
-
-        }
-
-
-    };
-
-
-});
-
-    });
-
-
-}
 
 });
