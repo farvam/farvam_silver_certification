@@ -1,88 +1,137 @@
+/* ===================================
+FARVAM V2
+Luxury Silver Certification
+BASE STYLE
+=================================== */
+
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
 }
+
 
 
 html{
-    scroll-behavior:smooth;
+
+scroll-behavior:smooth;
+
 }
+
 
 
 body{
 
-    background:#050505;
 
-    color:#fff;
+background:#050505;
 
-    font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
+color:white;
 
-    overflow-x:hidden;
+font-family:
+
+Tahoma,
+
+Arial,
+
+sans-serif;
+
+
+overflow-x:hidden;
+
 
 }
 
 
 
 
-
-
-/* =====================
+/* ===================================
 ذرات طلایی
-===================== */
+=================================== */
 
 
 #goldParticles{
 
-    position:fixed;
 
-    width:100%;
+position:fixed;
 
-    height:100%;
 
-    top:0;
+width:100%;
 
-    left:0;
 
-    pointer-events:none;
+height:100%;
 
-    z-index:2;
 
-    overflow:hidden;
+top:0;
+
+
+left:0;
+
+
+pointer-events:none;
+
+
+overflow:hidden;
+
+
+z-index:5;
+
 
 }
+
 
 
 
 .particle{
 
-    position:absolute;
 
-    width:4px;
+position:absolute;
 
-    height:4px;
 
-    background:#d4af37;
+width:4px;
 
-    border-radius:50%;
 
-    animation:float 8s infinite;
+height:4px;
+
+
+background:#d4af37;
+
+
+border-radius:50%;
+
+
+box-shadow:
+
+0 0 10px #d4af37;
+
+
+animation:
+
+floatGold 10s linear infinite;
+
 
 }
 
 
 
-@keyframes float{
+
+@keyframes floatGold{
 
 
-from{
+0%{
 
-transform:translateY(100vh);
+
+transform:
+
+translateY(100vh);
+
 
 opacity:0;
+
 
 }
 
@@ -90,69 +139,95 @@ opacity:0;
 
 30%{
 
+
 opacity:1;
+
 
 }
 
 
 
-to{
+100%{
 
-transform:translateY(-20vh);
+
+transform:
+
+translateY(-20vh);
+
 
 opacity:0;
 
-}
 
 }
 
 
 
+}
 
 
 
 
-/* =====================
-فیلم شروع FARVAM
-===================== */
+
+
+
+/* ===================================
+INTRO VIDEO
+=================================== */
 
 
 #intro{
 
-    position:fixed;
 
-    width:100%;
+position:fixed;
 
-    height:100vh;
 
-    top:0;
+top:0;
 
-    left:0;
 
-    background:#000;
+left:0;
 
-    z-index:100;
 
-    display:flex;
+width:100%;
 
-    justify-content:center;
 
-    align-items:center;
+height:100dvh;
 
-    animation:hideIntro 2s ease 7s forwards;
+
+background:#000;
+
+
+z-index:100;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+animation:
+
+hideIntro 2s ease 7s forwards;
+
 
 }
-
 
 
 
 #intro video{
 
-    width:100%;
 
-    height:100%;
+width:100%;
 
-    object-fit:cover;
+
+height:100%;
+
+
+object-fit:cover;
+
 
 }
 
@@ -163,44 +238,56 @@ opacity:0;
 
 from{
 
+
 opacity:1;
+
 
 }
 
 
 to{
 
+
 opacity:0;
+
 
 visibility:hidden;
 
-}
-
 
 }
 
 
 
+}
 
 
 
 
-/* =====================
-لوگو
-===================== */
+
+
+
+/* ===================================
+LOGO
+=================================== */
 
 
 .brand{
 
-    height:35vh;
 
-    display:flex;
+height:40vh;
 
-    justify-content:center;
 
-    align-items:center;
+display:flex;
 
-    padding-top:30px;
+
+align-items:center;
+
+
+justify-content:center;
+
+
+position:relative;
+
 
 }
 
@@ -208,359 +295,233 @@ visibility:hidden;
 
 .brand img{
 
-    width:180px;
 
-    filter:
-    drop-shadow(0 0 25px #d4af37);
+width:190px;
 
-    animation:
-    logoGlow 3s infinite alternate;
+
+max-width:60%;
+
+
+filter:
+
+drop-shadow(0 0 25px #d4af37);
+
+
+animation:
+
+logoPulse 3s infinite alternate;
+
 
 }
 
 
 
-@keyframes logoGlow{
+
+@keyframes logoPulse{
 
 
 from{
 
+
 filter:
-drop-shadow(0 0 10px #d4af37);
+
+drop-shadow(0 0 15px #d4af37);
+
 
 }
+
 
 
 to{
 
+
 filter:
-drop-shadow(0 0 40px #d4af37);
+
+drop-shadow(0 0 45px #d4af37);
+
 
 }
-
-}
-
-
-
-
-
-
-
-/* =====================
-فیلم تبلیغاتی اولیه
-===================== */
-
-
-.product-intro{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:30px;
-
-}
-
-
-
-.product-intro .product-box{
-
-
-width:90%;
-
-max-width:430px;
-
-padding:15px;
-
-background:#090909;
-
-border:
-
-1px solid #d4af37;
-
-
-border-radius:30px;
-
-
-box-shadow:
-
-0 0 40px rgba(212,175,55,.35);
 
 
 }
 
 
 
-.product-intro video{
+
+
+
+
+/* ===================================
+فلش های شیشه ای کنار لوگو
+=================================== */
+
+
+.scrollArrows{
 
 
 width:100%;
 
-border-radius:22px;
 
-display:block;
-
-
-}
+display:flex;
 
 
+justify-content:space-between;
 
 
+align-items:center;
 
 
+padding:0 35px;
 
 
-/* =====================
-گواهی اصالت
-===================== */
+margin-top:-80px;
 
 
-.certificate{
+position:relative;
 
 
-padding:60px 25px;
-
-
-text-align:center;
-
-
-background:
-
-radial-gradient(
-
-circle,
-
-#191205,
-
-#050505 75%
-
-);
+z-index:10;
 
 
 }
 
 
 
-.certificate h1{
+.glassArrow{
 
 
-color:#d4af37;
+width:65px;
 
 
-font-family:
+height:65px;
 
-"IranNastaliq",
 
-"B Nazanin",
-
-serif;
-
-
-font-size:38px;
-
-
-margin-bottom:40px;
-
-
-}
-
-
-
-.certificate p{
-
-
-max-width:850px;
-
-
-margin:25px auto;
-
-
-text-align:center;
-
-
-font-family:
-
-"IranNastaliq",
-
-"B Nazanin",
-
-serif;
-
-
-font-size:22px;
-
-
-line-height:2.5;
-
-
-color:#f3dfaa;
-
-
-}
-
-
-
-.certificate h3{
-
-
-margin-top:50px;
-
-
-color:#d4af37;
-
-
-font-family:
-
-"IranNastaliq",
-
-serif;
-
-
-font-size:30px;
-
-
-}
-
-
-
-
-
-
-
-
-/* =====================
-اسکرول راهنما
-===================== */
-
-
-.scroll-guide{
-
-
-text-align:center;
-
-
-color:#d4af37;
-
-
-font-size:18px;
-
-
-padding:30px;
-
-
-animation:
-
-scrollFade 2s infinite;
-
-
-}
-
-
-
-.scroll-guide div{
-
-
-font-size:45px;
-
-
-margin-top:10px;
-
-
-animation:
-
-arrowMove 1.5s infinite;
-
-
-}
-
-
-
-@keyframes arrowMove{
-
-
-0%{
-
-transform:translateY(0);
-
-}
-
-
-50%{
-
-transform:translateY(15px);
-
-}
-
-
-100%{
-
-transform:translateY(0);
-
-}
-
-
-}
-
-
-
-
-@keyframes scrollFade{
-
-
-50%{
-
-opacity:.5;
-
-}
-
-
-}
-
-
-
-
-
-
-
-/* =====================
-محصول
-===================== */
-
-
-.product{
+border-radius:50%;
 
 
 display:flex;
 
+
 justify-content:center;
+
 
 align-items:center;
 
-padding:35px;
+
+font-size:35px;
+
+
+color:#d4af37;
+
+
+background:
+
+rgba(255,255,255,.08);
+
+
+backdrop-filter:
+
+blur(12px);
+
+
+border:
+
+1px solid rgba(212,175,55,.6);
+
+
+box-shadow:
+
+0 0 25px rgba(212,175,55,.4);
+
+
+animation:
+
+arrowFloat 1.8s infinite;
 
 
 }
 
 
 
+@keyframes arrowFloat{
 
-.product-box{
+
+0%,100%{
 
 
-width:90%;
+transform:translateY(0);
+
+
+}
+
+
+
+50%{
+
+
+transform:translateY(12px);
+
+
+}
+
+
+}
+
+/* ===================================
+VIDEO BOXES
+کادر یکسان برای فیلم تبلیغاتی و محصول
+=================================== */
+
+
+.introProduct,
+.productSection{
+
+
+width:100%;
+
+
+padding:40px 20px;
+
+
+display:flex;
+
+
+justify-content:center;
+
+
+align-items:center;
+
+
+}
+
+
+
+.videoBox{
+
+
+width:92%;
+
 
 max-width:430px;
-
-
-padding:15px;
 
 
 border-radius:30px;
 
 
-background:#090909;
+padding:12px;
+
+
+background:
+
+linear-gradient(
+
+145deg,
+
+#161616,
+
+#050505
+
+);
 
 
 border:
@@ -570,10 +531,63 @@ border:
 
 box-shadow:
 
-0 0 45px rgba(212,175,55,.35);
+0 0 40px rgba(212,175,55,.35);
 
 
-min-height:300px;
+overflow:hidden;
+
+
+position:relative;
+
+
+}
+
+
+
+.videoBox video{
+
+
+width:100%;
+
+
+height:auto;
+
+
+max-height:520px;
+
+
+display:block;
+
+
+object-fit:contain;
+
+
+border-radius:22px;
+
+
+background:#000;
+
+
+}
+
+
+
+
+
+
+/* ===================================
+PRODUCT PLACEHOLDER
+قبل از وارد کردن سریال
+=================================== */
+
+
+#productPlaceholder{
+
+
+width:100%;
+
+
+aspect-ratio:9/16;
 
 
 display:flex;
@@ -585,29 +599,10 @@ justify-content:center;
 align-items:center;
 
 
-}
-
-
-
-
-.product-box video{
-
-
-width:100%;
-
-border-radius:22px;
-
-}
-
-
-
-#productMessage{
-
-
 text-align:center;
 
 
-color:#d4af37;
+padding:30px;
 
 
 font-size:20px;
@@ -616,18 +611,149 @@ font-size:20px;
 line-height:2;
 
 
+color:#d4af37;
+
+
+background:
+
+radial-gradient(
+
+circle,
+
+#18120a,
+
+#050505
+
+);
+
+
+border-radius:22px;
+
+
 }
 
 
 
 
 
-/* =====================
-کارت محصول
-===================== */
+/* ===================================
+CERTIFICATE
+گواهی اصالت
+=================================== */
+
+
+.certificate{
+
+
+padding:50px 30px;
+
+
+text-align:center;
+
+
+line-height:2.4;
+
+
+background:
+
+linear-gradient(
+
+180deg,
+
+#080808,
+
+#050505
+
+);
+
+
+}
+
+
+
+
+.certificate h1{
+
+
+font-family:
+
+"Nastaliq",
+
+"Tahoma",
+
+sans-serif;
+
+
+font-size:34px;
+
+
+color:#d4af37;
+
+
+margin-bottom:35px;
+
+
+text-shadow:
+
+0 0 15px rgba(212,175,55,.5);
+
+
+}
+
+
+
+
+.certificate p{
+
+
+font-size:17px;
+
+
+max-width:750px;
+
+
+margin:
+
+20px auto;
+
+
+color:#eee;
+
+
+}
+
+
+
+.certificate h3{
+
+
+margin-top:45px;
+
+
+color:#d4af37;
+
+
+font-size:22px;
+
+
+}
+
+
+
+
+
+
+
+/* ===================================
+PRODUCT DETAILS
+کارت اطلاعات
+=================================== */
 
 
 .details{
+
+
+padding:30px;
 
 
 display:flex;
@@ -636,23 +762,24 @@ display:flex;
 flex-direction:column;
 
 
-gap:30px;
-
-
-padding:30px;
+gap:25px;
 
 
 }
 
 
 
-.card{
+.hidden{
 
 
-padding:30px;
+display:none;
 
 
-text-align:center;
+}
+
+
+
+.productCard{
 
 
 background:
@@ -663,10 +790,9 @@ linear-gradient(
 
 #151515,
 
-#050505
+#070707
 
 );
-
 
 
 border:
@@ -675,6 +801,12 @@ border:
 
 
 border-radius:25px;
+
+
+padding:30px;
+
+
+text-align:center;
 
 
 box-shadow:
@@ -687,23 +819,62 @@ opacity:0;
 
 transform:
 
-translateY(60px);
+translateY(50px);
 
 
-transition:1s;
+animation:
+
+cardShow .8s forwards;
 
 
 }
 
 
 
-.card.show{
+@keyframes cardShow{
+
+
+to{
 
 
 opacity:1;
 
 
-transform:translateY(0);
+transform:
+
+translateY(0);
+
+
+}
+
+
+}
+
+
+
+.productCard h2,
+
+
+.productCard h3{
+
+
+color:#d4af37;
+
+
+margin-bottom:15px;
+
+
+}
+
+
+
+.productCard p{
+
+
+font-size:18px;
+
+
+line-height:2;
 
 
 }
@@ -711,29 +882,30 @@ transform:translateY(0);
 
 
 
-.hidden{
 
-display:none;
+/* ===================================
+SERIAL SECTION
+=================================== */
+
+
+.serialSection,
+
+
+.customerSection{
+
+
+padding:40px 25px;
+
+
+text-align:center;
+
 
 }
 
 
 
 
-
-
-
-/* =====================
-سریال و مشتری
-===================== */
-
-
-#serialSection,
-
-.customer{
-
-
-padding:35px;
+.serialBox{
 
 
 display:flex;
@@ -745,19 +917,29 @@ flex-direction:column;
 gap:20px;
 
 
+align-items:center;
+
+
 }
-
-
 
 
 
 input{
 
 
-padding:15px;
+width:100%;
+
+
+max-width:400px;
+
+
+padding:16px;
 
 
 border-radius:15px;
+
+
+background:#111;
 
 
 border:
@@ -765,13 +947,13 @@ border:
 1px solid #d4af37;
 
 
-background:#111;
-
-
 color:white;
 
 
-font-size:16px;
+font-size:17px;
+
+
+text-align:center;
 
 
 }
@@ -779,10 +961,17 @@ font-size:16px;
 
 
 
+
 button{
 
 
-padding:15px;
+width:100%;
+
+
+max-width:400px;
+
+
+padding:16px;
 
 
 border-radius:15px;
@@ -791,13 +980,428 @@ border-radius:15px;
 border:none;
 
 
-background:#d4af37;
+background:
+
+linear-gradient(
+
+135deg,
+
+#d4af37,
+
+#f5df8b
+
+);
 
 
 color:#000;
 
 
-font-weight:bold;
+font-weight
+
+    /* ===================================
+RESULT BOX
+تایید اصالت لوکس
+=================================== */
+
+
+#result{
+
+
+margin-top:30px;
+
+
+display:flex;
+
+
+justify-content:center;
+
+
+}
+
+
+
+.successBox{
+
+
+width:100%;
+
+
+max-width:430px;
+
+
+padding:30px;
+
+
+border-radius:25px;
+
+
+background:
+
+rgba(0,255,120,.08);
+
+
+border:
+
+1px solid #00ff88;
+
+
+box-shadow:
+
+0 0 35px rgba(0,255,136,.35);
+
+
+backdrop-filter:
+
+blur(15px);
+
+
+color:#00ff88;
+
+
+font-size:18px;
+
+
+line-height:2;
+
+
+text-align:center;
+
+
+animation:
+
+successShow .8s ease;
+
+
+}
+
+
+
+
+
+.errorBox{
+
+
+width:100%;
+
+
+max-width:430px;
+
+
+padding:25px;
+
+
+border-radius:25px;
+
+
+background:
+
+rgba(255,0,0,.08);
+
+
+border:
+
+1px solid #ff4444;
+
+
+box-shadow:
+
+0 0 30px rgba(255,0,0,.3);
+
+
+color:#ff4444;
+
+
+text-align:center;
+
+
+}
+
+
+
+
+
+@keyframes successShow{
+
+
+from{
+
+
+opacity:0;
+
+
+transform:
+
+scale(.8);
+
+
+}
+
+
+to{
+
+
+opacity:1;
+
+
+transform:
+
+scale(1);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ===================================
+CUSTOMER CLUB
+باشگاه مشتریان
+=================================== */
+
+
+.customerSection{
+
+
+background:
+
+radial-gradient(
+
+circle,
+
+#151008,
+
+#050505
+
+);
+
+
+}
+
+
+
+.customerSection h2{
+
+
+color:#d4af37;
+
+
+margin-bottom:25px;
+
+
+font-size:26px;
+
+
+}
+
+
+
+.customerSection p{
+
+
+color:#ddd;
+
+
+margin-bottom:25px;
+
+
+line-height:2;
+
+
+}
+
+
+
+
+#customerResult{
+
+
+margin-top:20px;
+
+
+color:#d4af37;
+
+
+font-size:18px;
+
+
+}
+
+
+
+
+
+
+/* ===================================
+FOOTER
+=================================== */
+
+
+footer{
+
+
+padding:40px 20px;
+
+
+text-align:center;
+
+
+color:#d4af37;
+
+
+font-size:18px;
+
+
+border-top:
+
+1px solid rgba(212,175,55,.3);
+
+
+}
+
+
+
+
+
+
+
+
+/* ===================================
+فاصله بهتر بین لوگو و فیلم
+=================================== */
+
+
+.introProduct{
+
+
+margin-top:-20px;
+
+
+}
+
+
+
+
+
+
+
+
+/* ===================================
+موبایل
+=================================== */
+
+
+@media(max-width:600px){
+
+
+
+.brand{
+
+
+height:32vh;
+
+
+}
+
+
+
+
+.brand img{
+
+
+width:150px;
+
+
+}
+
+
+
+
+.scrollArrows{
+
+
+padding:0 20px;
+
+
+margin-top:-55px;
+
+
+}
+
+
+
+.glassArrow{
+
+
+width:55px;
+
+
+height:55px;
+
+
+font-size:30px;
+
+
+}
+
+
+
+
+
+.videoBox{
+
+
+width:95%;
+
+
+padding:10px;
+
+
+}
+
+
+
+
+
+.videoBox video{
+
+
+max-height:450px;
+
+
+}
+
+
+
+
+.certificate{
+
+
+padding:
+
+40px 20px;
+
+
+}
+
+
+
+.certificate h1{
+
+
+font-size:28px;
+
+
+}
+
+
+
+.certificate p{
 
 
 font-size:16px;
@@ -807,33 +1411,37 @@ font-size:16px;
 
 
 
+.productCard{
 
 
-/* موبایل */
+padding:25px 20px;
 
-
-@media(max-width:600px){
-
-
-.brand img{
-
-width:150px;
 
 }
 
 
-.certificate h1{
-
-font-size:30px;
-
-}
 
 
-.certificate p{
-
-font-size:19px;
 
 }
+
+
+
+
+
+/* ===================================
+فونت آماده
+اگر فونت اضافه شد فعال می‌شود
+=================================== */
+
+
+@font-face{
+
+
+font-family:Nastaliq;
+
+
+src:url("./assets/fonts/Nastaliq.ttf");
 
 
 }
