@@ -200,7 +200,31 @@ card.classList.add("show");
 
 }
 
+let container =
+document.getElementById("goldParticles");
 
+
+for(let i=0;i<40;i++){
+
+
+let p=document.createElement("span");
+
+
+p.className="particle";
+
+
+p.style.left =
+Math.random()*100+"%";
+
+
+p.style.animationDelay =
+Math.random()*8+"s";
+
+
+container.appendChild(p);
+
+
+}
 });
 
 
