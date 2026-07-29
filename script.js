@@ -1,3 +1,1 @@
-console.log("FARVAM JS RUNNING");
-
-alert("FARVAM JS RUNNING");
+alert("SCRIPT JS FILE WORKS");
