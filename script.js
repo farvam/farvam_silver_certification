@@ -3,11 +3,29 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // برگشت به اول صفحه بعد از ورود
 
-    window.history.scrollRestoration = "manual";
-
-    window.scrollTo(0,0);
+  window.history.scrollRestoration = "manual";
 
 
+setTimeout(()=>{
+
+    window.scrollTo({
+        top:0,
+        left:0,
+        behavior:"instant"
+    });
+
+},500);
+
+
+setTimeout(()=>{
+
+    window.scrollTo({
+        top:0,
+        left:0,
+        behavior:"instant"
+    });
+
+},2000);
 
 
     // =====================
