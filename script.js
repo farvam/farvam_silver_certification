@@ -1,5 +1,3 @@
-document.addEventListener("DOMContentLoaded", function(){
+console.log("FARVAM JS RUNNING");
 
-    alert("FARVAM JS OK");
-
-});
+alert("FARVAM JS RUNNING");
