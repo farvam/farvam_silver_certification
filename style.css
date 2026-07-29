@@ -12,11 +12,9 @@ html{
 
 body{
 
-    overflow-x:hidden;
-
     background:#050505;
 
-    color:white;
+    color:#fff;
 
     font-family:
     Tahoma,
@@ -31,8 +29,9 @@ body{
 
 
 
+
 /* =====================
-   ذرات طلایی
+ذرات طلایی
 ===================== */
 
 
@@ -50,9 +49,9 @@ body{
 
     pointer-events:none;
 
-    overflow:hidden;
+    z-index:2;
 
-    z-index:5;
+    overflow:hidden;
 
 }
 
@@ -88,11 +87,13 @@ opacity:0;
 }
 
 
+
 30%{
 
 opacity:1;
 
 }
+
 
 
 to{
@@ -103,8 +104,8 @@ opacity:0;
 
 }
 
-
 }
+
 
 
 
@@ -112,29 +113,36 @@ opacity:0;
 
 
 /* =====================
-   فیلم شروع لوگو
+فیلم شروع FARVAM
 ===================== */
 
 
 #intro{
-overflow:hidden;
+
     position:fixed;
 
     width:100%;
 
-    height:100dvh;
+    height:100vh;
 
     top:0;
 
     left:0;
 
+    background:#000;
+
     z-index:100;
 
-    background:#000;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     animation:hideIntro 2s ease 7s forwards;
 
 }
+
 
 
 
@@ -144,10 +152,9 @@ overflow:hidden;
 
     height:100%;
 
-    object-fit:contain;
+    object-fit:cover;
 
 }
-
 
 
 
@@ -178,24 +185,145 @@ visibility:hidden;
 
 
 
-
 /* =====================
-   فیلم محصول
+لوگو
 ===================== */
 
 
-.product{
+.brand{
+
+    height:35vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding-top:30px;
+
+}
 
 
-min-height:100dvh;
 
-display:flex;
+.brand img{
 
-justify-content:center;
+    width:180px;
 
-align-items:center;
+    filter:
+    drop-shadow(0 0 25px #d4af37);
 
-padding:25px;
+    animation:
+    logoGlow 3s infinite alternate;
+
+}
+
+
+
+@keyframes logoGlow{
+
+
+from{
+
+filter:
+drop-shadow(0 0 10px #d4af37);
+
+}
+
+
+to{
+
+filter:
+drop-shadow(0 0 40px #d4af37);
+
+}
+
+}
+
+
+
+
+
+
+
+/* =====================
+فیلم تبلیغاتی اولیه
+===================== */
+
+
+.product-intro{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+
+}
+
+
+
+.product-intro .product-box{
+
+
+width:90%;
+
+max-width:430px;
+
+padding:15px;
+
+background:#090909;
+
+border:
+
+1px solid #d4af37;
+
+
+border-radius:30px;
+
+
+box-shadow:
+
+0 0 40px rgba(212,175,55,.35);
+
+
+}
+
+
+
+.product-intro video{
+
+
+width:100%;
+
+border-radius:22px;
+
+display:block;
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================
+گواهی اصالت
+===================== */
+
+
+.certificate{
+
+
+padding:60px 25px;
+
+
+text-align:center;
 
 
 background:
@@ -204,14 +332,217 @@ radial-gradient(
 
 circle,
 
-#1b1608,
+#191205,
 
-#050505 70%
+#050505 75%
 
 );
 
 
 }
+
+
+
+.certificate h1{
+
+
+color:#d4af37;
+
+
+font-family:
+
+"IranNastaliq",
+
+"B Nazanin",
+
+serif;
+
+
+font-size:38px;
+
+
+margin-bottom:40px;
+
+
+}
+
+
+
+.certificate p{
+
+
+max-width:850px;
+
+
+margin:25px auto;
+
+
+text-align:center;
+
+
+font-family:
+
+"IranNastaliq",
+
+"B Nazanin",
+
+serif;
+
+
+font-size:22px;
+
+
+line-height:2.5;
+
+
+color:#f3dfaa;
+
+
+}
+
+
+
+.certificate h3{
+
+
+margin-top:50px;
+
+
+color:#d4af37;
+
+
+font-family:
+
+"IranNastaliq",
+
+serif;
+
+
+font-size:30px;
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================
+اسکرول راهنما
+===================== */
+
+
+.scroll-guide{
+
+
+text-align:center;
+
+
+color:#d4af37;
+
+
+font-size:18px;
+
+
+padding:30px;
+
+
+animation:
+
+scrollFade 2s infinite;
+
+
+}
+
+
+
+.scroll-guide div{
+
+
+font-size:45px;
+
+
+margin-top:10px;
+
+
+animation:
+
+arrowMove 1.5s infinite;
+
+
+}
+
+
+
+@keyframes arrowMove{
+
+
+0%{
+
+transform:translateY(0);
+
+}
+
+
+50%{
+
+transform:translateY(15px);
+
+}
+
+
+100%{
+
+transform:translateY(0);
+
+}
+
+
+}
+
+
+
+
+@keyframes scrollFade{
+
+
+50%{
+
+opacity:.5;
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* =====================
+محصول
+===================== */
+
+
+.product{
+
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:35px;
+
+
+}
+
 
 
 
@@ -232,88 +563,17 @@ border-radius:30px;
 background:#090909;
 
 
-border:2px solid #d4af37;
+border:
+
+2px solid #d4af37;
 
 
 box-shadow:
 
-0 0 40px rgba(212,175,55,.35);
+0 0 45px rgba(212,175,55,.35);
 
 
-animation:
-
-boxShow 1.5s ease forwards;
-
-
-}
-
-
-
-
-.product-box video{
-
-
-width:100%;
-
-
-display:block;
-
-
-border-radius:22px;
-
-
-}
-
-
-
-
-@keyframes boxShow{
-
-
-from{
-
-opacity:0;
-
-transform:
-
-translateY(60px)
-
-scale(.85);
-
-}
-
-
-
-to{
-
-opacity:1;
-
-transform:
-
-translateY(0)
-
-scale(1);
-
-}
-
-
-}
-
-
-
-
-
-
-
-/* =====================
-   لوگو
-===================== */
-
-
-.brand{
-
-
-height:70vh;
+min-height:300px;
 
 
 display:flex;
@@ -329,59 +589,41 @@ align-items:center;
 
 
 
-.brand img{
+
+.product-box video{
 
 
-width:180px;
+width:100%;
 
-
-filter:
-
-drop-shadow(0 0 25px #d4af37);
-
-
-animation:
-
-logoGlow 3s infinite alternate;
-
+border-radius:22px;
 
 }
 
 
 
-
-@keyframes logoGlow{
-
-
-from{
-
-filter:
-
-drop-shadow(0 0 10px #d4af37);
-
-}
+#productMessage{
 
 
-to{
+text-align:center;
 
-filter:
 
-drop-shadow(0 0 35px #d4af37);
+color:#d4af37;
 
-}
+
+font-size:20px;
+
+
+line-height:2;
 
 
 }
-
-
-
 
 
 
 
 
 /* =====================
-   کارت اطلاعات
+کارت محصول
 ===================== */
 
 
@@ -404,8 +646,6 @@ padding:30px;
 
 
 
-
-
 .card{
 
 
@@ -421,7 +661,7 @@ linear-gradient(
 
 145deg,
 
-#111,
+#151515,
 
 #050505
 
@@ -434,15 +674,12 @@ border:
 1px solid #d4af37;
 
 
-
-border-radius:20px;
-
+border-radius:25px;
 
 
 box-shadow:
 
-0 0 20px rgba(212,175,55,.15);
-
+0 0 25px rgba(212,175,55,.2);
 
 
 opacity:0;
@@ -450,12 +687,10 @@ opacity:0;
 
 transform:
 
-translateY(80px);
-
+translateY(60px);
 
 
 transition:1s;
-
 
 
 }
@@ -468,10 +703,17 @@ transition:1s;
 opacity:1;
 
 
-transform:
+transform:translateY(0);
 
-translateY(0);
 
+}
+
+
+
+
+.hidden{
+
+display:none;
 
 }
 
@@ -482,77 +724,13 @@ translateY(0);
 
 
 /* =====================
-   گواهی اصالت
+سریال و مشتری
 ===================== */
 
 
-.certificate{
+#serialSection,
 
-
-padding:35px;
-
-
-line-height:2.2;
-
-
-text-align:right;
-
-
-background:#080808;
-
-
-}
-
-
-
-
-.certificate h1{
-
-
-text-align:center;
-
-
-color:#d4af37;
-
-
-margin-bottom:30px;
-
-
-}
-
-
-
-
-.certificate h3{
-
-
-text-align:center;
-
-
-color:#d4af37;
-
-
-margin-top:40px;
-
-
-}
-
-
-
-
-
-
-
-
-/* =====================
-   مشتری و سریال
-===================== */
-
-
-
-.customer,
-
-#serialSection{
+.customer{
 
 
 padding:35px;
@@ -579,10 +757,12 @@ input{
 padding:15px;
 
 
-border-radius:12px;
+border-radius:15px;
 
 
-border:1px solid #d4af37;
+border:
+
+1px solid #d4af37;
 
 
 background:#111;
@@ -599,14 +779,13 @@ font-size:16px;
 
 
 
-
 button{
 
 
 padding:15px;
 
 
-border-radius:12px;
+border-radius:15px;
 
 
 border:none;
@@ -630,45 +809,31 @@ font-size:16px;
 
 
 
-
-
-
-/* =====================
-   موبایل
-===================== */
+/* موبایل */
 
 
 @media(max-width:600px){
 
 
-.product-box{
-
-
-width:92%;
-
-
-}
-
-
-
 .brand img{
-
 
 width:150px;
 
+}
+
+
+.certificate h1{
+
+font-size:30px;
 
 }
 
 
+.certificate p{
 
-.certificate{
-
-
-font-size:15px;
-
+font-size:19px;
 
 }
-
 
 
 }
