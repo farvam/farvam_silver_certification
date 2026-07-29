@@ -134,7 +134,7 @@ if(checkButton && serialInput && result){
 
 
             const response =
-            await fetch("products.json?v=1");
+            await fetch("products.json?v=2");
 
 
             const products =
