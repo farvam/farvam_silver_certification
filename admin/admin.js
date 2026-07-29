@@ -1,19 +1,17 @@
 document.addEventListener("DOMContentLoaded", function(){
 
 
-
 let products = {};
 
 
 
 // =====================
-// ورود
+// ورود مدیریت
 // =====================
 
 
 const loginBtn =
 document.getElementById("loginBtn");
-
 
 
 if(loginBtn){
@@ -99,14 +97,17 @@ showProducts();
 console.log(error);
 
 
-document.getElementById("list").innerHTML =
-"خطا در خواندن محصولات";
+products={};
+
+
+showProducts();
 
 
 });
 
 
 }
+
 
 
 
@@ -130,14 +131,28 @@ if(!list) return;
 
 
 
-list.innerHTML="";
+list.innerHTML =
+`
+<div style="
+text-align:center;
+color:#d4af37;
+margin-bottom:20px;
+">
+
+تعداد محصولات:
+${Object.keys(products).length}
+
+</div>
+`;
 
 
 
 Object.keys(products).forEach(code=>{
 
 
-let p=products[code];
+const p =
+products[code];
+
 
 
 list.innerHTML += `
@@ -172,6 +187,20 @@ ${p.purity}
 ${p.weight}
 
 
+<br>
+
+
+تاریخ ثبت:
+${p.created || "نامشخص"}
+
+
+<br>
+
+
+وضعیت:
+${p.active ? "فعال":"غیرفعال"}
+
+
 </div>
 
 
@@ -189,8 +218,9 @@ ${p.weight}
 
 
 
+
 // =====================
-// ثبت محصول
+// ثبت محصول جدید
 // =====================
 
 
@@ -206,15 +236,18 @@ addButton.onclick=function(){
 
 
 
-let serial =
-document.getElementById("serial").value.trim();
+const serial =
+document.getElementById("serial")
+.value.trim();
+
 
 
 
 if(serial===""){
 
 
-alert("شماره سریال را وارد کنید");
+alert("❌ شماره سریال وارد نشده است");
+
 
 return;
 
@@ -224,22 +257,57 @@ return;
 
 
 
+
+// جلوگیری از سریال تکراری
+
+
+if(products[serial]){
+
+
+alert(
+"❌ این شماره سریال قبلاً ثبت شده است"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+
+
+
 products[serial]={
+
 
 
 active:true,
 
 
 name:
-document.getElementById("name").value,
+document.getElementById("name").value.trim(),
+
 
 
 purity:
-document.getElementById("purity").value,
+document.getElementById("purity").value.trim(),
+
 
 
 weight:
-document.getElementById("weight").value,
+document.getElementById("weight").value.trim(),
+
+
 
 
 media:{
@@ -250,29 +318,42 @@ document.getElementById("mediaType").value,
 
 
 src:
-document.getElementById("mediaSrc").value
+document.getElementById("mediaSrc").value.trim()
 
 
 },
 
 
 
+
 certificate:{
+
+
+title:
+"گواهی اصالت و مالکیت FARVAM",
 
 
 status:
 "اصالت محصول تأیید شده",
 
 
+
 description:
-document.getElementById("description").value
+document.getElementById("description").value.trim()
 
 
-}
+},
+
+
+
+
+created:
+today
 
 
 
 };
+
 
 
 
@@ -280,16 +361,18 @@ document.getElementById("description").value
 showProducts();
 
 
-
 downloadJSON();
 
 
 
-alert("✅ محصول ساخته شد و فایل JSON آماده شد");
+alert(
+"✅ محصول با موفقیت ثبت شد"
+);
 
 
 
 };
+
 
 
 }
@@ -301,7 +384,7 @@ alert("✅ محصول ساخته شد و فایل JSON آماده شد");
 
 
 // =====================
-// ساخت فایل JSON
+// خروجی JSON
 // =====================
 
 
@@ -310,7 +393,11 @@ function downloadJSON(){
 
 
 const json =
-JSON.stringify(products,null,2);
+JSON.stringify(
+products,
+null,
+2
+);
 
 
 
