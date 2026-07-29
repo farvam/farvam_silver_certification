@@ -5,33 +5,54 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>FARVAM | Silver Certification</title>
+<meta
+name="theme-color"
+content="#050505">
 
-<link rel="stylesheet" href="./style.css?v=10">
+<title>
+FARVAM | Silver Certification
+</title>
+
+<link
+rel="stylesheet"
+href="./style.css?v=20">
 
 </head>
 
-
 <body>
 
+
+
+<!-- ===================================
+ذرات طلایی
+=================================== -->
 
 <div id="goldParticles"></div>
 
 
 
-<!-- =====================
-INTRO FARVAM
-===================== -->
+
+
+<!-- ===================================
+فیلم معرفی FARVAM
+=================================== -->
 
 <section id="intro">
 
-<video autoplay muted playsinline>
+    <video
+        autoplay
+        muted
+        playsinline>
 
-<source src="./assets/intro.mp4" type="video/mp4">
+        <source
+            src="./assets/intro.mp4"
+            type="video/mp4">
 
-</video>
+    </video>
 
 </section>
 
@@ -39,15 +60,15 @@ INTRO FARVAM
 
 
 
-<!-- =====================
-LOGO
-===================== -->
+<!-- ===================================
+لوگو
+=================================== -->
 
 <section class="brand">
 
-
-<img src="./assets/logo.png" alt="FARVAM">
-
+    <img
+        src="./assets/logo.png"
+        alt="FARVAM">
 
 </section>
 
@@ -55,59 +76,53 @@ LOGO
 
 
 
-<!-- =====================
-SCROLL GUIDE
-===================== -->
+<!-- ===================================
+فلش های راهنما
+=================================== -->
 
+<div class="scrollArrows">
 
-<div class="scroll-guide">
+<div class="glassArrow left">
 
+↓
 
-<span>↓</span>
+</div>
 
+<div class="glassArrow right">
 
-<div>
+↓
 
-مشاهده جزئیات
+</div>
 
 </div>
 
 
-<span>↓</span>
-
-
-</div>
 
 
 
 
+<!-- ===================================
+فیلم معرفی محصول
+فعلاً همان silver.mp4
+=================================== -->
 
+<section class="introProduct">
 
+<div class="videoBox">
 
+<video
+autoplay
+muted
+loop
+playsinline>
 
-<!-- =====================
-INTRO PRODUCT VIDEO
-فعلا همان silver.mp4
-===================== -->
-
-
-<section class="product-intro">
-
-
-<div class="video-box">
-
-
-<video autoplay muted loop playsinline>
-
-
-<source src="./assets/silver.mp4" type="video/mp4">
-
+<source
+src="./assets/silver.mp4"
+type="video/mp4">
 
 </video>
 
-
 </div>
-
 
 </section>
 
@@ -117,15 +132,11 @@ INTRO PRODUCT VIDEO
 
 
 
-
-
-<!-- =====================
-CERTIFICATE
-===================== -->
-
+<!-- ===================================
+گواهی اصالت
+=================================== -->
 
 <section class="certificate">
-
 
 <h1>
 
@@ -134,37 +145,34 @@ CERTIFICATE
 </h1>
 
 
-
 <p>
 
-تبریک می‌گوییم؛ شما اکنون مالک قطعه‌ای ارزشمند از نقره اصیل FARVAM هستید.
+تبریک می‌گوییم.
+
+شما اکنون مالک یکی از محصولات اصیل FARVAM هستید.
 
 </p>
 
 
-
 <p>
 
-این محصول با دقت انتخاب، بررسی و تحت استانداردهای کنترل کیفیت FARVAM عرضه شده است.
+تمام اطلاعات این صفحه مستقیماً از سامانه محصولات FARVAM دریافت می‌شود و تنها مرجع رسمی تأیید اصالت کالا محسوب می‌شود.
 
 </p>
 
 
-
 <p>
 
-نقره برای ما تنها یک فلز گران‌بها نیست؛ بلکه نمادی از ارزش، ماندگاری و انتخاب هوشمندانه است.
+هدف ما ایجاد تجربه‌ای لوکس، شفاف و مطمئن برای خریداران محصولات FARVAM است.
 
 </p>
-
 
 
 <h3>
 
-⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
+⚜️ FARVAM ⚜️
 
 </h3>
-
 
 </section>
 
@@ -174,32 +182,80 @@ CERTIFICATE
 
 
 
+<!-- ===================================
+فیلم محصول
+=================================== -->
 
-<!-- =====================
-PRODUCT LOCK
-===================== -->
+<section
+class="productSection">
 
+<div
+class="videoBox"
+id="productContainer">
 
-<section class="product">
-
-
-<div class="video-box product-lock">
-
-
-
-<div id="productMessage">
+<div
+id="productPlaceholder">
 
 لطفاً ابتدا شماره سریال محصول را وارد کنید
 
 </div>
 
+<video
 
+id="productVideo"
 
-<video id="productMedia" muted loop playsinline>
+muted
 
+loop
+
+playsinline
+
+style="display:none;">
+
+<source
+id="productVideoSource"
+src=""
+type="video/mp4">
 
 </video>
 
+</div>
+
+</section>
+
+<!-- ===================================
+اطلاعات محصول
+تا قبل از تایید سریال مخفی است
+=================================== -->
+
+<section
+class="details hidden"
+id="productDetails">
+
+
+<div class="productCard">
+
+<h2 id="productName">
+
+</h2>
+
+</div>
+
+
+
+<div class="productCard">
+
+<h3>
+
+مشخصات محصول
+
+</h3>
+
+
+<p id="productInfo">
+
+</p>
+
 
 </div>
 
@@ -213,51 +269,12 @@ PRODUCT LOCK
 
 
 
-<!-- =====================
-PRODUCT DETAILS
-===================== -->
+<!-- ===================================
+ورود شماره سریال
+=================================== -->
 
-
-<section class="details hidden" id="productDetails">
-
-
-
-<div class="card">
-
-
-<h2 id="productName"></h2>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-
-<h2 id="productInfo"></h2>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- =====================
-SERIAL
-===================== -->
-
-
-<section id="serialSection">
+<section
+class="serialSection">
 
 
 <h2>
@@ -268,21 +285,35 @@ SERIAL
 
 
 
-<input 
+<div class="serialBox">
+
+
+<input
+
 id="serialInput"
+
+type="text"
+
 placeholder="شماره سریال محصول">
 
 
+<button
 
-<button id="checkSerial">
+id="checkSerial">
 
 بررسی اصالت
 
 </button>
 
 
+</div>
 
-<div id="result"></div>
+
+
+<div
+id="result">
+
+</div>
 
 
 </section>
@@ -295,12 +326,12 @@ placeholder="شماره سریال محصول">
 
 
 
-<!-- =====================
-CUSTOMER
-===================== -->
+<!-- ===================================
+باشگاه مشتریان
+=================================== -->
 
-
-<section class="customer">
+<section
+class="customerSection">
 
 
 <h2>
@@ -311,24 +342,48 @@ CUSTOMER
 
 
 
-<input 
+<p>
+
+برای ثبت خرید و دریافت خدمات بهتر، اطلاعات خود را وارد کنید.
+
+</p>
+
+
+
+<input
+
 id="customerName"
-placeholder="نام شما">
+
+type="text"
+
+placeholder="نام و نام خانوادگی">
 
 
 
-<input 
+<input
+
 id="customerPhone"
+
+type="tel"
+
 placeholder="شماره موبایل">
 
 
 
-<button id="registerCustomer">
+<button
+
+id="registerCustomer">
 
 ثبت اطلاعات
 
 </button>
 
+
+
+<div
+id="customerResult">
+
+</div>
 
 
 </section>
@@ -337,9 +392,42 @@ placeholder="شماره موبایل">
 
 
 
-<script src="./script.js?v=10"></script>
+
+
+<!-- ===================================
+فوتر
+=================================== -->
+
+
+<footer>
+
+<p>
+
+⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
+
+</p>
+
+</footer>
+
+
+
+
+
+
+<!-- ===================================
+Javascript
+=================================== -->
+
+
+<script
+
+src="./script.js?v=20">
+
+</script>
+
 
 
 </body>
 
 </html>
+  
