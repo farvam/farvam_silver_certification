@@ -9,7 +9,7 @@
 
 <title>FARVAM | Certification</title>
 
-<link rel="stylesheet" href="./style.css?v=5">
+<link rel="stylesheet" href="./style.css?v=6">
 
 </head>
 
@@ -17,21 +17,26 @@
 <body>
 
 
-<!-- ذرات طلایی -->
-
 <div id="goldParticles"></div>
 
 
 
-<!-- فیلم شروع -->
+
+<!-- =====================
+فیلم شروع FARVAM
+===================== -->
 
 <section id="intro">
 
+
 <video autoplay muted playsinline>
+
 
 <source src="./assets/intro.mp4" type="video/mp4">
 
+
 </video>
+
 
 </section>
 
@@ -41,7 +46,10 @@
 
 
 
-<!-- لوگو -->
+<!-- =====================
+لوگو
+===================== -->
+
 
 <section class="brand">
 
@@ -57,14 +65,50 @@
 
 
 
-<!-- گواهی اصالت -->
+<!-- =====================
+فیلم تبلیغاتی اولیه
+===================== -->
+
+
+<section class="product-intro">
+
+
+<div class="product-box">
+
+
+<video autoplay muted loop playsinline>
+
+
+<source src="./assets/product_intro.mp4" type="video/mp4">
+
+
+</video>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =====================
+گواهی اصالت
+===================== -->
+
 
 <section class="certificate">
 
 
 <h1 id="certificateTitle">
 
+
 گواهی اصالت و مالکیت نقره
+
 
 </h1>
 
@@ -102,9 +146,12 @@
 
 <h3>
 
+
 ⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
 
+
 </h3>
+
 
 
 </section>
@@ -115,27 +162,30 @@
 
 
 
-<!-- راهنمای اسکرول -->
+
+<!-- =====================
+راهنمای اسکرول
+===================== -->
 
 
 <div class="scroll-guide">
 
 
-<div>
-
-مشاهده جزئیات
-
-</div>
-
-
 <span>
 
-↓
-
+مشاهده جزئیات
 
 </span>
 
 
+<div>
+
+↓
+
+
+</div>
+
+
 </div>
 
 
@@ -146,20 +196,33 @@
 
 
 
-<!-- محصول -->
+<!-- =====================
+نمایش محصول
+===================== -->
 
 
 <section class="product">
 
 
-<div class="product-box">
+<div class="product-box locked" id="productBox">
+
+
+
+<div id="productMessage">
+
+
+لطفاً ابتدا شماره سریال محصول را وارد کنید
+
+
+</div>
+
+
+
 
 
 <video
 
 id="productMedia"
-
-autoplay
 
 muted
 
@@ -168,62 +231,10 @@ loop
 playsinline>
 
 
-<source src="./assets/silver.mp4" type="video/mp4">
-
-
 </video>
 
 
 
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<!-- اطلاعات محصول -->
-
-
-<section class="details">
-
-
-<div class="card">
-
-
-<h2 id="productName">
-
-FARVAM FINE SILVER
-
-</h2>
-
-
-</div>
-
-
-
-
-
-<div class="card">
-
-
-<h2 id="productInfo">
-
-عیار: 999.9
-
-<br><br>
-
-وزن: 100g
-
-
-</h2>
-
 
 </div>
 
@@ -239,7 +250,49 @@ FARVAM FINE SILVER
 
 
 
-<!-- استعلام سریال -->
+<!-- =====================
+اطلاعات محصول
+===================== -->
+
+
+<section class="details hidden" id="productDetails">
+
+
+
+<div class="card">
+
+
+<h2 id="productName"></h2>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h2 id="productInfo"></h2>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+ورود سریال
+===================== -->
 
 
 <section id="serialSection">
@@ -281,7 +334,9 @@ placeholder="شماره سریال محصول">
 
 
 
-<!-- باشگاه مشتریان -->
+<!-- =====================
+باشگاه مشتریان
+===================== -->
 
 
 <section class="customer">
@@ -289,7 +344,7 @@ placeholder="شماره سریال محصول">
 
 <h2>
 
-عضویت در باشگاه مشتریان FARVAM
+باشگاه مشتریان FARVAM
 
 </h2>
 
@@ -322,7 +377,8 @@ placeholder="شماره موبایل">
 
 
 
-<script src="./script.js?v=5"></script>
+
+<script src="./script.js?v=6"></script>
 
 
 </body>
