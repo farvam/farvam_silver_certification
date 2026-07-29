@@ -16,14 +16,14 @@
 </head>
 
 
-
 <body>
-
 
 
 <!-- ذرات طلایی -->
 
 <div id="goldParticles"></div>
+
+
 
 
 
@@ -47,6 +47,8 @@
 
 
 
+
+
 <!-- فیلم محصول -->
 
 <section class="product">
@@ -57,7 +59,7 @@
 
 <video
 
-id="silverVideo"
+id="productMedia"
 
 autoplay
 
@@ -68,17 +70,16 @@ loop
 playsinline>
 
 
-<source src="./assets/silver.mp4" type="video/mp4">
-
-
 </video>
-
 
 
 </div>
 
 
 </section>
+
+
+
 
 
 
@@ -98,34 +99,44 @@ playsinline>
 
 
 
+
+
+
 <!-- اطلاعات محصول -->
 
 <section class="details">
 
 
-
 <div class="card">
 
-<h2>
-FARVAM FINE SILVER
+
+<h2 id="productName">
+
+در حال دریافت اطلاعات محصول...
+
 </h2>
+
 
 </div>
 
 
 
 
+
 <div class="card">
 
-<h2>
-عیار 999.9
+
+<h2 id="productInfo">
+
 </h2>
+
 
 </div>
 
 
 
 </section>
+
 
 
 
@@ -141,7 +152,7 @@ FARVAM FINE SILVER
 
 
 
-<h1>
+<h1 id="certificateTitle">
 
 گواهی اصالت و مالکیت نقره
 
@@ -149,47 +160,57 @@ FARVAM FINE SILVER
 
 
 
-<p>
 
-تبریک می‌گوییم؛ شما اکنون مالک قطعه‌ای ارزشمند از نقره اصیل هستید؛ انتخابی که در کنار زیبایی و درخشش، می‌تواند بخشی از مسیر حفظ و افزایش ارزش دارایی‌های شما باشد.
+
+<p id="certificateText">
+
+
+تبریک می‌گوییم؛ شما اکنون مالک قطعه‌ای ارزشمند از FARVAM هستید.
+
 
 </p>
 
 
 
+
 <p>
+
 
 این محصول با دقت انتخاب، بررسی و تحت استانداردهای کنترل کیفیت FARVAM عرضه شده است. اطلاعات ثبت‌شده در این صفحه، به‌منزله تأیید مشخصات و اصالت کالای شما بوده و نشان‌دهنده تعهد ما به شفافیت، کیفیت و اعتماد مشتریان است.
 
+
 </p>
+
+
 
 
 
 <p>
 
-در این مجموعه ما نقره را تنها یک فلز گران‌بها نمی‌دانیم؛ بلکه آن را نمادی از ارزش، ماندگاری و انتخاب هوشمندانه می‌دانیم.
+
+در این مجموعه ما فلزات گران‌بها را تنها یک کالا نمی‌دانیم؛ بلکه آن را نمادی از ارزش، ماندگاری و انتخاب هوشمندانه می‌دانیم.
+
 
 </p>
 
 
-
-<p>
-
-امیدواریم این خرید، آغاز تجربه‌ای ماندگار و سودمند برای شما باشد؛ تجربه‌ای که هر بار با نگاه کردن به این قطعه، حس اطمینان، ارزش و شکوه را برایتان زنده کند.
-
-</p>
 
 
 
 <h3>
 
+
 ⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
+
 
 </h3>
 
 
 
 </section>
+
+
+
 
 
 
@@ -211,10 +232,16 @@ FARVAM FINE SILVER
 
 
 
-<input id="customerName" placeholder="نام شما">
+<input 
+id="customerName"
+placeholder="نام شما">
 
 
-<input id="customerPhone" placeholder="شماره موبایل">
+
+<input 
+id="customerPhone"
+placeholder="شماره موبایل">
+
 
 
 <button>
@@ -233,8 +260,9 @@ FARVAM FINE SILVER
 
 
 
-<!-- استعلام سریال -->
 
+
+<!-- استعلام اصالت -->
 
 <section id="serialSection">
 
@@ -248,7 +276,9 @@ FARVAM FINE SILVER
 
 
 
-<input id="serialInput" placeholder="شماره سریال محصول">
+<input 
+id="serialInput"
+placeholder="شماره سریال محصول">
 
 
 
@@ -268,7 +298,13 @@ FARVAM FINE SILVER
 
 
 
-<script src="script.js?v=2"></script>
+
+
+
+
+<script src="script.js?v=3"></script>
+
+
 </body>
 
 </html>
