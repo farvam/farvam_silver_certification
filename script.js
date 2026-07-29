@@ -198,5 +198,5 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
-alert("SERIAL SCRIPT LOADED");
+
 });
