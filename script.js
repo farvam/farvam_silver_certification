@@ -101,38 +101,52 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-    // =====================
-    // بررسی اصالت محصول
-    // =====================
+// =====================
+// بررسی اصالت از فایل محصولات
+// =====================
 
 
-    const checkButton =
-    document.getElementById("checkSerial");
+const checkButton =
+document.getElementById("checkSerial");
 
 
-    const serialInput =
-    document.getElementById("serialInput");
+const serialInput =
+document.getElementById("serialInput");
 
 
-    const result =
-    document.getElementById("result");
-
-
-
-    if(checkButton && serialInput && result){
+const result =
+document.getElementById("result");
 
 
 
-        checkButton.addEventListener("click", function(){
+if(checkButton && serialInput && result){
+
+
+    checkButton.addEventListener("click", async function(){
+
+
+        let serial =
+        serialInput.value.trim();
 
 
 
-            let serial =
-            serialInput.value.trim();
+        try{
+
+
+            const response =
+            await fetch("products.json?v=1");
+
+
+            const products =
+            await response.json();
 
 
 
-            if(serial === "FS000001"){
+            if(products[serial]){
+
+
+                let product =
+                products[serial];
 
 
 
@@ -141,33 +155,53 @@ document.addEventListener("DOMContentLoaded", function(){
                 <div style="
                 color:#00ff88;
                 text-align:center;
-                padding:20px;
-                border:1px solid #00ff88;
-                border-radius:15px;
+                padding:25px;
+                border:1px solid #d4af37;
+                border-radius:20px;
                 ">
+
 
                 🟢 اصالت محصول تأیید شد
 
+
                 <br><br>
 
-                FARVAM FINE SILVER
+
+                ${product.name}
+
 
                 <br>
 
-                عیار 999.9
+
+                عیار: ${product.purity}
+
 
                 <br>
 
-                محصول ثبت شده در سیستم FARVAM
+
+                وزن: ${product.weight}
+
+
+                <br><br>
+
+
+                ${product.status}
+
+
+                <br><br>
+
+
+                ${product.description}
+
 
                 </div>
 
                 `;
 
 
+            }
 
-            }else{
-
+            else{
 
 
                 result.innerHTML = `
@@ -176,11 +210,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 color:#ff4444;
                 text-align:center;
                 padding:20px;
-                border:1px solid red;
-                border-radius:15px;
                 ">
 
-                ❌ شماره سریال معتبر نیست
+                ❌ شماره سریال در سیستم FARVAM ثبت نشده است
 
                 </div>
 
@@ -191,12 +223,33 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-        });
+        }
+
+        catch(error){
+
+
+            result.innerHTML = `
+
+            <div style="color:red;text-align:center">
+
+            خطا در اتصال به سیستم
+
+            </div>
+
+            `;
+
+
+            console.log(error);
+
+
+        }
 
 
 
-    }
+    });
 
+
+}
 
 
 });
