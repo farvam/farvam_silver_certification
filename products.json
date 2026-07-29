@@ -1,8 +1,9 @@
 {
- "FS000001":{
-   "name":"FARVAM FINE SILVER",
-   "purity":"999.9",
-   "weight":"100g",
-   "image":"silver.mp4"
- }
+  "FS000001": {
+    "name": "FARVAM FINE SILVER",
+    "purity": "999.9",
+    "weight": "100g",
+    "status": "اصالت محصول تأیید شده",
+    "description": "قطعه نقره اصیل FARVAM با استاندارد کنترل کیفیت"
+  }
 }
