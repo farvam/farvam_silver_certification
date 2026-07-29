@@ -202,7 +202,86 @@ if(checkButton){
 
         }
 
+// =====================
+// FARVAM SERIAL CHECK
+// =====================
 
+document.addEventListener("DOMContentLoaded", function(){
+
+    const btn = document.getElementById("checkSerial");
+
+    const input = document.getElementById("serialInput");
+
+    const result = document.getElementById("result");
+
+
+    if(!btn || !input || !result){
+
+        console.log("Serial elements not found");
+
+        return;
+
+    }
+
+
+    btn.onclick = function(){
+
+
+        let code = input.value.trim();
+
+
+
+        if(code === "FS000001"){
+
+
+            result.innerHTML = `
+
+            <div style="
+            color:#00ff88;
+            text-align:center;
+            margin-top:20px;
+            ">
+
+            🟢 اصالت محصول تأیید شد
+
+            <br><br>
+
+            FARVAM FINE SILVER
+
+            <br>
+
+            عیار 999.9
+
+            </div>
+
+            `;
+
+
+        }else{
+
+
+            result.innerHTML = `
+
+            <div style="
+            color:red;
+            text-align:center;
+            margin-top:20px;
+            ">
+
+            ❌ شماره سریال معتبر نیست
+
+            </div>
+
+            `;
+
+
+        }
+
+
+    };
+
+
+});
 
     });
 
