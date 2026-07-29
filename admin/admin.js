@@ -1,29 +1,33 @@
-document.addEventListener("DOMContentLoaded",()=>{
-
-
-let products={};
+document.addEventListener("DOMContentLoaded", function(){
 
 
 
-// =================
+let products = {};
+
+
+
+// =====================
 // ورود
-// =================
+// =====================
 
 
-document
-.getElementById("loginBtn")
-.onclick=function(){
+const loginBtn =
+document.getElementById("loginBtn");
 
 
 
-let user =
+if(loginBtn){
+
+
+loginBtn.onclick=function(){
+
+
+const user =
 document.getElementById("adminUser").value.trim();
 
 
-
-let pass =
+const pass =
 document.getElementById("adminPass").value.trim();
-
 
 
 
@@ -33,12 +37,10 @@ pass === ADMIN_CONFIG.password
 ){
 
 
-document.getElementById("loginBox")
-.style.display="none";
+document.getElementById("loginBox").style.display="none";
 
 
-document.getElementById("adminPanel")
-.style.display="block";
+document.getElementById("adminPanel").style.display="block";
 
 
 loadProducts();
@@ -49,8 +51,7 @@ loadProducts();
 else{
 
 
-document.getElementById("loginMessage")
-.innerHTML=
+document.getElementById("loginMessage").innerHTML =
 "❌ اطلاعات ورود اشتباه است";
 
 
@@ -60,12 +61,15 @@ document.getElementById("loginMessage")
 };
 
 
+}
 
 
 
-// =================
+
+
+// =====================
 // دریافت محصولات
-// =================
+// =====================
 
 
 function loadProducts(){
@@ -74,7 +78,7 @@ function loadProducts(){
 fetch("../products.json?v="+Date.now())
 
 
-.then(res=>res.json())
+.then(response=>response.json())
 
 
 .then(data=>{
@@ -89,12 +93,14 @@ showProducts();
 })
 
 
-.catch(()=>{
+.catch(error=>{
 
 
-document.getElementById("list")
-.innerHTML=
-"خطا در دریافت محصولات";
+console.log(error);
+
+
+document.getElementById("list").innerHTML =
+"خطا در خواندن محصولات";
 
 
 });
@@ -106,50 +112,61 @@ document.getElementById("list")
 
 
 
-// =================
+
+// =====================
 // نمایش محصولات
-// =================
+// =====================
 
 
 function showProducts(){
 
 
-let list =
+const list =
 document.getElementById("list");
+
+
+
+if(!list) return;
+
 
 
 list.innerHTML="";
 
 
 
-Object.keys(products)
-.forEach(code=>{
+Object.keys(products).forEach(code=>{
 
 
 let p=products[code];
 
 
-list.innerHTML +=`
+list.innerHTML += `
+
 
 <div class="productItem">
 
 
-<b>${code}</b>
+<b>
+${code}
+</b>
 
 
 <br><br>
 
 
+نام:
 ${p.name}
 
 
 <br>
+
 
 عیار:
 ${p.purity}
 
 
 <br>
+
 
 وزن:
 ${p.weight}
@@ -161,6 +178,7 @@ ${p.weight}
 `;
 
 
+
 });
 
 
@@ -170,30 +188,39 @@ ${p.weight}
 
 
 
-// =================
-// افزودن محصول
-// =================
+
+// =====================
+// ثبت محصول
+// =====================
 
 
-document
-.getElementById("addProduct")
-.onclick=function(){
+const addButton =
+document.getElementById("addProduct");
+
+
+
+if(addButton){
+
+
+addButton.onclick=function(){
 
 
 
 let serial =
-document.getElementById("serial")
-.value.trim();
+document.getElementById("serial").value.trim();
 
 
 
-if(!serial){
+if(serial===""){
+
 
 alert("شماره سریال را وارد کنید");
 
 return;
 
+
 }
+
 
 
 
@@ -213,7 +240,6 @@ document.getElementById("purity").value,
 
 weight:
 document.getElementById("weight").value,
-
 
 
 media:{
@@ -245,6 +271,7 @@ document.getElementById("description").value
 }
 
 
+
 };
 
 
@@ -253,47 +280,77 @@ document.getElementById("description").value
 showProducts();
 
 
+
 downloadJSON();
+
+
+
+alert("✅ محصول ساخته شد و فایل JSON آماده شد");
 
 
 
 };
 
 
+}
 
 
+
+
+
+
+
+// =====================
+// ساخت فایل JSON
+// =====================
 
 
 function downloadJSON(){
 
 
-let file =
+
+const json =
 JSON.stringify(products,null,2);
 
 
 
-let blob =
-new Blob([file],{
+const blob =
+new Blob(
+[json],
+{
 type:"application/json"
-});
+}
+);
 
 
 
-let link =
-document.createElement("a");
-
-
-link.href=
+const url =
 URL.createObjectURL(blob);
 
 
 
-link.download=
-"products.json";
+const a =
+document.createElement("a");
+
+
+a.href=url;
+
+
+a.download="products.json";
+
+
+document.body.appendChild(a);
+
+
+a.click();
+
+
+document.body.removeChild(a);
 
 
 
-link.click();
+URL.revokeObjectURL(url);
+
 
 
 }
