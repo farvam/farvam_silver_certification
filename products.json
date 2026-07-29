@@ -1,9 +1,29 @@
 {
   "FS000001": {
+
+    "active": true,
+
     "name": "FARVAM FINE SILVER",
+
     "purity": "999.9",
+
     "weight": "100g",
-    "status": "اصالت محصول تأیید شده",
-    "description": "قطعه نقره اصیل FARVAM تحت استانداردهای کنترل کیفیت عرضه شده است."
+
+    "media": {
+      "type": "video",
+      "src": "./assets/silver.mp4"
+    },
+
+    "certificate": {
+
+      "title": "گواهی اصالت و مالکیت نقره",
+
+      "status": "اصالت محصول تأیید شده",
+
+      "description": "این محصول با دقت انتخاب، بررسی و تحت استانداردهای کنترل کیفیت FARVAM عرضه شده است."
+    },
+
+    "created": "2026-07-29"
+
   }
-} 
+}
