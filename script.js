@@ -103,11 +103,12 @@ document.addEventListener("DOMContentLoaded", async function(){
 --------------------------------
 */
 
+document.addEventListener("DOMContentLoaded", function(){
+
 
 const serialButton = document.querySelector(
 "#serialSection button"
 );
-
 
 
 if(serialButton){
@@ -115,43 +116,28 @@ if(serialButton){
 
 serialButton.addEventListener(
 "click",
-
 function(){
 
 
-
-const serialInput = document.querySelector(
-"#serialSection input"
-);
-
-
-
-const result =
-document.querySelector("#result");
-
-
-
 let serial =
-serialInput.value.trim();
+document.querySelector("#serialSection input").value.trim();
 
+
+let result =
+document.querySelector("#result");
 
 
 
 if(serial === "FS000001"){
 
 
-result.innerHTML =
+result.innerHTML = `
 
-`
-<div style="
-color:#00ff88;
-font-size:20px;
-text-align:center;
-">
+<div class="success">
 
 🟢 اصالت محصول تأیید شد
 
-<br>
+<br><br>
 
 FARVAM FINE SILVER
 
@@ -161,12 +147,11 @@ FARVAM FINE SILVER
 
 <br>
 
-100 گرم
+وزن: 100 گرم
 
 </div>
 
 `;
-
 
 
 }
@@ -174,14 +159,9 @@ FARVAM FINE SILVER
 else{
 
 
-result.innerHTML =
+result.innerHTML = `
 
-`
-<div style="
-color:red;
-text-align:center;
-font-size:20px;
-">
+<div class="error">
 
 ❌ شماره سریال معتبر نیست
 
@@ -189,9 +169,16 @@ font-size:20px;
 
 `;
 
+}
+
+
+});
+
 
 }
 
+
+});
 
 
 });
