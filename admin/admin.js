@@ -1,159 +1,165 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",()=>{
 
 
-const list = document.getElementById("list");
+// =====================
+// ورود
+// =====================
 
 
-const serialInput = document.getElementById("serial");
-const nameInput = document.getElementById("name");
-const purityInput = document.getElementById("purity");
-const weightInput = document.getElementById("weight");
+const loginBtn =
+document.getElementById("loginBtn");
 
 
-
-let products = {};
-
+loginBtn.onclick=function(){
 
 
-// خواندن محصولات فعلی
+let user =
+document.getElementById("adminUser").value.trim();
 
-fetch("../products.json", {
-    cache:"no-store"
-})
 
-.then(response => response.json())
-
-.then(data => {
-
-    products = data;
-
-    showProducts();
-
-})
-
-.catch(error=>{
-
-    list.innerHTML =
-    "خطا در خواندن محصولات";
-
-    console.log(error);
-
-});
+let pass =
+document.getElementById("adminPass").value.trim();
 
 
 
+if(
+user==="farvam"
+&&
+pass==="9999"
+){
 
 
-// نمایش محصولات
-
-function showProducts(){
+document.getElementById("loginBox").style.display="none";
 
 
-    list.innerHTML="";
+document.getElementById("adminPanel").style.display="block";
 
 
-    Object.keys(products).forEach(code=>{
-
-
-        let product = products[code];
-
-
-        list.innerHTML += `
-
-        <div style="
-        border:1px solid #d4af37;
-        padding:15px;
-        margin:10px;
-        border-radius:15px;
-        ">
-
-        <b>${code}</b>
-
-        <br><br>
-
-        ${product.name}
-
-        <br>
-
-        عیار:
-        ${product.purity}
-
-        <br>
-
-        وزن:
-        ${product.weight}
-
-        </div>
-
-        `;
-
-
-    });
+loadProducts();
 
 
 }
 
+else{
 
 
+document.getElementById("loginMessage").innerHTML=
+"❌ نام کاربری یا رمز اشتباه است";
 
-
-// ثبت محصول جدید (فعلاً آزمایشی)
-
-const button =
-document.querySelector("button");
-
-
-button.addEventListener("click",function(){
-
-
-let serial =
-serialInput.value.trim();
-
-
-if(!serial){
-
-alert("شماره سریال وارد کنید");
-
-return;
 
 }
 
-
-
-products[serial]={
-
-active:true,
-
-name:nameInput.value,
-
-purity:purityInput.value,
-
-weight:weightInput.value,
-
-
-certificate:{
-
-status:"اصالت محصول تأیید شده",
-
-description:"محصول ثبت شده در سیستم FARVAM"
-
-}
 
 };
 
 
 
+
+
+// =====================
+// محصولات
+// =====================
+
+
+let products={};
+
+
+
+function loadProducts(){
+
+
+fetch("../products.json?v="+Date.now())
+
+.then(res=>res.json())
+
+.then(data=>{
+
+
+products=data;
+
+
 showProducts();
 
 
+})
 
-alert(
-"محصول به صورت آزمایشی اضافه شد"
-);
 
+.catch(()=>{
+
+
+document.getElementById("list").innerHTML=
+"خطا در دریافت محصولات";
 
 
 });
+
+
+}
+
+
+
+
+
+function showProducts(){
+
+
+let list =
+document.getElementById("list");
+
+
+list.innerHTML="";
+
+
+
+Object.keys(products).forEach(code=>{
+
+
+let p=products[code];
+
+
+list.innerHTML +=`
+
+<div class="productItem">
+
+
+<b>
+${code}
+</b>
+
+
+<br><br>
+
+
+${p.name}
+
+
+<br>
+
+
+عیار:
+${p.purity}
+
+
+<br>
+
+
+وزن:
+${p.weight}
+
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
 
 
 
