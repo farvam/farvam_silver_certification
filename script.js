@@ -1,139 +1,191 @@
-document.addEventListener("DOMContentLoaded", function(){
+/* ===================================
+FARVAM V2
+Main Script
+Part 1
+=================================== */
 
 
-// =====================
-// برگشت به اول صفحه
-// =====================
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+
+
+/* ===================================
+برگشت به ابتدای صفحه
+=================================== */
+
 
 window.history.scrollRestoration = "manual";
 
 
 setTimeout(()=>{
 
-window.scrollTo(0,0);
+
+window.scrollTo({
+
+top:0,
+
+left:0,
+
+behavior:"instant"
+
+});
+
 
 },500);
 
 
 
 
-// =====================
-// ذرات طلایی
-// =====================
 
-const particlesBox =
+
+
+/* ===================================
+ذرات طلایی
+=================================== */
+
+
+const particlesBox = 
 document.getElementById("goldParticles");
+
 
 
 if(particlesBox){
 
 
-for(let i=0;i<60;i++){
+
+for(let i=0;i<70;i++){
+
 
 
 let particle =
 document.createElement("span");
 
 
-particle.classList.add("particle");
+
+particle.classList.add(
+"particle"
+);
+
 
 
 particle.style.left =
 Math.random()*100+"%";
 
 
+
 particle.style.animationDelay =
-Math.random()*10+"s";
+Math.random()*8+"s";
+
 
 
 particle.style.animationDuration =
 (5+Math.random()*10)+"s";
 
 
-particlesBox.appendChild(particle);
+
+particlesBox.appendChild(
+particle
+);
+
 
 
 }
 
 
-}
-
-
-
-
-
-// =====================
-// انیمیشن کارت ها
-// =====================
-
-
-const cards =
-document.querySelectorAll(".card");
-
-
-
-const observer =
-new IntersectionObserver(function(entries){
-
-
-entries.forEach(entry=>{
-
-
-if(entry.isIntersecting){
-
-entry.target.classList.add("show");
 
 }
 
 
-});
-
-
-},{
-threshold:0.3
-});
-
-
-
-cards.forEach(card=>{
-
-observer.observe(card);
-
-});
 
 
 
 
 
 
-
-
-
-// =====================
-// بررسی اصالت محصول
-// =====================
+/* ===================================
+متغیرهای محصول
+=================================== */
 
 
 const checkButton =
-document.getElementById("checkSerial");
+document.getElementById(
+"checkSerial"
+);
+
 
 
 const serialInput =
-document.getElementById("serialInput");
+document.getElementById(
+"serialInput"
+);
+
 
 
 const result =
-document.getElementById("result");
+document.getElementById(
+"result"
+);
 
 
 
+const productVideo =
+document.getElementById(
+"productVideo"
+);
 
 
-if(checkButton && serialInput && result){
+
+const productSource =
+document.getElementById(
+"productVideoSource"
+);
 
 
 
-checkButton.addEventListener("click", async function(){
+const placeholder =
+document.getElementById(
+"productPlaceholder"
+);
+
+
+
+const productDetails =
+document.getElementById(
+"productDetails"
+);
+
+
+
+const productName =
+document.getElementById(
+"productName"
+);
+
+
+
+const productInfo =
+document.getElementById(
+"productInfo"
+);
+  /* ===================================
+بررسی اصالت محصول
+خواندن از products.json
+=================================== */
+
+
+if(
+checkButton &&
+serialInput &&
+result
+){
+
+
+
+checkButton.addEventListener(
+"click",
+async function(){
 
 
 
@@ -143,27 +195,25 @@ serialInput.value.trim();
 
 
 
-
-if(serial===""){
+if(serial === ""){
 
 
 result.innerHTML = `
 
-<div style="
-color:#ff4444;
-text-align:center;
-padding:20px;
-">
+<div class="errorBox">
 
-❌ لطفاً شماره سریال را وارد کنید
+لطفاً شماره سریال محصول را وارد کنید
 
 </div>
 
 `;
 
+
 return;
 
+
 }
+
 
 
 
@@ -174,14 +224,22 @@ try{
 
 
 const response =
-await fetch("products.json",{
-cache:"no-store"
-});
+await fetch(
+"./products.json?v="+Date.now()
+);
 
 
 
 const products =
 await response.json();
+
+
+
+
+
+if(products[serial] &&
+products[serial].active === true
+){
 
 
 
@@ -193,73 +251,50 @@ products[serial];
 
 
 
-// محصول پیدا شد
+/* =====================
+نمایش فیلم محصول
+===================== */
 
 
-if(product){
-
-
-
-// بررسی فعال بودن
-
-
-if(product.active === false){
-
-
-result.innerHTML = `
-
-<div style="
-color:#ff9900;
-text-align:center;
-padding:20px;
-">
-
-⚠️ این محصول در حال حاضر غیرفعال است
-
-</div>
-
-`;
-
-return;
-
-}
+if(
+product.media &&
+product.media.src
+){
 
 
 
-
-
-// =====================
-// تغییر فیلم محصول
-// =====================
-
-
-const video =
-document.getElementById("productMedia");
+productSource.src =
+product.media.src;
 
 
 
-if(video && product.media){
+productVideo.style.display =
+"block";
 
 
 
-if(product.media.type==="video"){
+placeholder.style.display =
+"none";
 
 
 
-video.innerHTML = `
-
-<source 
-src="${product.media.src}"
-type="video/mp4">
-
-`;
+productVideo.load();
 
 
 
-video.load();
+productVideo.play()
+.catch(
+error=>{
 
+console.log(
+"Video autoplay blocked",
+error
+);
 
 }
+
+);
+
 
 
 }
@@ -270,44 +305,41 @@ video.load();
 
 
 
-// =====================
-// اطلاعات محصول
-// =====================
+/* =====================
+نمایش اطلاعات محصول
+===================== */
 
 
-const name =
-document.getElementById("productName");
-
-
-
-const info =
-document.getElementById("productInfo");
-
-
-
-if(name){
-
-name.innerHTML =
+productName.innerHTML =
 product.name;
 
-}
 
 
 
-if(info){
+productInfo.innerHTML = `
 
-info.innerHTML =
+عیار:
+${product.purity}
 
-`
-عیار: ${product.purity}
+<br>
+
+وزن:
+${product.weight}
 
 <br><br>
 
-وزن: ${product.weight}
+${product.certificate.status}
 
 `;
 
-}
+
+
+
+
+
+productDetails.classList.remove(
+"hidden"
+);
 
 
 
@@ -315,63 +347,14 @@ info.innerHTML =
 
 
 
-
-// =====================
-// گواهی اصالت
-// =====================
-
-
-if(product.certificate){
-
-
-
-const title =
-document.getElementById("certificateTitle");
-
-
-const text =
-document.getElementById("certificateText");
-
-
-
-if(title){
-
-title.innerHTML =
-product.certificate.title;
-
-}
-
-
-
-if(text){
-
-text.innerHTML =
-product.certificate.description;
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-// پیام موفقیت
+/* =====================
+پیام تایید
+===================== */
 
 
 result.innerHTML = `
 
-<div style="
-color:#00ff88;
-text-align:center;
-padding:25px;
-border:1px solid #d4af37;
-border-radius:20px;
-">
+<div class="successBox">
 
 
 🟢 اصالت محصول تأیید شد
@@ -386,12 +369,16 @@ ${product.name}
 <br><br>
 
 
-محصول ثبت شده در سیستم FARVAM
+FARVAM Certification System
 
 
 </div>
 
+
 `;
+
+
+
 
 
 
@@ -404,11 +391,7 @@ else{
 
 result.innerHTML = `
 
-<div style="
-color:#ff4444;
-text-align:center;
-padding:20px;
-">
+<div class="errorBox">
 
 ❌ شماره سریال در سیستم FARVAM ثبت نشده است
 
@@ -419,7 +402,6 @@ padding:20px;
 
 
 }
-
 
 
 
@@ -436,12 +418,9 @@ console.log(error);
 
 result.innerHTML = `
 
-<div style="
-color:red;
-text-align:center;
-">
+<div class="errorBox">
 
-خطا در اتصال به سیستم
+خطا در اتصال به سیستم اصالت
 
 </div>
 
@@ -456,7 +435,241 @@ text-align:center;
 });
 
 
+
 }
+
+  /* ===================================
+باشگاه مشتریان FARVAM
+=================================== */
+
+
+const customerName =
+document.getElementById(
+"customerName"
+);
+
+
+
+const customerPhone =
+document.getElementById(
+"customerPhone"
+);
+
+
+
+const registerCustomer =
+document.getElementById(
+"registerCustomer"
+);
+
+
+
+const customerResult =
+document.getElementById(
+"customerResult"
+);
+
+
+
+
+if(
+registerCustomer &&
+customerName &&
+customerPhone
+){
+
+
+
+registerCustomer.addEventListener(
+"click",
+function(){
+
+
+
+let name =
+customerName.value.trim();
+
+
+
+let phone =
+customerPhone.value.trim();
+
+
+
+
+
+if(
+name === "" ||
+phone === ""
+){
+
+
+customerResult.innerHTML = `
+
+لطفاً اطلاعات را کامل وارد کنید
+
+`;
+
+return;
+
+
+}
+
+
+
+
+
+
+
+/*
+فعلاً ذخیره محلی برای تست
+
+در نسخه VPS به دیتابیس وصل می‌شود
+*/
+
+
+let customers =
+JSON.parse(
+localStorage.getItem(
+"farvamCustomers"
+)
+)
+||
+[];
+
+
+
+
+
+customers.push({
+
+name:name,
+
+phone:phone,
+
+date:
+new Date().toISOString()
+
+});
+
+
+
+
+
+localStorage.setItem(
+
+"farvamCustomers",
+
+JSON.stringify(customers)
+
+);
+
+
+
+
+
+
+
+customerResult.innerHTML = `
+
+<div class="successBox">
+
+✅ عضویت شما در باشگاه مشتریان FARVAM ثبت شد
+
+</div>
+
+`;
+
+
+
+
+
+customerName.value="";
+
+customerPhone.value="";
+
+
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+/* ===================================
+افکت ورود کارت ها
+=================================== */
+
+
+const cards =
+document.querySelectorAll(
+".productCard"
+);
+
+
+
+if(cards.length){
+
+
+cards.forEach(
+(card,index)=>{
+
+
+card.style.animationDelay =
+(index*0.2)+"s";
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+/* ===================================
+جلوگیری از برگشت اسکرول هنگام رفرش
+=================================== */
+
+
+window.addEventListener(
+"load",
+function(){
+
+
+setTimeout(
+()=>{
+
+
+window.scrollTo({
+
+top:0,
+
+left:0
+
+});
+
+
+},
+300
+);
+
+
+});
+
+
 
 
 
