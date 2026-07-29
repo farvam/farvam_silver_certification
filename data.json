@@ -1,6 +1,19 @@
 {
-  "brand": "FARVAM",
-  "product_name": "Fine Silver",
-  "purity": "999.9",
-  "title": "گواهی اصالت و مالکیت نقره"
+  "site": {
+    "brand": "FARVAM",
+    "title": "گواهی اصالت و مالکیت نقره",
+    "slogan": "ثروتی باشکوه، انتخابی ماندگار"
+  },
+
+  "settings": {
+    "serial_enabled": true,
+    "customer_register": true,
+    "show_video": true,
+    "show_logo": true,
+    "show_certificate": true,
+    "show_purity": true,
+    "show_weight": true,
+    "show_issue_date": true,
+    "show_transfer": false
+  }
 }
