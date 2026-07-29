@@ -6,346 +6,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FARVAM | Fine Silver Certification</title>
+<title>FARVAM | Certification</title>
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-
-body{
-
-background:#050505;
-
-font-family:
-Tahoma,
-Arial,
-sans-serif;
-
-overflow-x:hidden;
-
-color:white;
-
-}
-
-
-/* فیلم شروع */
-
-.intro-video{
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100dvh;
-
-object-fit:contain;
-
-background:#000;
-
-z-index:100;
-
-animation:
-introHide 2s ease 5s forwards;
-
-}
-
-
-@keyframes introHide{
-
-from{
-
-opacity:1;
-
-}
-
-to{
-
-opacity:0;
-
-visibility:hidden;
-
-}
-
-}
-
-
-
-/* بخش محصول */
-
-.product-section{
-
-
-min-height:100dvh;
-
-
-display:flex;
-
-
-justify-content:center;
-
-
-align-items:center;
-
-
-padding:25px;
-
-
-background:
-
-radial-gradient(
-
-circle at center,
-
-#1c1608,
-
-#050505 65%
-
-);
-
-
-}
-
-
-
-/* قاب لوکس */
-
-
-.product-frame{
-
-
-width:88%;
-
-
-max-width:420px;
-
-
-padding:15px;
-
-
-border-radius:30px;
-
-
-background:
-
-linear-gradient(
-
-145deg,
-
-#151515,
-
-#050505
-
-);
-
-
-
-border:
-
-2px solid
-
-#d4af37;
-
-
-
-box-shadow:
-
-
-0 0 35px
-
-rgba(212,175,55,.35),
-
-
-inset 0 0 20px
-
-rgba(255,255,255,.05);
-
-
-
-opacity:0;
-
-
-animation:
-
-frameShow 1.5s ease 6s forwards;
-
-
-}
-
-
-
-@keyframes frameShow{
-
-
-from{
-
-
-opacity:0;
-
-
-transform:
-
-scale(.8)
-
-translateY(50px);
-
-
-}
-
-
-to{
-
-
-opacity:1;
-
-
-transform:
-
-scale(1)
-
-translateY(0);
-
-
-}
-
-
-}
-
-
-
-/* فیلم نقره */
-
-
-.product-video{
-
-
-width:100%;
-
-
-display:block;
-
-
-border-radius:22px;
-
-
-object-fit:contain;
-
-
-max-height:70vh;
-
-
-}
-
-
-
-/* بخش بعدی */
-
-
-.next-section{
-
-
-height:100vh;
-
-
-display:flex;
-
-
-justify-content:center;
-
-
-align-items:center;
-
-
-font-size:35px;
-
-
-color:#d4af37;
-
-
-background:#050505;
-
-
-}
-
-
-
-</style>
-
+<link rel="stylesheet" href="style.css">
 
 </head>
-
 
 
 <body>
 
 
+<!-- فیلم شروع برند -->
 
-<!-- فیلم لوگو -->
+<div id="intro">
 
+<video autoplay muted playsinline>
 
-<video
-
-class="intro-video"
-
-autoplay
-
-muted
-
-playsinline>
-
-
-<source
-
-src="assets/intro.mp4"
-
-type="video/mp4">
-
+<source src="assets/intro.mp4" type="video/mp4">
 
 </video>
 
+</div>
 
 
 
-<!-- قاب محصول -->
+<!-- بخش محصول -->
+
+<section class="product">
 
 
-<section class="product-section">
+<div class="product-box">
 
 
-<div class="product-frame">
-
-
-
-<video
-
-class="product-video"
-
+<video 
+id="silverVideo"
 autoplay
-
 muted
-
 loop
-
 playsinline>
 
-
-<source
-
-src="assets/silver.mp4"
-
-type="video/mp4">
-
+<source src="assets/silver.mp4" type="video/mp4">
 
 </video>
-
 
 
 </div>
@@ -355,16 +57,158 @@ type="video/mp4">
 
 
 
+<!-- لوگو -->
 
-<section class="next-section">
+<section class="brand">
 
 
-⚜️ FARVAM ⚜️
+<img src="assets/logo.png">
 
 
 </section>
 
 
+
+
+<!-- اطلاعات محصول -->
+
+<section class="details">
+
+
+<div class="card">
+
+<h2>FARVAM FINE SILVER</h2>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>عیار 999.9</h2>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<!-- گواهی اصالت -->
+
+<section class="certificate">
+
+
+<h1>
+گواهی اصالت و مالکیت نقره
+</h1>
+
+
+
+<p>
+
+تبریک می‌گوییم؛ شما اکنون مالک قطعه‌ای ارزشمند از نقره اصیل هستید؛ انتخابی که در کنار زیبایی و درخشش، می‌تواند بخشی از مسیر حفظ و افزایش ارزش دارایی‌های شما باشد.
+
+</p>
+
+
+
+<p>
+
+این محصول با دقت انتخاب، بررسی و تحت استانداردهای کنترل کیفیت FARVAM عرضه شده است. اطلاعات ثبت‌شده در این صفحه، به‌منزله تأیید مشخصات و اصالت کالای شما بوده و نشان‌دهنده تعهد ما به شفافیت، کیفیت و اعتماد مشتریان است.
+
+</p>
+
+
+
+<p>
+
+در این مجموعه ما نقره را تنها یک فلز گران‌بها نمی‌دانیم؛ بلکه آن را نمادی از ارزش، ماندگاری و انتخاب هوشمندانه می‌دانیم.
+
+</p>
+
+
+
+<p>
+
+امیدواریم این خرید، آغاز تجربه‌ای ماندگار و سودمند برای شما باشد؛ تجربه‌ای که هر بار با نگاه کردن به این قطعه، حس اطمینان، ارزش و شکوه را برایتان زنده کند.
+
+</p>
+
+
+
+<h3>
+
+⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
+
+</h3>
+
+
+
+</section>
+
+
+
+
+
+<!-- بخش مشتری -->
+
+<section class="customer">
+
+
+<h2>
+عضویت در باشگاه مشتریان FARVAM
+</h2>
+
+
+<input placeholder="نام">
+
+<input placeholder="شماره موبایل">
+
+
+<button>
+ثبت اطلاعات
+</button>
+
+
+</section>
+
+
+
+
+
+<!-- بخش سریال -->
+
+<section id="serialSection">
+
+
+<h2>
+استعلام اصالت محصول
+</h2>
+
+
+<input placeholder="شماره سریال محصول">
+
+
+<button>
+بررسی
+</button>
+
+
+
+<div id="result"></div>
+
+
+</section>
+
+
+
+
+
+<script src="script.js"></script>
 
 
 </body>
