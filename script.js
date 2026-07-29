@@ -1,17 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function(){
 
 
-    // رفتن به ابتدای صفحه بعد از ورود
+    // برگشت به اول صفحه بعد از ورود
 
-    setTimeout(function(){
+    window.history.scrollRestoration = "manual";
 
-        window.scrollTo(0,0);
-
-    },100);
+    window.scrollTo(0,0);
 
 
 
-    // ساخت ذرات طلایی
+
+    // =====================
+    // ذرات طلایی
+    // =====================
+
 
     const particlesBox = document.getElementById("goldParticles");
 
@@ -19,12 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if(particlesBox){
 
 
-        for(let i=0; i<50; i++){
+        for(let i=0; i<60; i++){
 
 
             let particle = document.createElement("span");
 
-            particle.className="particle";
+
+            particle.classList.add("particle");
 
 
             particle.style.left =
@@ -32,142 +35,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             particle.style.animationDelay =
-            Math.random()*8 + "s";
+            Math.random()*10 + "s";
 
 
             particle.style.animationDuration =
-            (5 + Math.random()*8) + "s";
+            (5 + Math.random()*10) + "s";
 
 
             particlesBox.appendChild(particle);
 
+
         }
 
+
     }
 
 
 
 
 
+    // =====================
     // انیمیشن کارت ها
+    // =====================
 
 
-    const cards =
-    document.querySelectorAll(".card");
+    const cards = document.querySelectorAll(".card");
 
 
-    function checkCards(){
+    const observer = new IntersectionObserver(
+
+        function(entries){
 
 
-        cards.forEach(card=>{
+            entries.forEach(entry=>{
 
 
-            let top =
-            card.getBoundingClientRect().top;
+                if(entry.isIntersecting){
 
 
-
-            if(top < window.innerHeight - 100){
-
-
-                card.classList.add("show");
+                    entry.target.classList.add("show");
 
 
-            }
+                }
 
 
-        });
+            });
 
 
-    }
+        },
+
+        {
+
+            threshold:0.3
+
+        }
 
 
-
-    window.addEventListener(
-        "scroll",
-        checkCards
     );
 
 
-    checkCards();
+
+    cards.forEach(card=>{
 
 
+        observer.observe(card);
 
 
-
-    // استعلام سریال
-
-
-    const button =
-    document.getElementById("checkSerial");
+    });
 
 
-    if(button){
-
-
-        button.addEventListener(
-        "click",
-        function(){
-
-
-            let serial =
-            document.getElementById("serialInput").value.trim();
-
-
-
-            let result =
-            document.getElementById("result");
-
-
-
-            if(serial==="FS000001"){
-
-
-                result.innerHTML=
-                `
-                <div style="color:#00ff88;text-align:center">
-
-                🟢 اصالت محصول تأیید شد
-
-                <br><br>
-
-                FARVAM FINE SILVER
-
-                <br>
-
-                عیار 999.9
-
-                <br>
-
-                وزن: 100 گرم
-
-                </div>
-                `;
-
-
-            }
-
-            else{
-
-
-                result.innerHTML=
-                `
-                <div style="color:red;text-align:center">
-
-                ❌ شماره سریال معتبر نیست
-
-                </div>
-                `;
-
-
-            }
-
-
-
-        });
-
-
-    }
 
 
 });
