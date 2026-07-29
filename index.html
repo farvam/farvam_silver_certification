@@ -4,33 +4,50 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>FARVAM | Certification</title>
 
-<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="./style.css?v=4">
+
 
 </head>
 
 
+
 <body>
+
+
+
+<!-- ذرات طلایی -->
+
 <div id="goldParticles"></div>
 
-<!-- فیلم شروع برند -->
 
-<div id="intro">
+
+<!-- فیلم شروع لوگو -->
+
+<section id="intro">
+
 
 <video autoplay muted playsinline>
 
-<source src="assets/intro.mp4" type="video/mp4">
+
+<source src="./assets/intro.mp4" type="video/mp4">
+
 
 </video>
 
-</div>
+
+</section>
 
 
 
-<!-- بخش محصول -->
+
+
+<!-- فیلم محصول -->
 
 <section class="product">
 
@@ -38,22 +55,32 @@
 <div class="product-box">
 
 
-<video 
+<video
+
 id="silverVideo"
+
 autoplay
+
 muted
+
 loop
+
 playsinline>
 
-<source src="assets/silver.mp4" type="video/mp4">
+
+<source src="./assets/silver.mp4" type="video/mp4">
+
 
 </video>
+
 
 
 </div>
 
 
 </section>
+
+
 
 
 
@@ -62,10 +89,11 @@ playsinline>
 <section class="brand">
 
 
-<img src="assets/logo.png">
+<img src="./assets/logo.png" alt="FARVAM">
 
 
 </section>
+
 
 
 
@@ -75,17 +103,23 @@ playsinline>
 <section class="details">
 
 
+
 <div class="card">
 
-<h2>FARVAM FINE SILVER</h2>
+<h2>
+FARVAM FINE SILVER
+</h2>
 
 </div>
 
 
 
+
 <div class="card">
 
-<h2>عیار 999.9</h2>
+<h2>
+عیار 999.9
+</h2>
 
 </div>
 
@@ -97,13 +131,20 @@ playsinline>
 
 
 
+
+
+
 <!-- گواهی اصالت -->
+
 
 <section class="certificate">
 
 
+
 <h1>
+
 گواهی اصالت و مالکیت نقره
+
 </h1>
 
 
@@ -154,24 +195,34 @@ playsinline>
 
 
 
-<!-- بخش مشتری -->
+
+<!-- باشگاه مشتریان -->
+
 
 <section class="customer">
 
 
+
 <h2>
+
 عضویت در باشگاه مشتریان FARVAM
+
 </h2>
 
 
-<input placeholder="نام">
 
-<input placeholder="شماره موبایل">
+<input id="customerName" placeholder="نام شما">
+
+
+<input id="customerPhone" placeholder="شماره موبایل">
 
 
 <button>
+
 ثبت اطلاعات
+
 </button>
+
 
 
 </section>
@@ -180,21 +231,31 @@ playsinline>
 
 
 
-<!-- بخش سریال -->
+
+
+<!-- استعلام سریال -->
+
 
 <section id="serialSection">
 
 
+
 <h2>
+
 استعلام اصالت محصول
+
 </h2>
 
 
-<input placeholder="شماره سریال محصول">
+
+<input id="serialInput" placeholder="شماره سریال محصول">
 
 
-<button>
-بررسی
+
+<button id="checkSerial">
+
+بررسی اصالت
+
 </button>
 
 
@@ -202,13 +263,16 @@ playsinline>
 <div id="result"></div>
 
 
+
 </section>
 
 
 
 
 
-<script src="script.js"></script>
+
+<script src="./script.js?v=4" defer></script>
+
 
 
 </body>
