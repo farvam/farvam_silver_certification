@@ -1,34 +1,37 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
 }
 
 
 body{
 
-    background:#050505;
+background:#050505;
 
-    color:white;
+color:white;
 
-    font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
+font-family:
+Tahoma,
+Arial,
+sans-serif;
 
 }
 
 
-
 .container{
 
-    width:90%;
+width:90%;
 
-    max-width:700px;
+max-width:700px;
 
-    margin:auto;
+margin:auto;
 
-    padding:40px 20px;
+padding:40px 20px;
 
 }
 
@@ -36,48 +39,66 @@ body{
 
 h1{
 
-    text-align:center;
+text-align:center;
 
-    color:#d4af37;
+color:#d4af37;
 
-    margin-bottom:20px;
-
-    text-shadow:
-    0 0 20px #d4af37;
+margin-bottom:25px;
 
 }
 
 
-
 h2{
 
-    margin:25px 0;
+text-align:center;
 
-    text-align:center;
+margin:20px;
 
 }
 
 
 
 .box,
-.products{
-
-    background:
-    linear-gradient(
-    145deg,
-    #111,
-    #050505
-    );
+.products,
+#loginBox{
 
 
-    border:1px solid #d4af37;
+background:
+linear-gradient(
+145deg,
+#111,
+#050505
+);
 
-    border-radius:20px;
 
-    padding:25px;
+border:1px solid #d4af37;
 
-    box-shadow:
-    0 0 30px rgba(212,175,55,.15);
+
+border-radius:20px;
+
+
+padding:25px;
+
+
+box-shadow:
+0 0 30px rgba(212,175,55,.2);
+
+
+}
+
+
+
+#loginBox{
+
+
+width:90%;
+
+max-width:400px;
+
+margin:100px auto;
+
+text-align:center;
+
 
 }
 
@@ -85,23 +106,30 @@ h2{
 
 input{
 
-    width:100%;
 
-    padding:15px;
+width:100%;
 
-    margin-bottom:15px;
 
-    border-radius:12px;
+padding:15px;
 
-    border:
 
-    1px solid #d4af37;
+margin-bottom:15px;
 
-    background:#111;
 
-    color:white;
+border-radius:12px;
 
-    font-size:16px;
+
+border:1px solid #d4af37;
+
+
+background:#111;
+
+
+color:white;
+
+
+font-size:16px;
+
 
 }
 
@@ -109,23 +137,33 @@ input{
 
 button{
 
-    width:100%;
 
-    padding:15px;
+width:100%;
 
-    border:none;
 
-    border-radius:12px;
+padding:15px;
 
-    background:#d4af37;
 
-    color:#000;
+border:none;
 
-    font-weight:bold;
 
-    font-size:17px;
+border-radius:12px;
 
-    cursor:pointer;
+
+background:#d4af37;
+
+
+color:#000;
+
+
+font-weight:bold;
+
+
+font-size:16px;
+
+
+cursor:pointer;
+
 
 }
 
@@ -133,27 +171,51 @@ button{
 
 button:hover{
 
-    box-shadow:
-    0 0 20px #d4af37;
+
+box-shadow:
+
+0 0 20px #d4af37;
+
 
 }
 
 
 
-.products{
+#adminPanel{
 
-    margin-top:30px;
+
+display:none;
+
 
 }
 
 
 
-#list{
+#loginMessage{
 
-    padding:20px;
 
-    text-align:center;
+margin-top:15px;
 
-    color:#aaa;
+color:#d4af37;
+
+
+}
+
+
+
+.productItem{
+
+
+border:1px solid #d4af37;
+
+
+padding:15px;
+
+
+border-radius:15px;
+
+
+margin:10px 0;
+
 
 }
