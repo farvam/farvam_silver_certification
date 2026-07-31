@@ -673,6 +673,8 @@ linear-gradient(
 
 
 .certificate h1{
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+
 
 
 font-family:
@@ -1442,6 +1444,214 @@ font-family:Nastaliq;
 
 
 src:url("./assets/fonts/Nastaliq.ttf");
+
+
+}
+/* ===================================
+FARVAM V2 POLISH
+Video + Luxury Arrows
+=================================== */
+
+
+/* هماهنگ شدن قاب تمام ویدئوها */
+
+.videoBox{
+
+    width:92%;
+    max-width:430px;
+
+    padding:12px;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        145deg,
+        #1c1c1c,
+        #050505
+    );
+
+    border:
+    2px solid #d4af37;
+
+    box-shadow:
+    0 0 45px rgba(212,175,55,.45);
+
+}
+
+
+
+.videoBox video{
+
+    width:100%;
+
+    height:auto;
+
+    aspect-ratio:9 / 16;
+
+    object-fit:cover;
+
+    display:block;
+
+    border-radius:22px;
+
+}
+
+
+
+
+
+/* ===================================
+فلش شیشه ای سه بعدی کنار لوگو
+=================================== */
+
+
+.scrollArrows{
+
+
+    margin-top:-110px;
+
+    padding:
+    0 45px;
+
+    position:relative;
+
+    z-index:20;
+
+}
+
+
+
+.glassArrow{
+
+
+    width:70px;
+
+    height:110px;
+
+
+    background:
+
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,.35),
+        rgba(255,255,255,.05)
+    );
+
+
+    backdrop-filter:
+    blur(15px);
+
+
+
+    clip-path:
+    polygon(
+        50% 100%,
+        0 45%,
+        30% 45%,
+        30% 0,
+        70% 0,
+        70% 45%,
+        100% 45%
+    );
+
+
+    border:none;
+
+
+    color:#d4af37;
+
+
+    filter:
+
+    drop-shadow(
+    0 0 18px rgba(212,175,55,.7)
+    );
+
+
+    animation:
+
+    luxuryArrow 2s infinite;
+
+
+
+}
+
+
+
+
+@keyframes luxuryArrow{
+
+
+0%{
+
+transform:
+translateY(0);
+
+opacity:.7;
+
+}
+
+
+50%{
+
+transform:
+translateY(15px);
+
+opacity:1;
+
+}
+
+
+100%{
+
+transform:
+translateY(0);
+
+opacity:.7;
+
+}
+
+
+}
+
+
+
+
+
+
+/* فاصله بهتر بین لوگو و فلش */
+
+.brand{
+
+    margin-bottom:70px;
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.scrollArrows{
+
+    padding:0 25px;
+
+    margin-top:-80px;
+
+}
+
+
+.glassArrow{
+
+    width:55px;
+
+    height:90px;
+
+}
+
 
 
 }
