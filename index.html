@@ -1,433 +1,687 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="FARVAM Silver Certification System - Premium Authentication">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>FARVAM | گواهی اصالت و مالکیت محصولات نقره</title>
+    
+    <!-- Tailwind CSS (For structural grid/flex utilities) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Luxury Serif) & Vazirmatn (Persian UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FUTURE SPLIT: /css/style.css?v=1.0.0 -->
+    <style>
+        :root {
+            /* Luxury Color Palette */
+            --gold-light: #FDF5A9;
+            --gold-main: #D4AF37;
+            --gold-dark: #8A6D1C;
+            --silver-main: #E0E0E0;
+            --matte-black: #0a0a0a;
+            --dark-gray: #141414;
+            --glass-bg: rgba(20, 20, 20, 0.45);
+            --glass-border: rgba(212, 175, 55, 0.25);
+            --glass-highlight: rgba(253, 245, 169, 0.1);
+        }
 
-<meta charset="UTF-8">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+        body {
+            background-color: var(--matte-black);
+            color: var(--silver-main);
+            font-family: 'Vazirmatn', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-<meta
-name="theme-color"
-content="#050505">
+        .en-font {
+            font-family: 'Playfair Display', serif;
+        }
 
-<title>
-FARVAM | Silver Certification
-</title>
+        .gold-text-gradient {
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: goldShimmer 4s linear infinite;
+        }
 
-<link
-rel="stylesheet"
-href="./style.css?v=20">
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-highlight);
+            border-left: 1px solid var(--glass-highlight);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border-radius: 1.5rem;
+        }
 
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--matte-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-dark);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-main);
+        }
+
+        @keyframes goldShimmer {
+            to { background-position: 200% center; }
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeInSlideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Sequence Animation Classes */
+        .seq-hidden {
+            opacity: 0;
+        }
+        .seq-logo {
+            animation: fadeInScale 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 1.5s; /* Logo waits for video */
+        }
+        .seq-arrows {
+            animation: fadeInSlideUp 1s ease-out forwards;
+            animation-delay: 3.5s; /* Arrows wait for logo */
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.6;
+            animation: fadeInScale 2s ease-out forwards;
+        }
+
+        .overlay-vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Luxury Input */
+        .luxury-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--gold-dark);
+            color: var(--gold-light);
+            padding: 1rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+        }
+        .luxury-input:focus {
+            border-color: var(--gold-main);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            background: rgba(0,0,0,0.6);
+        }
+
+        /* Luxury Button */
+        .luxury-button {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-main) 50%, var(--gold-light) 100%);
+            color: var(--matte-black);
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .luxury-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+            filter: brightness(1.1);
+        }
+        .luxury-button:disabled {
+            background: #333;
+            color: #777;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 3D Transform Utilities */
+        .tilt-container {
+            perspective: 1000px;
+        }
+        .tilt-element {
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Toast Notification System */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .luxury-toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--gold-main);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .luxury-toast.show {
+            transform: translateX(0);
+        }
+        .toast-icon {
+            color: var(--gold-main);
+            font-size: 1.25rem;
+        }
+
+        /* Certificate Styling */
+        .certificate-border {
+            border: 2px solid var(--gold-main);
+            outline: 1px solid var(--gold-dark);
+            outline-offset: 4px;
+            padding: 2px;
+        }
+        
+        .hide {
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body>
 
-
-
-<!-- ===================================
-ذرات طلایی
-=================================== -->
-
-<div id="goldParticles"></div>
-
-
-
-
-
-<!-- ===================================
-فیلم معرفی FARVAM
-=================================== -->
-
-<section id="intro">
-
-    <video
-        autoplay
-        muted
-        playsinline>
-
-        <source
-            src="./assets/intro.mp4"
-            type="video/mp4">
-
-    </video>
-
-</section>
-
-
-
-
-
-<!-- ===================================
-لوگو
-=================================== -->
-
-<section class="brand">
-
-    <img
-        src="./assets/logo.png"
-        alt="FARVAM">
-
-</section>
-
-
-
-
-
-<!-- ===================================
-فلش های راهنما
-=================================== -->
-
-<div class="scrollArrows">
-
-<div class="glassArrow left">
-
-↓
-
-</div>
-
-<div class="glassArrow right">
-
-↓
-
-</div>
-
-</div>
-
-
-
-
-
-
-<!-- ===================================
-فیلم معرفی محصول
-فعلاً همان silver.mp4
-=================================== -->
-
-<section class="introProduct">
-
-<div class="videoBox">
-
-<video
-autoplay
-muted
-loop
-playsinline>
-
-<source
-src="./assets/silver.mp4"
-type="video/mp4">
-
-</video>
-
-</div>
-
-</section>
-
-
-
-
-
-
-
-<!-- ===================================
-گواهی اصالت
-=================================== -->
-
-<section class="certificate">
-
-<h1>
-
-گواهی اصالت و مالکیت نقره
-
-</h1>
-
-
-<p>
-
-تبریک می‌گوییم.
-
-شما اکنون مالک یکی از محصولات اصیل FARVAM هستید.
-
-</p>
-
-
-<p>
-
-تمام اطلاعات این صفحه مستقیماً از سامانه محصولات FARVAM دریافت می‌شود و تنها مرجع رسمی تأیید اصالت کالا محسوب می‌شود.
-
-</p>
-
-
-<p>
-
-هدف ما ایجاد تجربه‌ای لوکس، شفاف و مطمئن برای خریداران محصولات FARVAM است.
-
-</p>
-
-
-<h3>
-
-⚜️ FARVAM ⚜️
-
-</h3>
-
-</section>
-
-
-
-
-
-
-
-<!-- ===================================
-فیلم محصول
-=================================== -->
-
-<section
-class="productSection">
-
-<div
-class="videoBox"
-id="productContainer">
-
-<div
-id="productPlaceholder">
-
-لطفاً ابتدا شماره سریال محصول را وارد کنید
-
-</div>
-
-<video
-
-id="productVideo"
-
-muted
-
-loop
-
-playsinline
-
-style="display:none;">
-
-<source
-id="productVideoSource"
-src=""
-type="video/mp4">
-
-</video>
-
-</div>
-
-</section>
-
-<!-- ===================================
-اطلاعات محصول
-تا قبل از تایید سریال مخفی است
-=================================== -->
-
-<section
-class="details hidden"
-id="productDetails">
-
-
-<div class="productCard">
-
-<h2 id="productName">
-
-</h2>
-
-</div>
-
-
-
-<div class="productCard">
-
-<h3>
-
-مشخصات محصول
-
-</h3>
-
-
-<p id="productInfo">
-
-</p>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- ===================================
-ورود شماره سریال
-=================================== -->
-
-<section
-class="serialSection">
-
-
-<h2>
-
-استعلام اصالت محصول
-
-</h2>
-
-
-
-<div class="serialBox">
-
-
-<input
-
-id="serialInput"
-
-type="text"
-
-placeholder="شماره سریال محصول">
-
-
-<button
-
-id="checkSerial">
-
-بررسی اصالت
-
-</button>
-
-
-</div>
-
-
-
-<div
-id="result">
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<!-- ===================================
-باشگاه مشتریان
-=================================== -->
-
-<section
-class="customerSection">
-
-
-<h2>
-
-باشگاه مشتریان FARVAM
-
-</h2>
-
-
-
-<p>
-
-برای ثبت خرید و دریافت خدمات بهتر، اطلاعات خود را وارد کنید.
-
-</p>
-
-
-
-<input
-
-id="customerName"
-
-type="text"
-
-placeholder="نام و نام خانوادگی">
-
-
-
-<input
-
-id="customerPhone"
-
-type="tel"
-
-placeholder="شماره موبایل">
-
-
-
-<button
-
-id="registerCustomer">
-
-ثبت اطلاعات
-
-</button>
-
-
-
-<div
-id="customerResult">
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-<!-- ===================================
-فوتر
-=================================== -->
-
-
-<footer>
-
-<p>
-
-⚜️ FARVAM | ثروتی باشکوه، انتخابی ماندگار ⚜️
-
-</p>
-
-</footer>
-
-
-
-
-
-
-<!-- ===================================
-Javascript
-=================================== -->
-
-
-<script
-
-src="./script.js?v=20">
-
-</script>
-
-
-
+    <!-- STREAMING_CHUNK:Building Hero Section (Video -> Logo -> Arrows)... -->
+    <!-- 1. Hero Section -->
+    <section class="hero-section" id="hero">
+        <!-- Abstract Luxury Video Background (Loads instantly) -->
+        <video class="video-bg" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1600861194802-a2b11076bc8f?q=80&w=2000&auto=format&fit=crop">
+            <!-- Fallback generic elegant liquid gold/silver video -->
+            <source src="https://cdn.pixabay.com/video/2021/08/11/84687-586738914_large.mp4" type="video/mp4">
+        </video>
+        <div class="overlay-vignette"></div>
+
+        <!-- Logo (Appears after 1.5s delay) -->
+        <div class="z-10 flex flex-col items-center seq-hidden seq-logo">
+            <h1 class="text-5xl md:text-7xl font-bold en-font tracking-[0.2em] gold-text-gradient mb-4 drop-shadow-2xl">FARVAM</h1>
+            <p class="text-xl md:text-2xl text-gray-300 font-light tracking-[0.4em] uppercase text-center">Fine Silver Collection</p>
+        </div>
+
+        <!-- Scroll Arrows (Appears after 3.5s delay, with float animation) -->
+        <div class="absolute bottom-10 z-10 flex flex-col items-center seq-hidden seq-arrows" style="animation: fadeInSlideUp 1s ease-out forwards 3.5s, float 3s ease-in-out infinite 4.5s;">
+            <p class="text-sm text-gray-400 mb-2 font-light">Scroll to Discover</p>
+            <div class="glass-panel p-2 rounded-full cursor-pointer hover:bg-white/5 transition duration-300" onclick="document.getElementById('promo').scrollIntoView()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Promo Video Section -->
+    <section class="relative min-h-[70vh] flex items-center justify-center py-20 px-4" id="promo">
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-[#111] to-black z-[-1]"></div>
+        
+        <div class="max-w-6xl w-full mx-auto tilt-container">
+            <div class="glass-panel p-2 md:p-4 rounded-3xl tilt-element" id="promo-tilt">
+                <div class="relative rounded-2xl overflow-hidden aspect-video certificate-border">
+                    <video class="w-full h-full object-cover" controls poster="https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=1600&auto=format&fit=crop">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
+                    </video>
+                    <!-- Watermark -->
+                    <div class="absolute top-4 right-4 text-white/50 en-font text-xl font-bold">FARVAM</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Authentication Section -->
+    <section class="py-24 px-4 relative" id="auth-section">
+        <div class="max-w-xl mx-auto text-center z-10 relative tilt-container">
+            <div class="glass-panel p-10 md:p-14 tilt-element" id="auth-tilt">
+                <div class="mb-8">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <h2 class="text-3xl font-bold text-white mb-2">استعلام اصالت</h2>
+                    <p class="text-gray-400 text-sm">لطفاً شماره سریال درج شده روی گواهی یا محصول را وارد نمایید</p>
+                </div>
+
+                <form id="auth-form" class="space-y-6" onsubmit="event.preventDefault(); App.handleAuth();">
+                    <div class="relative">
+                        <input type="text" id="serial-input" class="luxury-input en-font" placeholder="FSXXXXXX" autocomplete="off" spellcheck="false" maxlength="20">
+                    </div>
+                    <button type="submit" id="verify-btn" class="luxury-button w-full">تأیید اصالت</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Product Result Section (Hidden initially) -->
+    <section id="result-section" class="py-20 px-4 hide relative min-h-screen">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent z-[-1]"></div>
+        
+        <div class="max-w-5xl mx-auto space-y-12">
+            
+            <!-- Certificate 3D Card -->
+            <div class="tilt-container mx-auto max-w-3xl">
+                <div class="glass-panel p-8 md:p-12 certificate-border text-center relative overflow-hidden tilt-element" id="cert-tilt">
+                    <!-- Background Watermark -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+                        <span class="en-font text-9xl font-bold">FARVAM</span>
+                    </div>
+                    
+                    <h3 class="en-font text-3xl text-white mb-1 uppercase tracking-widest">Certificate of Authenticity</h3>
+                    <div class="w-24 h-px bg-[#D4AF37] mx-auto mb-8"></div>
+                    
+                    <div class="space-y-4 relative z-10 text-lg">
+                        <p class="text-gray-300">بدین‌وسیله گواهی می‌شود محصول زیر با بالاترین استانداردهای برند FARVAM تولید و اصالت آن تأیید می‌گردد.</p>
+                        <p class="text-xl font-bold text-white mt-4" id="res-name">-</p>
+                        <p class="en-font text-[#D4AF37] text-2xl mt-2 tracking-widest" id="res-serial">-</p>
+                        <div class="inline-block mt-6 px-6 py-2 border border-green-500 text-green-400 rounded-full bg-green-500/10">
+                            ✓ اصالت تأیید شد
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Media & Specs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 tilt-container">
+                <!-- Media -->
+                <div class="glass-panel p-4 rounded-3xl tilt-element" id="media-tilt">
+                    <div class="relative w-full h-[400px] rounded-2xl overflow-hidden" id="res-media-container">
+                        <!-- Dynamically filled with image or video -->
+                    </div>
+                </div>
+
+                <!-- Specs -->
+                <div class="glass-panel p-8 rounded-3xl flex flex-col justify-center tilt-element" id="specs-tilt">
+                    <h4 class="text-2xl font-bold text-white mb-6 border-b border-gray-800 pb-4">مشخصات محصول</h4>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                            <span class="text-gray-400">نام محصول</span>
+                            <span class="text-white font-medium" id="spec-name">-</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                            <span class="text-gray-400">وزن</span>
+                            <span class="text-white en-font" id="spec-weight">-</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                            <span class="text-gray-400">عیار (Purity)</span>
+                            <span class="text-[#D4AF37] en-font font-bold" id="spec-purity">-</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
+                            <span class="text-gray-400">وضعیت</span>
+                            <span class="text-green-400" id="spec-active">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h5 class="text-gray-400 text-sm mb-2">توضیحات:</h5>
+                        <p class="text-sm text-gray-300 leading-relaxed" id="spec-desc">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Customer Club Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-[#111]" id="club-section">
+        <div class="max-w-md mx-auto text-center tilt-container">
+            <div class="glass-panel p-8 md:p-12 tilt-element" id="club-tilt">
+                <h3 class="text-2xl font-bold gold-text-gradient mb-2">باشگاه مشتریان خاص FARVAM</h3>
+                <p class="text-gray-400 text-sm mb-8">برای دریافت خدمات ویژه و گارانتی، ثبت نام کنید.</p>
+                
+                <form id="club-form" class="space-y-4" onsubmit="event.preventDefault(); App.handleClubRegistration();">
+                    <input type="text" id="club-name" class="luxury-input w-full text-right !font-sans" placeholder="نام و نام خانوادگی" required>
+                    <input type="tel" id="club-phone" class="luxury-input w-full text-left en-font" placeholder="09120000000" dir="ltr" required pattern="[0-9]{11}">
+                    <button type="submit" class="luxury-button w-full !mt-6 text-sm">ثبت در باشگاه مشتریان</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center border-t border-gray-900 bg-black">
+        <div class="en-font text-2xl gold-text-gradient font-bold mb-4">FARVAM</div>
+        <p class="text-gray-600 text-sm">© 2026 FARVAM Silver. All Rights Reserved.</p>
+        <p class="text-gray-700 text-xs mt-2">v1.0.0 Master Architecture</p>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- FUTURE SPLIT: /js/app.js?v=1.0.0 -->
+    <script>
+        /**
+         * FARVAM Master Application Core
+         * Architecture: Module Pattern (IIFE) to prevent global variable leaks.
+         * Version: 1.0.0
+         */
+        const App = (function() {
+            "use strict";
+
+            // --- 1. MOCK DATABASE (products.json Simulation) ---
+            // In future VPS/API setup, this will be replaced by a fetch() call.
+            const MockDatabase = {
+                "products": [
+                    {
+                        "Serial": "FS000001",
+                        "Active": true,
+                        "Name": "شمش نقره فاین فاروام",
+                        "Purity": "999.9",
+                        "Weight": "1000g",
+                        "MediaType": "Video",
+                        "MediaUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+                        "Thumbnail": "https://images.unsplash.com/photo-1622359419139-446736dc053e?q=80&w=800&auto=format&fit=crop",
+                        "Certificate": "Original",
+                        "Description": "شمش یک کیلوگرمی نقره خالص با عیار ۹۹۹.۹، ضرب شده با بالاترین استانداردهای جهانی، دارای شماره سریال یکتا و گواهی اصالت.",
+                        "CreatedDate": "2026-07-31",
+                        "UpdatedDate": "2026-07-31"
+                    },
+                    {
+                        "Serial": "FS000002",
+                        "Active": true,
+                        "Name": "سکه نقره یادبود فاروام",
+                        "Purity": "999.9",
+                        "Weight": "31.1g (1oz)",
+                        "MediaType": "Image",
+                        "MediaUrl": "https://images.unsplash.com/photo-1622359419139-446736dc053e?q=80&w=800&auto=format&fit=crop",
+                        "Thumbnail": "",
+                        "Certificate": "Original",
+                        "Description": "سکه نقره یک اونسی، طراحی انحصاری و لیمیتد ادیشن.",
+                        "CreatedDate": "2026-07-31",
+                        "UpdatedDate": "2026-07-31"
+                    }
+                ]
+            };
+
+            // --- 2. UTILITY MODULE ---
+            const Utils = {
+                // Prevent XSS attacks by sanitizing inputs
+                sanitize: function(str) {
+                    if(typeof str !== 'string') return str;
+                    const div = document.createElement('div');
+                    div.textContent = str;
+                    return div.innerHTML;
+                },
+                
+                // Show Luxury Toast instead of alert()
+                showToast: function(message, type = 'info') {
+                    const container = document.getElementById('toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = 'luxury-toast';
+                    
+                    let icon = 'ℹ️';
+                    if(type === 'error') {
+                        icon = '❌';
+                        toast.style.borderColor = '#ef4444'; // Red for error
+                    } else if (type === 'success') {
+                        icon = '✅';
+                        toast.style.borderColor = '#22c55e'; // Green for success
+                    }
+
+                    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${this.sanitize(message)}</span>`;
+                    container.appendChild(toast);
+                    
+                    // Trigger reflow for transition
+                    void toast.offsetWidth;
+                    toast.classList.add('show');
+
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 400); // Wait for transition out
+                    }, 4000);
+                },
+
+                // Apply 3D Tilt Effect to an element
+                init3DTilt: function(elementId) {
+                    const el = document.getElementById(elementId);
+                    if(!el) return;
+
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - rect.left; // x position within the element
+                        const y = e.clientY - rect.top;  // y position within the element
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = ((y - centerY) / centerY) * -5; // Max 5 deg tilt
+                        const rotateY = ((x - centerX) / centerX) * 5;
+
+                        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                        el.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2 + 15}px 35px rgba(0,0,0,0.6)`;
+                    });
+
+                    el.addEventListener('mouseleave', () => {
+                        el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                        el.style.boxShadow = `0 15px 35px rgba(0,0,0,0.6)`;
+                    });
+                }
+            };
+
+            // --- 3. DATA SERVICE MODULE ---
+            const DataService = {
+                getProductBySerial: async function(serial) {
+                    // Simulate network delay for realistic loading effect (VPS preparation)
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            const product = MockDatabase.products.find(p => p.Serial.toUpperCase() === serial.toUpperCase());
+                            if (product) {
+                                resolve(product);
+                            } else {
+                                reject(new Error("محصولی با این شناسه یافت نشد."));
+                            }
+                        }, 800); 
+                    });
+                }
+            };
+
+            // --- 4. UI RENDERER MODULE ---
+            const UI = {
+                elements: {
+                    btn: document.getElementById('verify-btn'),
+                    input: document.getElementById('serial-input'),
+                    resultSection: document.getElementById('result-section'),
+                    // Result fields
+                    resName: document.getElementById('res-name'),
+                    resSerial: document.getElementById('res-serial'),
+                    specName: document.getElementById('spec-name'),
+                    specWeight: document.getElementById('spec-weight'),
+                    specPurity: document.getElementById('spec-purity'),
+                    specActive: document.getElementById('spec-active'),
+                    specDesc: document.getElementById('spec-desc'),
+                    mediaContainer: document.getElementById('res-media-container')
+                },
+
+                setLoading: function(isLoading) {
+                    this.elements.btn.disabled = isLoading;
+                    this.elements.btn.textContent = isLoading ? 'در حال بررسی...' : 'تأیید اصالت';
+                    this.elements.input.disabled = isLoading;
+                },
+
+                renderProduct: function(product) {
+                    // Fill text data (with sanitization)
+                    this.elements.resName.textContent = Utils.sanitize(product.Name);
+                    this.elements.resSerial.textContent = Utils.sanitize(product.Serial);
+                    this.elements.specName.textContent = Utils.sanitize(product.Name);
+                    this.elements.specWeight.textContent = Utils.sanitize(product.Weight);
+                    this.elements.specPurity.textContent = Utils.sanitize(product.Purity);
+                    this.elements.specActive.textContent = product.Active ? 'فعال و معتبر' : 'غیرفعال';
+                    this.elements.specDesc.textContent = Utils.sanitize(product.Description);
+
+                    // Render Media
+                    this.elements.mediaContainer.innerHTML = ''; // Clear previous
+                    
+                    if (product.MediaType === 'Video') {
+                        const video = document.createElement('video');
+                        video.className = 'w-full h-full object-cover';
+                        video.controls = true;
+                        video.autoplay = true;
+                        video.muted = true; // Required for autoplay in most browsers
+                        video.poster = Utils.sanitize(product.Thumbnail);
+                        
+                        const source = document.createElement('source');
+                        source.src = Utils.sanitize(product.MediaUrl);
+                        source.type = 'video/mp4';
+                        
+                        video.appendChild(source);
+                        this.elements.mediaContainer.appendChild(video);
+                    } else if (product.MediaType === 'Image') {
+                        const img = document.createElement('img');
+                        img.className = 'w-full h-full object-cover';
+                        img.src = Utils.sanitize(product.MediaUrl);
+                        img.alt = Utils.sanitize(product.Name);
+                        this.elements.mediaContainer.appendChild(img);
+                    }
+
+                    // Show section with smooth scroll
+                    this.elements.resultSection.classList.remove('hide');
+                    setTimeout(() => {
+                        this.elements.resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                },
+                
+                hideResult: function() {
+                    this.elements.resultSection.classList.add('hide');
+                }
+            };
+
+            // --- 5. CONTROLLERS ---
+            
+            const handleAuth = async function() {
+                const serial = UI.elements.input.value.trim();
+                
+                if(!serial) {
+                    Utils.showToast('لطفاً شماره سریال را وارد کنید.', 'error');
+                    return;
+                }
+
+                UI.setLoading(true);
+                UI.hideResult();
+
+                try {
+                    const product = await DataService.getProductBySerial(serial);
+                    Utils.showToast('اصالت محصول تأیید شد.', 'success');
+                    UI.renderProduct(product);
+                } catch (error) {
+                    Utils.showToast(error.message, 'error');
+                } finally {
+                    UI.setLoading(false);
+                }
+            };
+
+            const handleClubRegistration = function() {
+                const nameInput = document.getElementById('club-name');
+                const phoneInput = document.getElementById('club-phone');
+                
+                const name = nameInput.value.trim();
+                const phone = phoneInput.value.trim();
+
+                if(!name || !phone) {
+                    Utils.showToast('تکمیل تمامی فیلدها الزامی است.', 'error');
+                    return;
+                }
+
+                // Simple duplicate check using LocalStorage
+                const existingMembers = JSON.parse(localStorage.getItem('farvam_club') || '[]');
+                if(existingMembers.includes(phone)) {
+                    Utils.showToast('این شماره موبایل قبلاً ثبت شده است.', 'error');
+                    return;
+                }
+
+                // Save
+                existingMembers.push(phone);
+                localStorage.setItem('farvam_club', JSON.stringify(existingMembers));
+                
+                Utils.showToast('ثبت نام شما با موفقیت انجام شد. به باشگاه فاروام خوش آمدید.', 'success');
+                
+                // Clear form
+                nameInput.value = '';
+                phoneInput.value = '';
+            };
+
+            // --- 6. INITIALIZATION ---
+            const init = function() {
+                // Initialize 3D effects on specific cards
+                const tiltElements = ['promo-tilt', 'auth-tilt', 'cert-tilt', 'media-tilt', 'specs-tilt', 'club-tilt'];
+                tiltElements.forEach(id => Utils.init3DTilt(id));
+                
+                console.log("FARVAM System Core v1.0.0 Initialized successfully.");
+            };
+
+            // Run initialization after DOM is fully loaded
+            document.addEventListener('DOMContentLoaded', init);
+
+            // Expose public methods
+            return {
+                handleAuth: handleAuth,
+                handleClubRegistration: handleClubRegistration
+            };
+
+        })();
+    </script>
 </body>
-
 </html>
-  
