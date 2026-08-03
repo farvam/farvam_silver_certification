@@ -3,59 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="FARVAM Silver Certification System - Premium Authentication">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>FARVAM | گواهی اصالت و مالکیت محصولات نقره</title>
-    
-    <!-- Tailwind CSS (For structural grid/flex utilities) -->
+    <title>FARVAM | Fine Silver Certification</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn Font for Persian Typography -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     
-    <!-- Google Fonts: Playfair Display (Luxury Serif) & Vazirmatn (Persian UI) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- FUTURE SPLIT: /css/style.css?v=1.0.0 -->
     <style>
         :root {
-            /* Luxury Color Palette */
-            --gold-light: #FDF5A9;
+            --gold-light: #F9F1CC;
             --gold-main: #D4AF37;
             --gold-dark: #8A6D1C;
-            --silver-main: #E0E0E0;
-            --matte-black: #0a0a0a;
-            --dark-gray: #141414;
-            --glass-bg: rgba(20, 20, 20, 0.45);
+            --matte-black: #080808;
+            --glass-bg: rgba(15, 15, 15, 0.55);
             --glass-border: rgba(212, 175, 55, 0.25);
-            --glass-highlight: rgba(253, 245, 169, 0.1);
+            --danger-main: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
         }
 
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--matte-black);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background-color: var(--matte-black);
-            color: var(--silver-main);
-            font-family: 'Vazirmatn', sans-serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+        .en-font { font-family: 'Inter', system-ui, sans-serif; }
+        .hide { display: none !important; }
 
-        .en-font {
-            font-family: 'Playfair Display', serif;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold-main); }
 
-        .gold-text-gradient {
-            background: linear-gradient(to right, var(--gold-dark), var(--gold-light), var(--gold-dark));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 200% auto;
-            animation: goldShimmer 4s linear infinite;
+        #particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none; opacity: 0.8;
         }
 
         .glass-panel {
@@ -63,624 +51,1091 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-top: 1px solid var(--glass-highlight);
-            border-left: 1px solid var(--glass-highlight);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            border-radius: 1.5rem;
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.8);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--matte-black);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold-dark);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-main);
-        }
-
-        @keyframes goldShimmer {
-            to { background-position: 200% center; }
-        }
-
-        @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes fadeInSlideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Sequence Animation Classes */
-        .seq-hidden {
-            opacity: 0;
-        }
-        .seq-logo {
-            animation: fadeInScale 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: 1.5s; /* Logo waits for video */
-        }
-        .seq-arrows {
-            animation: fadeInSlideUp 1s ease-out forwards;
-            animation-delay: 3.5s; /* Arrows wait for logo */
-        }
-
-        .hero-section {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.6;
-            animation: fadeInScale 2s ease-out forwards;
-        }
-
-        .overlay-vignette {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.9) 100%);
-            z-index: -1;
-        }
-
-        /* Luxury Input */
-        .luxury-input {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--gold-dark);
-            color: var(--gold-light);
-            padding: 1rem 1.5rem;
-            border-radius: 9999px;
-            font-size: 1.1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            outline: none;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 2px;
-        }
-        .luxury-input:focus {
-            border-color: var(--gold-main);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-            background: rgba(0,0,0,0.6);
-        }
-
-        /* Luxury Button */
-        .luxury-button {
-            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-main) 50%, var(--gold-light) 100%);
-            color: var(--matte-black);
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
-        .luxury-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
-            filter: brightness(1.1);
-        }
-        .luxury-button:disabled {
-            background: #333;
-            color: #777;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        /* 3D Transform Utilities */
-        .tilt-container {
-            perspective: 1000px;
-        }
-        .tilt-element {
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        .tilt-wrapper {
             transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
         }
+        .tilt-element { transform: translateZ(40px); }
 
-        /* Toast Notification System */
-        .toast-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .gold-text-gradient {
+            background: linear-gradient(to right, #B8860B, #FFD700, #F0E68C, #FFD700, #B8860B);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
         }
-        .luxury-toast {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--gold-main);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .luxury-toast.show {
-            transform: translateX(0);
-        }
-        .toast-icon {
-            color: var(--gold-main);
-            font-size: 1.25rem;
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        /* Certificate Styling */
-        .certificate-border {
-            border: 2px solid var(--gold-main);
-            outline: 1px solid var(--gold-dark);
-            outline-offset: 4px;
-            padding: 2px;
+        /* Banner */
+        #luxury-banner {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--gold-dark); transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; justify-content: center; align-items: center; padding: 10px 20px; gap: 15px;
+        }
+        #luxury-banner.show { transform: translateY(0); }
+
+        .intro-container {
+            position: relative; min-height: 100vh; display: flex;
+            flex-direction: column; justify-content: center; align-items: center; z-index: 10;
         }
         
-        .hide {
-            display: none !important;
+        .intro-video-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; opacity: 0;
+            animation: fadeInVideo 2s ease-in forwards;
+        }
+
+        .brand-logo-container {
+            opacity: 0; transform: translateY(30px) scale(0.95);
+            animation: fadeInUpLogo 2s ease-out forwards;
+            animation-delay: 1.5s; 
+        }
+
+        .scroll-indicator {
+            opacity: 0; margin-top: 5rem; cursor: pointer;
+            animation: fadeInBounce 2.5s ease-in-out infinite;
+            animation-delay: 3.5s; 
+        }
+
+        @keyframes fadeInVideo { to { opacity: 0.6; } }
+        @keyframes fadeInUpLogo { to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes fadeInBounce { 
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-20px); opacity: 1; }
+            60% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        .toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: flex; flex-direction: column; gap: 1rem; pointer-events: none;}
+        .luxury-toast { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--gold-main); padding: 1rem 1.5rem; border-radius: 1rem; color: white; display: flex; align-items: center; gap: 1rem; transform: translateX(150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); min-width: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .luxury-toast.show { transform: translateX(0); }
+        .toast-icon { width: 28px; height: 28px; }
+        .toast-success .toast-icon { color: #4ade80; }
+        .toast-error .toast-icon { color: #f87171; border-color: #f87171; }
+
+        .luxury-input {
+            width: 100%; background: rgba(0,0,0,0.7); border: 1px solid var(--gold-dark);
+            color: white; padding: 1.2rem; border-radius: 1rem; outline: none; transition: all 0.3s;
+            text-align: center; font-size: 1.25rem; letter-spacing: 3px;
+        }
+        .luxury-input:focus { border-color: var(--gold-main); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); background: rgba(0,0,0,0.9); }
+        .luxury-input:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .luxury-btn {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-main) 50%, var(--gold-dark) 100%);
+            color: black; font-weight: 800; padding: 1.2rem 2rem; border-radius: 1rem;
+            cursor: pointer; transition: all 0.3s; border: none; width: 100%; margin-top: 1rem; font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .luxury-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); transform: translateY(-2px); filter: brightness(1.1); }
+        .luxury-btn:active:not(:disabled) { transform: translateY(1px); }
+        .luxury-btn:disabled { filter: grayscale(1); opacity: 0.7; cursor: not-allowed; }
+
+        .danger-btn {
+            background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 50%, #7f1d1d 100%);
+            color: white; border: 1px solid #f87171;
+        }
+        .danger-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5); }
+
+        /* Concierge AI */
+        .concierge-btn {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 50; width: 65px; height: 65px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-main));
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4); transition: all 0.3s ease; border: 2px solid var(--gold-light);
+        }
+        .concierge-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 6px 25px rgba(212, 175, 55, 0.6); }
+        .concierge-window {
+            position: fixed; bottom: 7rem; left: 2rem; z-index: 50; width: 350px; max-width: calc(100vw - 4rem); height: 500px;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(25px); border: 1px solid var(--gold-dark); border-radius: 1.5rem;
+            display: flex; flex-direction: column; overflow: hidden; transform: translateY(30px) scale(0.9); opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+        }
+        .concierge-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+        
+        /* Modals (Admin & Transfer) */
+        .admin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
+        .admin-content { background: #0a0a0a; border: 1px solid var(--gold-dark); width: 95%; max-width: 1200px; height: 90vh; border-radius: 1.5rem; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 50px rgba(212,175,55,0.1); }
+        .admin-input { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.25rem; font-size: 0.9rem; transition: border-color 0.3s;}
+        .admin-input:focus { border-color: var(--gold-main); outline: none; }
+        
+        .otp-input { text-align: center; font-size: 1.5rem; letter-spacing: 10px; font-weight: bold; }
+        
+        .stolen-warning {
+            animation: pulseRed 2s infinite;
+        }
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 30px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- STREAMING_CHUNK:Building Hero Section (Video -> Logo -> Arrows)... -->
-    <!-- 1. Hero Section -->
-    <section class="hero-section" id="hero">
-        <!-- Abstract Luxury Video Background (Loads instantly) -->
-        <video class="video-bg" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1600861194802-a2b11076bc8f?q=80&w=2000&auto=format&fit=crop">
-            <!-- Fallback generic elegant liquid gold/silver video -->
-            <source src="https://cdn.pixabay.com/video/2021/08/11/84687-586738914_large.mp4" type="video/mp4">
-        </video>
-        <div class="overlay-vignette"></div>
+    <canvas id="particle-canvas"></canvas>
+    
+    <div id="luxury-banner">
+        <img id="banner-img" src="" class="h-10 w-auto rounded hide object-contain">
+        <span id="banner-text" class="text-sm md:text-base font-bold text-[#D4AF37]"></span>
+        <button onclick="document.getElementById('luxury-banner').classList.remove('show')" class="text-gray-400 hover:text-white mr-auto">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
 
-        <!-- Logo (Appears after 1.5s delay) -->
-        <div class="z-10 flex flex-col items-center seq-hidden seq-logo">
-            <h1 class="text-5xl md:text-7xl font-bold en-font tracking-[0.2em] gold-text-gradient mb-4 drop-shadow-2xl">FARVAM</h1>
-            <p class="text-xl md:text-2xl text-gray-300 font-light tracking-[0.4em] uppercase text-center">Fine Silver Collection</p>
-        </div>
-
-        <!-- Scroll Arrows (Appears after 3.5s delay, with float animation) -->
-        <div class="absolute bottom-10 z-10 flex flex-col items-center seq-hidden seq-arrows" style="animation: fadeInSlideUp 1s ease-out forwards 3.5s, float 3s ease-in-out infinite 4.5s;">
-            <p class="text-sm text-gray-400 mb-2 font-light">Scroll to Discover</p>
-            <div class="glass-panel p-2 rounded-full cursor-pointer hover:bg-white/5 transition duration-300" onclick="document.getElementById('promo').scrollIntoView()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. Promo Video Section -->
-    <section class="relative min-h-[70vh] flex items-center justify-center py-20 px-4" id="promo">
-        <div class="absolute inset-0 bg-gradient-to-b from-black via-[#111] to-black z-[-1]"></div>
-        
-        <div class="max-w-6xl w-full mx-auto tilt-container">
-            <div class="glass-panel p-2 md:p-4 rounded-3xl tilt-element" id="promo-tilt">
-                <div class="relative rounded-2xl overflow-hidden aspect-video certificate-border">
-                    <video class="w-full h-full object-cover" controls poster="https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=1600&auto=format&fit=crop">
-                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                        مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
-                    </video>
-                    <!-- Watermark -->
-                    <div class="absolute top-4 right-4 text-white/50 en-font text-xl font-bold">FARVAM</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. Authentication Section -->
-    <section class="py-24 px-4 relative" id="auth-section">
-        <div class="max-w-xl mx-auto text-center z-10 relative tilt-container">
-            <div class="glass-panel p-10 md:p-14 tilt-element" id="auth-tilt">
-                <div class="mb-8">
-                    <svg class="w-16 h-16 mx-auto mb-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    <h2 class="text-3xl font-bold text-white mb-2">استعلام اصالت</h2>
-                    <p class="text-gray-400 text-sm">لطفاً شماره سریال درج شده روی گواهی یا محصول را وارد نمایید</p>
-                </div>
-
-                <form id="auth-form" class="space-y-6" onsubmit="event.preventDefault(); App.handleAuth();">
-                    <div class="relative">
-                        <input type="text" id="serial-input" class="luxury-input en-font" placeholder="FSXXXXXX" autocomplete="off" spellcheck="false" maxlength="20">
-                    </div>
-                    <button type="submit" id="verify-btn" class="luxury-button w-full">تأیید اصالت</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. Product Result Section (Hidden initially) -->
-    <section id="result-section" class="py-20 px-4 hide relative min-h-screen">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent z-[-1]"></div>
-        
-        <div class="max-w-5xl mx-auto space-y-12">
-            
-            <!-- Certificate 3D Card -->
-            <div class="tilt-container mx-auto max-w-3xl">
-                <div class="glass-panel p-8 md:p-12 certificate-border text-center relative overflow-hidden tilt-element" id="cert-tilt">
-                    <!-- Background Watermark -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-                        <span class="en-font text-9xl font-bold">FARVAM</span>
-                    </div>
-                    
-                    <h3 class="en-font text-3xl text-white mb-1 uppercase tracking-widest">Certificate of Authenticity</h3>
-                    <div class="w-24 h-px bg-[#D4AF37] mx-auto mb-8"></div>
-                    
-                    <div class="space-y-4 relative z-10 text-lg">
-                        <p class="text-gray-300">بدین‌وسیله گواهی می‌شود محصول زیر با بالاترین استانداردهای برند FARVAM تولید و اصالت آن تأیید می‌گردد.</p>
-                        <p class="text-xl font-bold text-white mt-4" id="res-name">-</p>
-                        <p class="en-font text-[#D4AF37] text-2xl mt-2 tracking-widest" id="res-serial">-</p>
-                        <div class="inline-block mt-6 px-6 py-2 border border-green-500 text-green-400 rounded-full bg-green-500/10">
-                            ✓ اصالت تأیید شد
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Media & Specs -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 tilt-container">
-                <!-- Media -->
-                <div class="glass-panel p-4 rounded-3xl tilt-element" id="media-tilt">
-                    <div class="relative w-full h-[400px] rounded-2xl overflow-hidden" id="res-media-container">
-                        <!-- Dynamically filled with image or video -->
-                    </div>
-                </div>
-
-                <!-- Specs -->
-                <div class="glass-panel p-8 rounded-3xl flex flex-col justify-center tilt-element" id="specs-tilt">
-                    <h4 class="text-2xl font-bold text-white mb-6 border-b border-gray-800 pb-4">مشخصات محصول</h4>
-                    
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
-                            <span class="text-gray-400">نام محصول</span>
-                            <span class="text-white font-medium" id="spec-name">-</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
-                            <span class="text-gray-400">وزن</span>
-                            <span class="text-white en-font" id="spec-weight">-</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
-                            <span class="text-gray-400">عیار (Purity)</span>
-                            <span class="text-[#D4AF37] en-font font-bold" id="spec-purity">-</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-gray-800/50 pb-2">
-                            <span class="text-gray-400">وضعیت</span>
-                            <span class="text-green-400" id="spec-active">-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8">
-                        <h5 class="text-gray-400 text-sm mb-2">توضیحات:</h5>
-                        <p class="text-sm text-gray-300 leading-relaxed" id="spec-desc">-</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. Customer Club Section -->
-    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-[#111]" id="club-section">
-        <div class="max-w-md mx-auto text-center tilt-container">
-            <div class="glass-panel p-8 md:p-12 tilt-element" id="club-tilt">
-                <h3 class="text-2xl font-bold gold-text-gradient mb-2">باشگاه مشتریان خاص FARVAM</h3>
-                <p class="text-gray-400 text-sm mb-8">برای دریافت خدمات ویژه و گارانتی، ثبت نام کنید.</p>
-                
-                <form id="club-form" class="space-y-4" onsubmit="event.preventDefault(); App.handleClubRegistration();">
-                    <input type="text" id="club-name" class="luxury-input w-full text-right !font-sans" placeholder="نام و نام خانوادگی" required>
-                    <input type="tel" id="club-phone" class="luxury-input w-full text-left en-font" placeholder="09120000000" dir="ltr" required pattern="[0-9]{11}">
-                    <button type="submit" class="luxury-button w-full !mt-6 text-sm">ثبت در باشگاه مشتریان</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-8 text-center border-t border-gray-900 bg-black">
-        <div class="en-font text-2xl gold-text-gradient font-bold mb-4">FARVAM</div>
-        <p class="text-gray-600 text-sm">© 2026 FARVAM Silver. All Rights Reserved.</p>
-        <p class="text-gray-700 text-xs mt-2">v1.0.0 Master Architecture</p>
-    </footer>
-
-    <!-- Toast Container -->
+    <!-- Notification Toast System -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- FUTURE SPLIT: /js/app.js?v=1.0.0 -->
+    <section class="intro-container">
+        <video id="site-intro-video" class="intro-video-bg" autoplay muted loop playsinline 
+               src="assets/videos/intro.mp4" 
+               onerror="this.style.display='none'; document.getElementById('intro-fallback-bg').style.display='block';">
+        </video>
+        <div id="intro-fallback-bg" class="intro-video-bg hide" style="background: radial-gradient(circle, #2a220a 0%, #000000 100%);"></div>
+
+        <div class="brand-logo-container flex flex-col items-center z-10">
+            <img id="site-logo" src="assets/images/logo.png" 
+                 onerror="this.src='https://placehold.co/300x300/080808/D4AF37?text=FARVAM'" 
+                 alt="FARVAM Logo" class="w-48 h-48 md:w-56 md:h-56 object-contain mb-8 filter drop-shadow-2xl">
+            
+            <h1 class="text-6xl md:text-8xl font-bold tracking-[0.3em] gold-text-gradient en-font">FARVAM</h1>
+            <p class="text-[#D4AF37] mt-6 tracking-[0.4em] text-xs md:text-sm uppercase opacity-80">Fine Silver Certification</p>
+        </div>
+
+        <div class="scroll-indicator z-10" onclick="document.getElementById('promo-section').scrollIntoView({behavior: 'smooth'})">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+        </div>
+    </section>
+
+    <main class="relative z-20 w-full max-w-5xl mx-auto px-4 py-20 flex flex-col gap-24">
+        
+        <section id="promo-section" class="w-full">
+            <div class="rounded-3xl overflow-hidden glass-panel shadow-2xl border border-[#333]">
+                <video id="site-promo-video" class="w-full h-auto max-h-[500px] object-cover" autoplay muted loop playsinline 
+                       src="assets/videos/promo.mp4"
+                       onerror="this.style.display='none'">
+                </video>
+            </div>
+        </section>
+
+        <!-- Customer Club Section (Moved above search to enforce registration) -->
+        <section id="club-section" class="w-full max-w-2xl mx-auto">
+            <div id="club-panel" class="glass-panel p-8 md:p-12 rounded-[2rem] text-center border-t-4 border-t-[#D4AF37]">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white">باشگاه مشتریان ویژه FARVAM</h2>
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed">برای استعلام اصالت محصولات و بهره‌مندی از امکانات ویژه، ابتدا هویت خود را تأیید کنید.</p>
+                
+                <!-- مرحله ۱: دریافت اطلاعات -->
+                <form id="club-step-1" onsubmit="event.preventDefault(); window.Farvam.requestOTP();" class="flex flex-col gap-4">
+                    <input type="text" id="club-name" class="luxury-input !text-right !font-sans" placeholder="نام و نام خانوادگی" required>
+                    <input type="tel" id="club-phone" class="luxury-input en-font" placeholder="0912..." pattern="^09[0-9]{9}$" required title="شماره موبایل معتبر وارد کنید">
+                    <button type="submit" id="btn-req-otp" class="luxury-btn mt-2">دریافت کد تأیید پیامکی</button>
+                </form>
+
+                <!-- مرحله ۲: وارد کردن کد (ابتدا مخفی است) -->
+                <form id="club-step-2" onsubmit="event.preventDefault(); window.Farvam.verifyOTP();" class="flex flex-col gap-4 hide">
+                    <p class="text-sm text-[#D4AF37]">کد تأیید به شماره <span id="lbl-phone" class="en-font"></span> ارسال شد.</p>
+                    <p class="text-xs text-gray-500 mb-2">(برای تست سیستم، لطفاً کد 1234 را وارد کنید)</p>
+                    <input type="text" id="club-otp" class="luxury-input otp-input en-font" placeholder="----" maxlength="4" required autocomplete="off">
+                    <button type="submit" id="btn-verify-otp" class="luxury-btn mt-2">تأیید هویت و عضویت</button>
+                    <div id="otp-timer" class="text-xs text-gray-400 mt-2 en-font">02:00</div>
+                    <button type="button" id="btn-resend-otp" onclick="window.Farvam.requestOTP()" class="text-xs text-[#D4AF37] mt-2 hide cursor-pointer hover:text-white transition border-none bg-transparent">ارسال مجدد کد</button>
+                </form>
+
+                <div id="club-success" class="hide flex flex-col items-center justify-center py-6 gap-4">
+                    <svg class="w-16 h-16 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="text-[#D4AF37] font-bold text-lg">شما عضو رسمی باشگاه هستید.</div>
+                    <p class="text-sm text-gray-400">اکنون دسترسی شما به استعلام اصالت باز شده است.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="search-section">
+            <div id="tilt-search" class="tilt-wrapper w-full max-w-xl mx-auto">
+                <div class="glass-panel p-10 md:p-14 rounded-[2rem] text-center tilt-element relative overflow-hidden">
+                    
+                    <div id="search-lock-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-20 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-500">
+                        <svg class="w-12 h-12 text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <h3 class="text-white font-bold mb-2">دسترسی مسدود است</h3>
+                        <p class="text-sm text-gray-400 mb-4">برای استعلام اصالت، لطفاً ابتدا در باشگاه مشتریان (فرم بالا) ثبت‌نام کنید.</p>
+                        <button onclick="document.getElementById('club-section').scrollIntoView({behavior: 'smooth'})" class="text-[#D4AF37] border border-[#D4AF37] rounded-full px-6 py-2 text-sm hover:bg-[#D4AF37] hover:text-black transition">ثبت‌نام در باشگاه</button>
+                    </div>
+
+                    <div class="mb-8">
+                        <svg class="w-12 h-12 mx-auto text-[#D4AF37] mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-3 gold-text-gradient">استعلام اصالت</h2>
+                        <p class="text-gray-400 text-sm md:text-base leading-relaxed">شماره سریال حک شده روی شمش یا گواهی فیزیکی خود را در کادر زیر وارد نمایید.</p>
+                    </div>
+                    
+                    <form onsubmit="event.preventDefault(); window.Farvam.verifyProduct();" class="relative">
+                        <input type="text" id="serial-input" class="luxury-input en-font" placeholder="FS-XXXXXX" autocomplete="off" maxlength="15">
+                        <button type="submit" id="verify-btn" class="luxury-btn">بررسی گواهی</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-section" class="hide">
+            
+            <!-- STOLEN WARNING VIEW -->
+            <div id="stolen-view" class="hide w-full max-w-3xl mx-auto">
+                <div class="bg-[#110000] border border-red-900 rounded-[2rem] p-10 text-center shadow-[0_0_50px_rgba(239,68,68,0.2)] stolen-warning relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDEiLz4KPHBhdGggZD0iTTAgMEw4IDhaTTAgOEw4IDBaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1vcGFjaXR5PSIwLjAyIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9zdmc+')] opacity-50 pointer-events-none"></div>
+                    <svg class="w-20 h-20 text-red-600 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <h2 class="text-3xl font-bold text-red-500 mb-4">هشدار امنیتی: محصول سرقتی</h2>
+                    <p class="text-gray-300 leading-loose mb-6">این شماره سریال (<span id="stolen-serial" class="en-font font-bold"></span>) توسط مالک اصلی در سیستم به عنوان <strong>مفقودی / سرقتی</strong> گزارش شده است.</p>
+                    <div class="bg-black/50 border border-red-900/50 rounded-xl p-4 text-sm text-red-300 mb-6">
+                        جهت پیگیری‌های قانونی، اطلاعات شخصی ثبت‌نامی شما، دستگاه و موقعیت تقریبی در سیستم امنیتی FARVAM ثبت گردید. لطفاً محصول را به مراجع ذی‌صلاح تحویل دهید.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVE CERTIFICATE VIEW -->
+            <div id="active-view" class="hide tilt-wrapper">
+                <div class="glass-panel p-1 md:p-2 rounded-[2rem] tilt-element" id="certificate-border" style="background: linear-gradient(135deg, var(--gold-dark), #000, var(--gold-main));">
+                    <div class="bg-[#050505] rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden h-full">
+                        <div class="absolute inset-0 flex justify-center items-center opacity-[0.03] pointer-events-none overflow-hidden">
+                            <h1 class="text-[10rem] md:text-[15rem] font-bold rotate-[-30deg] en-font tracking-tighter">FARVAM</h1>
+                        </div>
+                        <div class="text-center mb-10 relative z-10">
+                            <img src="assets/images/logo.png" onerror="this.style.display='none'" class="w-16 h-16 mx-auto mb-4 opacity-80" alt="Logo">
+                            <div class="inline-block px-6 py-2 border border-[#D4AF37] rounded-full text-[#D4AF37] text-xs font-bold tracking-[0.2em] mb-4 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                                OFFICIAL CERTIFICATE
+                            </div>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-3 text-white">گواهی اصالت و مالکیت</h2>
+                        </div>
+                        
+                        <div class="mb-10 rounded-2xl overflow-hidden border border-[#222] shadow-2xl relative z-10 bg-black aspect-video group">
+                            <div id="media-container" class="w-full h-full flex justify-center items-center"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 relative z-10">
+                            <div class="lg:col-span-3">
+                                <h3 id="res-name" class="text-3xl font-bold text-[#D4AF37] mb-4 en-font tracking-wide drop-shadow-md"></h3>
+                                <div class="w-16 h-1 bg-gradient-to-r from-[#D4AF37] to-transparent mb-6"></div>
+                                <p id="res-desc" class="text-gray-300 leading-loose text-justify text-sm md:text-base font-light"></p>
+                                
+                                <!-- Ownership Transfer Box -->
+                                <div class="mt-8 p-5 bg-[#111] border border-[#333] rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                                    <div>
+                                        <div class="text-xs text-gray-500 mb-1">مالک فعلی در سیستم</div>
+                                        <div id="res-owner" class="text-[#D4AF37] font-bold">---</div>
+                                    </div>
+                                    <button onclick="window.Farvam.showTransferModal()" class="text-xs bg-[#222] text-white border border-[#444] px-4 py-2 rounded-lg hover:border-[#D4AF37] hover:text-[#D4AF37] transition">ثبت درخواست انتقال مالکیت</button>
+                                </div>
+                            </div>
+                            
+                            <div class="lg:col-span-2 bg-[#0a0a0a] rounded-2xl p-6 border border-[#222] shadow-inner">
+                                <ul class="space-y-5">
+                                    <li class="flex justify-between items-center border-b border-[#222] pb-3">
+                                        <span class="text-gray-500 text-sm">شماره سریال</span>
+                                        <span id="res-serial" class="font-mono text-[#D4AF37] text-lg tracking-wider">---</span>
+                                    </li>
+                                    <li class="flex justify-between items-center border-b border-[#222] pb-3">
+                                        <span class="text-gray-500 text-sm">عیار نقره</span>
+                                        <span id="res-purity" class="en-font text-white font-bold">---</span>
+                                    </li>
+                                    <li class="flex justify-between items-center border-b border-[#222] pb-3">
+                                        <span class="text-gray-500 text-sm">وزن خالص</span>
+                                        <span id="res-weight" class="en-font text-white font-bold">---</span>
+                                    </li>
+                                    <li class="flex justify-between items-center border-b border-[#222] pb-3">
+                                        <span class="text-gray-500 text-sm">تعداد استعلام</span>
+                                        <span id="res-scans" class="en-font text-white font-bold text-sm">---</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pt-2">
+                                        <span class="text-gray-500 text-sm">وضعیت اصالت</span>
+                                        <span class="text-green-500 font-bold flex items-center gap-2 text-sm">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            تأیید شده
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="transfer-modal" class="admin-modal hide">
+        <div class="bg-[#050505] p-8 rounded-2xl border border-[#333] w-full max-w-md shadow-[0_0_50px_rgba(212,175,55,0.1)] relative">
+            <button onclick="document.getElementById('transfer-modal').classList.add('hide')" class="absolute top-4 left-4 text-gray-500 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <h3 class="text-2xl font-bold mb-2 text-[#D4AF37] text-center">انتقال مالکیت</h3>
+            <p class="text-xs text-gray-400 mb-6 text-center leading-relaxed">با ثبت این فرم، درخواست انتقال برای مدیریت ارسال می‌شود. مالک جدید باید در باشگاه ثبت‌نام کرده باشد.</p>
+            <form onsubmit="event.preventDefault(); window.Farvam.submitTransfer();" class="flex flex-col gap-4">
+                <div><label class="text-xs text-gray-500">شماره سریال</label><input type="text" id="trans-serial" class="admin-input en-font" readonly disabled></div>
+                <div><label class="text-xs text-gray-500">نام مالک جدید</label><input type="text" id="trans-name" class="admin-input" required></div>
+                <div><label class="text-xs text-gray-500">موبایل مالک جدید</label><input type="tel" id="trans-phone" class="admin-input en-font" placeholder="0912..." pattern="^09[0-9]{9}$" required></div>
+                <button type="submit" class="luxury-btn !py-3">ثبت درخواست</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Concierge UI -->
+    <div class="concierge-btn" onclick="window.Farvam.toggleConcierge()" title="مشاور هوشمند">
+        <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.323 15.1c-.28.31-.64.55-1.025.702m-14.596 0c.385-.152.745-.392 1.025-.702m0 0L5 14.5m14.323.6c.28.31.64.55 1.025.702M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"></path></svg>
+    </div>
+    <div id="concierge-window" class="concierge-window">
+        <div class="bg-black/90 p-4 border-b border-[#333] flex justify-between items-center">
+            <div>
+                <h4 class="font-bold text-[#D4AF37] text-lg">FARVAM Concierge</h4>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Luxury AI Assistant</p>
+            </div>
+            <button onclick="window.Farvam.toggleConcierge()" class="text-gray-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div id="concierge-chat" class="flex-1 p-4 overflow-y-auto flex flex-col gap-4 scroll-behavior-smooth text-sm leading-relaxed">
+            <div class="self-end bg-gradient-to-br from-[#1a1505] to-[#332805] border border-[#D4AF37]/30 text-[#F9F1CC] p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-md">
+                درود بر شما. من مشاور اختصاصی شما در برند لوکس FARVAM هستم. چگونه می‌توانم در زمینه محصولات نقره و گواهی اصالت راهنمایی‌تان کنم؟
+            </div>
+        </div>
+        <form class="p-3 border-t border-[#222] flex gap-2 bg-[#050505]" onsubmit="event.preventDefault(); window.Farvam.sendConciergeMessage();">
+            <input type="text" id="concierge-input" class="flex-1 bg-[#111] border border-[#333] rounded-full px-4 text-white outline-none focus:border-[#D4AF37] transition text-sm" placeholder="پیام خود را بنویسید..." autocomplete="off">
+            <button type="submit" id="concierge-send-btn" class="bg-[#D4AF37] text-black w-10 h-10 rounded-full flex justify-center items-center hover:bg-[#F9F1CC] transition disabled:opacity-50">
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+            </button>
+        </form>
+    </div>
+
+    <footer class="relative z-20 text-center py-10 border-t border-[#222] bg-[#050505] mt-10">
+        <p class="text-gray-600 text-sm tracking-widest en-font mb-2">&copy; 2026 FARVAM FINE SILVER.</p>
+        <button onclick="document.getElementById('admin-login-modal').classList.remove('hide')" class="absolute bottom-6 right-6 text-[#222] hover:text-[#D4AF37] transition duration-300" title="مدیریت سیستم">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        </button>
+    </footer>
+
+    <!-- Admin Login -->
+    <div id="admin-login-modal" class="admin-modal hide">
+        <div class="bg-[#050505] p-8 rounded-2xl border border-[#333] w-full max-w-sm text-center shadow-[0_0_50px_rgba(212,175,55,0.1)]">
+            <h3 class="text-2xl font-bold mb-2 text-[#D4AF37]">ورود مدیریت</h3>
+            <p class="text-xs text-gray-500 mb-6">رمز عبور: admin123</p>
+            <input type="password" id="admin-pw" class="luxury-input !text-center !p-3 mb-6 en-font" placeholder="••••••••">
+            <button onclick="window.Farvam.loginAdmin()" class="luxury-btn !py-3">ورود به پنل</button>
+            <button onclick="document.getElementById('admin-login-modal').classList.add('hide'); document.getElementById('admin-pw').value=''" class="mt-6 text-gray-500 text-sm hover:text-white transition">انصراف و بازگشت</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard-modal" class="admin-modal hide">
+        <div class="admin-content">
+            <div class="p-5 border-b border-[#222] flex justify-between items-center bg-[#050505]">
+                <h2 class="text-xl font-bold text-[#D4AF37] flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    FARVAM Command Center
+                </h2>
+                <div class="flex gap-3">
+                    <button onclick="window.Farvam.exportData()" class="text-xs bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition border border-[#444]">خروجی دیتابیس (JSON)</button>
+                    <button onclick="document.getElementById('admin-dashboard-modal').classList.add('hide')" class="text-xs bg-red-900/50 text-red-200 px-4 py-2 rounded-lg hover:bg-red-900 transition border border-red-900">خروج امن</button>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+                <!-- Sidebar Nav -->
+                <div class="w-full md:w-64 bg-[#0a0a0a] border-l border-[#222] flex flex-col p-4 gap-2 shrink-0">
+                    <button onclick="window.Farvam.switchTab('dashboard')" id="tab-btn-dashboard" class="text-right p-3 rounded-lg text-sm transition bg-[#D4AF37]/10 text-[#D4AF37] font-bold border border-[#D4AF37]/30">داشبورد آماری</button>
+                    <button onclick="window.Farvam.switchTab('products')" id="tab-btn-products" class="text-right p-3 rounded-lg text-sm text-gray-400 hover:bg-[#111] transition">مدیریت محصولات</button>
+                    <button onclick="window.Farvam.switchTab('customers')" id="tab-btn-customers" class="text-right p-3 rounded-lg text-sm text-gray-400 hover:bg-[#111] transition">باشگاه مشتریان</button>
+                    <button onclick="window.Farvam.switchTab('transfers')" id="tab-btn-transfers" class="text-right p-3 rounded-lg text-sm text-gray-400 hover:bg-[#111] transition flex justify-between">درخواست انتقال <span id="badge-transfer" class="bg-[#D4AF37] text-black text-[10px] px-2 rounded-full hide">0</span></button>
+                    <button onclick="window.Farvam.switchTab('security')" id="tab-btn-security" class="text-right p-3 rounded-lg text-sm text-gray-400 hover:bg-[#111] transition flex justify-between">گزارشات امنیتی <span id="badge-security" class="bg-red-500 text-white text-[10px] px-2 rounded-full hide">0</span></button>
+                    <button onclick="window.Farvam.switchTab('settings')" id="tab-btn-settings" class="text-right p-3 rounded-lg text-sm text-gray-400 hover:bg-[#111] transition mt-auto">تنظیمات سیستم</button>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 p-6 overflow-y-auto bg-[#000]">
+                    
+                    <!-- TAB: DASHBOARD -->
+                    <div id="tab-dashboard" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222] text-center">
+                            <div class="text-3xl font-bold text-[#D4AF37] mb-2 en-font" id="stat-prods">0</div>
+                            <div class="text-xs text-gray-500">کل محصولات</div>
+                        </div>
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222] text-center">
+                            <div class="text-3xl font-bold text-white mb-2 en-font" id="stat-scans">0</div>
+                            <div class="text-xs text-gray-500">دفعات استعلام</div>
+                        </div>
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222] text-center">
+                            <div class="text-3xl font-bold text-white mb-2 en-font" id="stat-custs">0</div>
+                            <div class="text-xs text-gray-500">اعضای باشگاه</div>
+                        </div>
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222] text-center">
+                            <div class="text-3xl font-bold text-red-500 mb-2 en-font" id="stat-stolen">0</div>
+                            <div class="text-xs text-gray-500">گزارش سرقت</div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: SETTINGS -->
+                    <div id="tab-settings" class="hide max-w-3xl space-y-6">
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222]">
+                            <h4 class="text-[#D4AF37] font-bold mb-4">بنر اعلان عمومی</h4>
+                            <div class="flex items-center gap-3 mb-4">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                  <input type="checkbox" id="set-banner-active" class="sr-only peer">
+                                  <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#D4AF37]"></div>
+                                  <span class="mr-3 text-sm font-medium text-gray-300">نمایش بنر</span>
+                                </label>
+                            </div>
+                            <div class="space-y-4">
+                                <div><label class="text-xs text-gray-400 block mb-1">متن بنر</label><input type="text" id="set-banner-txt" class="admin-input"></div>
+                                <div><label class="text-xs text-gray-400 block mb-1">آدرس عکس بنر (اختیاری)</label><input type="text" id="set-banner-img" class="admin-input en-font text-left" dir="ltr"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222]">
+                            <h4 class="text-[#D4AF37] font-bold mb-4">تنظیمات هوش مصنوعی (Gemini AI)</h4>
+                            <div class="space-y-4">
+                                <div><label class="text-xs text-gray-400 block mb-1">API Key</label><input type="password" id="set-api" class="admin-input en-font text-left" dir="ltr" placeholder="AIzaSy..."></div>
+                                <div><label class="text-xs text-gray-400 block mb-1">دستورات سیستمی (System Prompt)</label>
+                                    <textarea id="set-ai-prompt" class="admin-input h-24 resize-none text-sm" placeholder="مثال: شما مشاور لوکس برند فاروام هستید. مودبانه و رسمی صحبت کنید..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تنظیمات اتصال به دیتابیس ابری -->
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222]">
+                            <h4 class="text-blue-400 font-bold mb-4 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                اتصال به دیتابیس ابری (Cloud Database)
+                            </h4>
+                            <p class="text-xs text-gray-400 mb-4 leading-relaxed">برای ذخیره دائمی اطلاعات خارج از مرورگر (آمادگی برای سرور اصلی)، لینک API دیتابیس خود (مثل Firebase یا سرویس‌های مشابه) را وارد کنید. در صورت خالی بودن، سیستم از دیتابیس لوکال استفاده می‌کند.</p>
+                            <div class="space-y-4">
+                                <div><label class="text-xs text-gray-400 block mb-1">آدرس سرور / API URL</label><input type="text" id="set-db-url" class="admin-input en-font text-left" dir="ltr" placeholder="https://api.yourserver.com/farvam-db"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#111] p-5 rounded-xl border border-[#222]">
+                            <h4 class="text-[#D4AF37] font-bold mb-4">تنظیمات رسانه (Media Paths)</h4>
+                            <div class="space-y-4">
+                                <div><label class="text-xs text-gray-400 block mb-1">آدرس فایل لوگو (PNG)</label><input type="text" id="set-logo" class="admin-input en-font text-left" dir="ltr"></div>
+                                <div><label class="text-xs text-gray-400 block mb-1">آدرس فیلم ورود سایت (MP4)</label><input type="text" id="set-intro" class="admin-input en-font text-left" dir="ltr"></div>
+                                <div><label class="text-xs text-gray-400 block mb-1">آدرس فیلم تبلیغاتی بدنه (MP4)</label><input type="text" id="set-promo" class="admin-input en-font text-left" dir="ltr"></div>
+                            </div>
+                        </div>
+
+                        <button onclick="window.Farvam.saveSettings()" class="luxury-btn !py-3 w-full">ذخیره تمامی تنظیمات</button>
+                    </div>
+
+                    <!-- TAB: PRODUCTS -->
+                    <div id="tab-products" class="hide space-y-6">
+                        <div class="bg-[#0a0a0a] p-6 rounded-2xl border border-[#222]">
+                            <h3 class="font-bold mb-6 text-[#D4AF37] border-b border-[#222] pb-2">افزودن / ویرایش محصول</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div><label class="text-xs text-gray-500">سریال (یکتا)</label><input type="text" id="prod-serial" class="admin-input en-font uppercase"></div>
+                                <div><label class="text-xs text-gray-500">نام محصول</label><input type="text" id="prod-name" class="admin-input"></div>
+                                <div><label class="text-xs text-gray-500">نام مالک (عضو باشگاه)</label><input type="text" id="prod-owner" class="admin-input" placeholder="نام مالک یا FARVAM"></div>
+                                
+                                <div><label class="text-xs text-gray-500">عیار</label><input type="text" id="prod-purity" class="admin-input en-font" value="999.9"></div>
+                                <div><label class="text-xs text-gray-500">وزن</label><input type="text" id="prod-weight" class="admin-input en-font" value="100g"></div>
+                                <div><label class="text-xs text-red-400">وضعیت امنیتی</label>
+                                    <select id="prod-status" class="admin-input !border-red-900 text-red-200">
+                                        <option value="Active">🟢 فعال و سالم</option>
+                                        <option value="Stolen">🔴 گزارش سرقت (Stolen)</option>
+                                    </select>
+                                </div>
+
+                                <div><label class="text-xs text-gray-500">نوع مدیا</label>
+                                    <select id="prod-type" class="admin-input">
+                                        <option value="Video">ویدئو (MP4)</option>
+                                        <option value="Image">تصویر (JPG/PNG)</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2"><label class="text-xs text-gray-500">آدرس مدیا (مثال: assets/videos/prod1.mp4)</label><input type="text" id="prod-url" class="admin-input en-font text-left" dir="ltr"></div>
+                                
+                                <div class="md:col-span-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs text-gray-500">توضیحات محصول</label>
+                                        <button type="button" onclick="window.Farvam.generateDesc()" id="ai-gen-btn" class="text-xs bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded border border-indigo-700 hover:bg-indigo-800 transition">تولید خودکار با هوش مصنوعی</button>
+                                    </div>
+                                    <textarea id="prod-desc" class="admin-input h-20 resize-none"></textarea>
+                                </div>
+                                <div class="md:col-span-3">
+                                    <button onclick="window.Farvam.addProduct()" class="w-full bg-[#111] hover:bg-[#222] text-[#D4AF37] border border-[#D4AF37] font-bold py-3 rounded-lg transition">ذخیره اطلاعات در دیتابیس</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto border border-[#222] rounded-xl">
+                            <table class="w-full text-sm text-left text-gray-300">
+                                <thead class="text-xs text-gray-500 bg-[#111] uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-right">سریال</th>
+                                        <th class="px-4 py-3 text-right">نام / مالک</th>
+                                        <th class="px-4 py-3 text-center">وضعیت</th>
+                                        <th class="px-4 py-3 text-center">استعلام</th>
+                                        <th class="px-4 py-3 text-center">عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-product-list" class="divide-y divide-[#222] bg-[#050505]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: CUSTOMERS -->
+                    <div id="tab-customers" class="hide space-y-4">
+                        <div class="p-4 bg-blue-900/10 border border-blue-900/30 rounded-xl text-blue-200 text-sm mb-4">
+                            برای ارتباط با مشتریان، می‌توانید مستقیماً از طریق آیکون‌های واتساپ و تلگرام پیام ارسال کنید.
+                        </div>
+                        <div class="overflow-x-auto border border-[#222] rounded-xl">
+                            <table class="w-full text-sm text-left text-gray-300">
+                                <thead class="text-xs text-gray-500 bg-[#111] uppercase">
+                                    <tr>
+                                        <th class="px-5 py-4 text-right">نام مشتری</th>
+                                        <th class="px-5 py-4 text-right">شماره موبایل</th>
+                                        <th class="px-5 py-4 text-right">تاریخ عضویت</th>
+                                        <th class="px-5 py-4 text-center">ارتباط مستقیم</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-customer-list" class="divide-y divide-[#222] bg-[#050505]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: TRANSFERS -->
+                    <div id="tab-transfers" class="hide space-y-4">
+                        <h3 class="font-bold text-white mb-4">درخواست‌های انتقال مالکیت</h3>
+                        <div class="overflow-x-auto border border-[#222] rounded-xl">
+                            <table class="w-full text-sm text-left text-gray-300">
+                                <thead class="text-xs text-gray-500 bg-[#111] uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-right">سریال</th>
+                                        <th class="px-4 py-3 text-right">انتقال دهنده</th>
+                                        <th class="px-4 py-3 text-right">مالک جدید (موبایل)</th>
+                                        <th class="px-4 py-3 text-center">عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-transfer-list" class="divide-y divide-[#222] bg-[#050505]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB: SECURITY -->
+                    <div id="tab-security" class="hide space-y-4">
+                        <div class="p-4 bg-red-900/10 border border-red-900/30 rounded-xl text-red-200 text-sm mb-4">
+                            گزارش استعلام محصولاتی که در حالت "سرقتی" بوده‌اند. هویت شخصی که این کالا را اسکن کرده است ثبت گردید.
+                        </div>
+                        <div class="overflow-x-auto border border-[#222] rounded-xl">
+                            <table class="w-full text-sm text-left text-gray-300">
+                                <thead class="text-xs text-gray-500 bg-[#111] uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-right">زمان و تاریخ</th>
+                                        <th class="px-4 py-3 text-right">سریال سرقتی</th>
+                                        <th class="px-4 py-3 text-right text-[#D4AF37]">هویت استعلام‌کننده</th>
+                                        <th class="px-4 py-3 text-right">مرورگر / دستگاه (Agent)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-security-list" class="divide-y divide-[#222] bg-[#050505]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        /**
-         * FARVAM Master Application Core
-         * Architecture: Module Pattern (IIFE) to prevent global variable leaks.
-         * Version: 1.0.0
-         */
-        const App = (function() {
-            "use strict";
+        window.Farvam = (function() {
+            'use strict';
 
-            // --- 1. MOCK DATABASE (products.json Simulation) ---
-            // In future VPS/API setup, this will be replaced by a fetch() call.
-            const MockDatabase = {
-                "products": [
-                    {
-                        "Serial": "FS000001",
-                        "Active": true,
-                        "Name": "شمش نقره فاین فاروام",
-                        "Purity": "999.9",
-                        "Weight": "1000g",
-                        "MediaType": "Video",
-                        "MediaUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
-                        "Thumbnail": "https://images.unsplash.com/photo-1622359419139-446736dc053e?q=80&w=800&auto=format&fit=crop",
-                        "Certificate": "Original",
-                        "Description": "شمش یک کیلوگرمی نقره خالص با عیار ۹۹۹.۹، ضرب شده با بالاترین استانداردهای جهانی، دارای شماره سریال یکتا و گواهی اصالت.",
-                        "CreatedDate": "2026-07-31",
-                        "UpdatedDate": "2026-07-31"
-                    },
-                    {
-                        "Serial": "FS000002",
-                        "Active": true,
-                        "Name": "سکه نقره یادبود فاروام",
-                        "Purity": "999.9",
-                        "Weight": "31.1g (1oz)",
-                        "MediaType": "Image",
-                        "MediaUrl": "https://images.unsplash.com/photo-1622359419139-446736dc053e?q=80&w=800&auto=format&fit=crop",
-                        "Thumbnail": "",
-                        "Certificate": "Original",
-                        "Description": "سکه نقره یک اونسی، طراحی انحصاری و لیمیتد ادیشن.",
-                        "CreatedDate": "2026-07-31",
-                        "UpdatedDate": "2026-07-31"
-                    }
-                ]
-            };
-
-            // --- 2. UTILITY MODULE ---
+            // --- 1. CORE UTILITIES ---
             const Utils = {
-                // Prevent XSS attacks by sanitizing inputs
-                sanitize: function(str) {
-                    if(typeof str !== 'string') return str;
+                sanitize: (str) => {
+                    if (typeof str !== 'string') return '';
                     const div = document.createElement('div');
-                    div.textContent = str;
+                    div.innerText = str;
                     return div.innerHTML;
                 },
-                
-                // Show Luxury Toast instead of alert()
-                showToast: function(message, type = 'info') {
-                    const container = document.getElementById('toast-container');
+                showToast: (msg, type = 'success') => {
+                    const cont = document.getElementById('toast-container');
                     const toast = document.createElement('div');
-                    toast.className = 'luxury-toast';
-                    
-                    let icon = 'ℹ️';
-                    if(type === 'error') {
-                        icon = '❌';
-                        toast.style.borderColor = '#ef4444'; // Red for error
-                    } else if (type === 'success') {
-                        icon = '✅';
-                        toast.style.borderColor = '#22c55e'; // Green for success
-                    }
-
-                    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${this.sanitize(message)}</span>`;
-                    container.appendChild(toast);
-                    
-                    // Trigger reflow for transition
-                    void toast.offsetWidth;
-                    toast.classList.add('show');
-
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        setTimeout(() => toast.remove(), 400); // Wait for transition out
-                    }, 4000);
+                    toast.className = `luxury-toast toast-${type}`;
+                    const icon = type === 'success' 
+                        ? `<svg class="toast-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+                        : `<svg class="toast-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    toast.innerHTML = `${icon} <span class="font-bold text-sm tracking-wide">${Utils.sanitize(msg)}</span>`;
+                    cont.appendChild(toast);
+                    requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('show')));
+                    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 4000);
                 },
-
-                // Apply 3D Tilt Effect to an element
-                init3DTilt: function(elementId) {
-                    const el = document.getElementById(elementId);
+                initTilt: (id) => {
+                    const el = document.getElementById(id);
                     if(!el) return;
-
                     el.addEventListener('mousemove', (e) => {
-                        const rect = el.getBoundingClientRect();
-                        const x = e.clientX - rect.left; // x position within the element
-                        const y = e.clientY - rect.top;  // y position within the element
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const rotateX = ((y - centerY) / centerY) * -5; // Max 5 deg tilt
-                        const rotateY = ((x - centerX) / centerX) * 5;
-
-                        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                        el.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2 + 15}px 35px rgba(0,0,0,0.6)`;
+                        const r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+                        el.style.transform = `perspective(1000px) rotateX(${((y-r.height/2)/r.height/2)*-4}deg) rotateY(${((x-r.width/2)/r.width/2)*4}deg) scale3d(1.02, 1.02, 1.02)`;
                     });
-
-                    el.addEventListener('mouseleave', () => {
-                        el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                        el.style.boxShadow = `0 15px 35px rgba(0,0,0,0.6)`;
-                    });
+                    el.addEventListener('mouseleave', () => el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`);
+                    el.addEventListener('touchmove', (e) => {
+                        const touch = e.touches[0], r = el.getBoundingClientRect(), x = touch.clientX - r.left, y = touch.clientY - r.top;
+                        el.style.transform = `perspective(1000px) rotateX(${((y-r.height/2)/r.height/2)*-5}deg) rotateY(${((x-r.width/2)/r.width/2)*5}deg) scale3d(1.02, 1.02, 1.02)`;
+                    }, {passive: true});
+                    el.addEventListener('touchend', () => el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`);
                 }
             };
 
-            // --- 3. DATA SERVICE MODULE ---
-            const DataService = {
-                getProductBySerial: async function(serial) {
-                    // Simulate network delay for realistic loading effect (VPS preparation)
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const product = MockDatabase.products.find(p => p.Serial.toUpperCase() === serial.toUpperCase());
-                            if (product) {
-                                resolve(product);
-                            } else {
-                                reject(new Error("محصولی با این شناسه یافت نشد."));
-                            }
-                        }, 800); 
-                    });
+            // --- 2. LOCAL DATABASE ENGINE ---
+            const defaults = {
+                settings: {
+                    logoUrl: 'assets/images/logo.png', introVideoUrl: 'assets/videos/intro.mp4', promoVideoUrl: 'assets/videos/promo.mp4',
+                    geminiApiKey: '', aiSystemPrompt: 'شما مشاور لوکس برند FARVAM هستید. مودبانه، رسمی و در حد ۲ خط پاسخ دهید.',
+                    bannerActive: true, bannerText: 'به سیستم یکپارچه گواهی اصالت FARVAM خوش آمدید.', bannerImg: '', dbApiUrl: ''
+                },
+                products: [{
+                    Serial: "FS000001", Name: "FARVAM FINE SILVER", Owner: "FARVAM VIP",
+                    Purity: "999.9", Weight: "100g", MediaType: "Video", MediaUrl: "assets/videos/product1.mp4", 
+                    Description: "شمش نقره خالص ۱۰۰ گرمی نماد اصالت.", Status: "Active", Scans: 0
+                }],
+                customers: [],
+                transfers: [],
+                securityLogs: []
+            };
+
+            const DB = {
+                get: (key) => { try { const data = localStorage.getItem(`farvam_${key}`); return data ? JSON.parse(data) : defaults[key]; } catch(e) { return defaults[key]; } },
+                save: (key, data) => localStorage.setItem(`farvam_${key}`, JSON.stringify(data))
+            };
+
+            // Init missing DB keys
+            ['settings', 'products', 'customers', 'transfers', 'securityLogs'].forEach(k => { if(!localStorage.getItem(`farvam_${k}`)) DB.save(k, defaults[k]); });
+
+            // --- 3. 3D PARTICLES ---
+            const Particles = {
+                init: () => {
+                    const canvas = document.getElementById('particle-canvas');
+                    if (!canvas) return;
+                    const ctx = canvas.getContext('2d');
+                    let w, h, particles = [];
+                    const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+                    window.addEventListener('resize', resize); resize();
+
+                    class Particle {
+                        constructor() { this.x = Math.random() * w; this.y = Math.random() * h; this.z = Math.random() * 2 + 0.5; this.size = (Math.random() * 2 + 0.5) / this.z; this.speedY = (Math.random() * 0.8 + 0.2) / this.z; this.speedX = (Math.random() * 0.4 - 0.2) / this.z; this.opacity = (Math.random() * 0.5 + 0.1) / this.z; }
+                        update() { this.y -= this.speedY; this.x += this.speedX; if (this.y < -10) { this.y = h + 10; this.x = Math.random() * w; } }
+                        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`; ctx.fill(); }
+                    }
+                    const count = window.innerWidth < 768 ? 30 : 60;
+                    for (let i = 0; i < count; i++) particles.push(new Particle());
+                    const animate = () => { ctx.clearRect(0, 0, w, h); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }; animate();
                 }
             };
 
-            // --- 4. UI RENDERER MODULE ---
-            const UI = {
-                elements: {
-                    btn: document.getElementById('verify-btn'),
-                    input: document.getElementById('serial-input'),
-                    resultSection: document.getElementById('result-section'),
-                    // Result fields
-                    resName: document.getElementById('res-name'),
-                    resSerial: document.getElementById('res-serial'),
-                    specName: document.getElementById('spec-name'),
-                    specWeight: document.getElementById('spec-weight'),
-                    specPurity: document.getElementById('spec-purity'),
-                    specActive: document.getElementById('spec-active'),
-                    specDesc: document.getElementById('spec-desc'),
-                    mediaContainer: document.getElementById('res-media-container')
-                },
+            // --- 4. APP / AUTH CONTROLLER ---
+            let currentUser = localStorage.getItem('farvam_logged_in'); // phone number
+            let otpTimerInterval;
 
-                setLoading: function(isLoading) {
-                    this.elements.btn.disabled = isLoading;
-                    this.elements.btn.textContent = isLoading ? 'در حال بررسی...' : 'تأیید اصالت';
-                    this.elements.input.disabled = isLoading;
-                },
-
-                renderProduct: function(product) {
-                    // Fill text data (with sanitization)
-                    this.elements.resName.textContent = Utils.sanitize(product.Name);
-                    this.elements.resSerial.textContent = Utils.sanitize(product.Serial);
-                    this.elements.specName.textContent = Utils.sanitize(product.Name);
-                    this.elements.specWeight.textContent = Utils.sanitize(product.Weight);
-                    this.elements.specPurity.textContent = Utils.sanitize(product.Purity);
-                    this.elements.specActive.textContent = product.Active ? 'فعال و معتبر' : 'غیرفعال';
-                    this.elements.specDesc.textContent = Utils.sanitize(product.Description);
-
-                    // Render Media
-                    this.elements.mediaContainer.innerHTML = ''; // Clear previous
+            const App = {
+                init: () => {
+                    const s = DB.get('settings');
+                    if(s.logoUrl) document.getElementById('site-logo').src = s.logoUrl;
+                    if(s.introVideoUrl) { document.getElementById('site-intro-video').src = s.introVideoUrl; document.getElementById('site-intro-video').classList.remove('hide'); }
+                    if(s.promoVideoUrl) { document.getElementById('site-promo-video').src = s.promoVideoUrl; }
                     
-                    if (product.MediaType === 'Video') {
-                        const video = document.createElement('video');
-                        video.className = 'w-full h-full object-cover';
-                        video.controls = true;
-                        video.autoplay = true;
-                        video.muted = true; // Required for autoplay in most browsers
-                        video.poster = Utils.sanitize(product.Thumbnail);
-                        
-                        const source = document.createElement('source');
-                        source.src = Utils.sanitize(product.MediaUrl);
-                        source.type = 'video/mp4';
-                        
-                        video.appendChild(source);
-                        this.elements.mediaContainer.appendChild(video);
-                    } else if (product.MediaType === 'Image') {
-                        const img = document.createElement('img');
-                        img.className = 'w-full h-full object-cover';
-                        img.src = Utils.sanitize(product.MediaUrl);
-                        img.alt = Utils.sanitize(product.Name);
-                        this.elements.mediaContainer.appendChild(img);
+                    if(s.bannerActive && s.bannerText) {
+                        const b = document.getElementById('luxury-banner');
+                        document.getElementById('banner-text').innerText = Utils.sanitize(s.bannerText);
+                        if(s.bannerImg) { const img = document.getElementById('banner-img'); img.src = s.bannerImg; img.classList.remove('hide'); }
+                        setTimeout(() => b.classList.add('show'), 2000);
                     }
 
-                    // Show section with smooth scroll
-                    this.elements.resultSection.classList.remove('hide');
-                    setTimeout(() => {
-                        this.elements.resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
+                    App.checkAuth();
+                },
+                checkAuth: () => {
+                    const overlay = document.getElementById('search-lock-overlay');
+                    const btn = document.getElementById('verify-btn');
+                    const inp = document.getElementById('serial-input');
+                    if(currentUser) {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => overlay.classList.add('hide'), 500);
+                        btn.disabled = false; inp.disabled = false;
+                        document.getElementById('club-step-1').classList.add('hide');
+                        document.getElementById('club-step-2').classList.add('hide');
+                        document.getElementById('club-success').classList.remove('hide');
+                    } else {
+                        overlay.classList.remove('hide'); overlay.style.opacity = '1';
+                        btn.disabled = true; inp.disabled = true;
+                    }
                 },
                 
-                hideResult: function() {
-                    this.elements.resultSection.classList.add('hide');
+                requestOTP: () => {
+                    const name = document.getElementById('club-name').value.trim();
+                    const phone = document.getElementById('club-phone').value.trim();
+                    if(!name || !phone) return Utils.showToast('لطفاً مشخصات را کامل وارد کنید', 'error');
+
+                    // در نسخه سرور اینجا یک درخواست Fetch به API پیامک ارسال می‌شود
+                    const btn = document.getElementById('btn-req-otp');
+                    btn.disabled = true; btn.innerText = 'در حال ارسال کد...';
+
+                    setTimeout(() => {
+                        document.getElementById('club-step-1').classList.add('hide');
+                        document.getElementById('club-step-2').classList.remove('hide');
+                        document.getElementById('lbl-phone').innerText = phone;
+                        document.getElementById('club-otp').focus();
+                        Utils.showToast('کد تأیید به موبایل شما ارسال شد', 'success');
+                        App.startOTPTimer();
+                        btn.disabled = false; btn.innerText = 'دریافت کد تأیید';
+                    }, 1000);
+                },
+
+                startOTPTimer: () => {
+                    let timeLeft = 120; // 2 minutes
+                    const timerDisplay = document.getElementById('otp-timer');
+                    const resendBtn = document.getElementById('btn-resend-otp');
+                    resendBtn.classList.add('hide');
+                    timerDisplay.classList.remove('hide');
+
+                    clearInterval(otpTimerInterval);
+                    otpTimerInterval = setInterval(() => {
+                        timeLeft--;
+                        const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                        const s = (timeLeft % 60).toString().padStart(2, '0');
+                        timerDisplay.innerText = `${m}:${s}`;
+                        
+                        if (timeLeft <= 0) {
+                            clearInterval(otpTimerInterval);
+                            timerDisplay.classList.add('hide');
+                            resendBtn.classList.remove('hide');
+                        }
+                    }, 1000);
+                },
+
+                verifyOTP: () => {
+                    const otp = document.getElementById('club-otp').value.trim();
+                    if(otp !== '1234') { // در نسخه سرور این کد با سرور چک می‌شود
+                        return Utils.showToast('کد وارد شده صحیح نیست. (کد تست: 1234)', 'error');
+                    }
+
+                    const name = document.getElementById('club-name').value.trim();
+                    const phone = document.getElementById('club-phone').value.trim();
+                    
+                    const customers = DB.get('customers');
+                    if(!customers.find(c => c.phone === phone)) {
+                        customers.push({ name, phone, date: new Date().toLocaleDateString('fa-IR') });
+                        DB.save('customers', customers);
+                    }
+                    localStorage.setItem('farvam_logged_in', phone);
+                    currentUser = phone;
+                    clearInterval(otpTimerInterval);
+                    App.checkAuth();
+                    Utils.showToast('تأیید هویت موفق. استعلام باز است.', 'success');
+                    document.getElementById('search-section').scrollIntoView({behavior:'smooth'});
+                },
+                
+                verify: () => {
+                    if(!currentUser) return Utils.showToast('ابتدا عضو باشگاه شوید', 'error');
+                    const btn = document.getElementById('verify-btn');
+                    const serial = document.getElementById('serial-input').value.trim().toUpperCase();
+                    if(!serial) return Utils.showToast('شماره سریال را وارد کنید', 'error');
+
+                    btn.disabled = true; btn.innerHTML = 'در حال ارتباط با سرور...';
+                    
+                    setTimeout(() => {
+                        btn.disabled = false; btn.innerHTML = 'بررسی گواهی';
+                        const products = DB.get('products');
+                        const productIndex = products.findIndex(p => p.Serial === serial);
+
+                        if(productIndex > -1) {
+                            const p = products[productIndex];
+                            p.Scans = (p.Scans || 0) + 1;
+                            DB.save('products', products);
+
+                            const resSec = document.getElementById('result-section');
+                            resSec.classList.remove('hide');
+
+                            if(p.Status === 'Stolen') {
+                                document.getElementById('active-view').classList.add('hide');
+                                document.getElementById('stolen-view').classList.remove('hide');
+                                document.getElementById('stolen-serial').innerText = Utils.sanitize(p.Serial);
+                                
+                                // Security Log: Capture the verified user who scanned the stolen item
+                                const logs = DB.get('securityLogs');
+                                const custs = DB.get('customers');
+                                const activeUser = custs.find(c => c.phone === currentUser);
+                                const userInfo = activeUser ? `${activeUser.name} (${activeUser.phone})` : currentUser;
+
+                                logs.push({ 
+                                    serial: p.Serial, 
+                                    date: new Date().toLocaleString('fa-IR'), 
+                                    user: userInfo,
+                                    agent: navigator.userAgent 
+                                });
+                                DB.save('securityLogs', logs);
+                                Utils.showToast('اخطار: محصول سرقتی است', 'error');
+                            } else {
+                                document.getElementById('stolen-view').classList.add('hide');
+                                document.getElementById('active-view').classList.remove('hide');
+                                App.renderCert(p);
+                                Utils.showToast('اصالت تأیید شد', 'success');
+                            }
+                            setTimeout(() => resSec.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
+                        } else {
+                            document.getElementById('result-section').classList.add('hide');
+                            Utils.showToast('شماره سریال نامعتبر است', 'error');
+                        }
+                    }, 1500);
+                },
+
+                renderCert: (p) => {
+                    document.getElementById('res-name').innerText = Utils.sanitize(p.Name);
+                    document.getElementById('res-serial').innerText = Utils.sanitize(p.Serial);
+                    document.getElementById('res-purity').innerText = Utils.sanitize(p.Purity);
+                    document.getElementById('res-weight').innerText = Utils.sanitize(p.Weight);
+                    document.getElementById('res-scans').innerText = (p.Scans || 1) + " بار استعلام";
+                    document.getElementById('res-owner').innerText = Utils.sanitize(p.Owner || 'ناشناس');
+                    document.getElementById('res-desc').innerText = Utils.sanitize(p.Description || 'بدون توضیحات');
+
+                    const mediaCont = document.getElementById('media-container');
+                    mediaCont.innerHTML = '';
+                    if(p.MediaUrl) {
+                        const el = document.createElement(p.MediaType === 'Video' ? 'video' : 'img');
+                        el.src = Utils.sanitize(p.MediaUrl);
+                        el.className = 'w-full h-full object-cover opacity-90';
+                        if(p.MediaType === 'Video') { el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true; }
+                        mediaCont.appendChild(el);
+                    }
+                },
+
+                showTransferModal: () => {
+                    document.getElementById('trans-serial').value = document.getElementById('res-serial').innerText;
+                    document.getElementById('transfer-modal').classList.remove('hide');
+                },
+                submitTransfer: () => {
+                    const serial = document.getElementById('trans-serial').value;
+                    const toName = document.getElementById('trans-name').value;
+                    const toPhone = document.getElementById('trans-phone').value;
+                    if(!toName || !toPhone) return;
+
+                    const reqs = DB.get('transfers');
+                    reqs.push({ serial, fromPhone: currentUser, toName, toPhone, date: new Date().toLocaleDateString('fa-IR') });
+                    DB.save('transfers', reqs);
+
+                    document.getElementById('transfer-modal').classList.add('hide');
+                    Utils.showToast('درخواست انتقال به مدیریت ارسال شد.', 'success');
                 }
             };
 
-            // --- 5. CONTROLLERS ---
-            
-            const handleAuth = async function() {
-                const serial = UI.elements.input.value.trim();
-                
-                if(!serial) {
-                    Utils.showToast('لطفاً شماره سریال را وارد کنید.', 'error');
-                    return;
-                }
+            // --- 5. AI CONCIERGE ---
+            const Concierge = {
+                toggle: () => {
+                    const w = document.getElementById('concierge-window');
+                    w.classList.toggle('open');
+                    if(w.classList.contains('open')) document.getElementById('concierge-input').focus();
+                },
+                send: async () => {
+                    const inp = document.getElementById('concierge-input');
+                    const btn = document.getElementById('concierge-send-btn');
+                    const text = inp.value.trim();
+                    if(!text) return;
 
-                UI.setLoading(true);
-                UI.hideResult();
+                    inp.value = ''; inp.disabled = true; btn.disabled = true;
+                    const chat = document.getElementById('concierge-chat');
+                    chat.innerHTML += `<div class="self-start bg-white/10 text-white p-3 rounded-2xl rounded-tl-none max-w-[85%]">${Utils.sanitize(text)}</div>`;
+                    chat.scrollTop = chat.scrollHeight;
 
-                try {
-                    const product = await DataService.getProductBySerial(serial);
-                    Utils.showToast('اصالت محصول تأیید شد.', 'success');
-                    UI.renderProduct(product);
-                } catch (error) {
-                    Utils.showToast(error.message, 'error');
-                } finally {
-                    UI.setLoading(false);
+                    try {
+                        const s = DB.get('settings');
+                        if(!s.geminiApiKey) throw new Error('NO_API');
+                        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${s.geminiApiKey}`;
+                        const prompt = `Context: ${s.aiSystemPrompt}\nUser: ${text}`;
+                        const res = await fetch(url, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                        });
+                        const data = await res.json();
+                        if(!res.ok || !data.candidates) throw new Error('API_FAIL');
+                        chat.innerHTML += `<div class="self-end bg-gradient-to-br from-[#1a1505] to-[#332805] border border-[#D4AF37]/30 text-[#F9F1CC] p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-md">${Utils.sanitize(data.candidates[0].content.parts[0].text)}</div>`;
+                    } catch(e) {
+                        const msg = e.message === 'NO_API' ? 'ربات در حالت نمایشی است. ادمین باید API Key را در بخش تنظیمات سیستم ثبت کند.' : 'خطا در ارتباط با سرور هوش مصنوعی.';
+                        chat.innerHTML += `<div class="self-end bg-red-900/40 text-red-200 border border-red-900 p-3 rounded-2xl rounded-tr-none max-w-[85%] text-xs">${msg}</div>`;
+                    } finally {
+                        inp.disabled = false; btn.disabled = false; inp.focus(); chat.scrollTop = chat.scrollHeight;
+                    }
                 }
             };
 
-            const handleClubRegistration = function() {
-                const nameInput = document.getElementById('club-name');
-                const phoneInput = document.getElementById('club-phone');
-                
-                const name = nameInput.value.trim();
-                const phone = phoneInput.value.trim();
+            // --- 6. ADMIN SYSTEM ---
+            const Admin = {
+                login: () => {
+                    if(document.getElementById('admin-pw').value === 'admin123') {
+                        document.getElementById('admin-login-modal').classList.add('hide');
+                        document.getElementById('admin-dashboard-modal').classList.remove('hide');
+                        Admin.load(); Utils.showToast('ورود مدیر موفق', 'success');
+                    } else Utils.showToast('رمز عبور اشتباه است', 'error');
+                },
+                switchTab: (id) => {
+                    ['dashboard', 'products', 'customers', 'transfers', 'security', 'settings'].forEach(t => {
+                        document.getElementById(`tab-${t}`).classList.add('hide');
+                        const btn = document.getElementById(`tab-btn-${t}`);
+                        btn.classList.remove('bg-[#D4AF37]/10', 'text-[#D4AF37]', 'border-[#D4AF37]/30');
+                        btn.classList.add('text-gray-400');
+                    });
+                    document.getElementById(`tab-${id}`).classList.remove('hide');
+                    const activeBtn = document.getElementById(`tab-btn-${id}`);
+                    activeBtn.classList.remove('text-gray-400');
+                    activeBtn.classList.add('bg-[#D4AF37]/10', 'text-[#D4AF37]', 'border-[#D4AF37]/30');
+                },
+                load: () => {
+                    const s = DB.get('settings'), p = DB.get('products'), c = DB.get('customers'), t = DB.get('transfers'), sec = DB.get('securityLogs');
+                    
+                    // Stats
+                    document.getElementById('stat-prods').innerText = p.length;
+                    document.getElementById('stat-scans').innerText = p.reduce((sum, item) => sum + (item.Scans||0), 0);
+                    document.getElementById('stat-custs').innerText = c.length;
+                    document.getElementById('stat-stolen').innerText = sec.length;
+                    
+                    // Badges
+                    if(t.length > 0) { document.getElementById('badge-transfer').innerText = t.length; document.getElementById('badge-transfer').classList.remove('hide'); }
+                    if(sec.length > 0) { document.getElementById('badge-security').innerText = sec.length; document.getElementById('badge-security').classList.remove('hide'); }
 
-                if(!name || !phone) {
-                    Utils.showToast('تکمیل تمامی فیلدها الزامی است.', 'error');
-                    return;
+                    // Settings Tab
+                    document.getElementById('set-banner-active').checked = s.bannerActive;
+                    document.getElementById('set-banner-txt').value = s.bannerText || '';
+                    document.getElementById('set-banner-img').value = s.bannerImg || '';
+                    document.getElementById('set-db-url').value = s.dbApiUrl || '';
+                    document.getElementById('set-api').value = s.geminiApiKey || '';
+                    document.getElementById('set-ai-prompt').value = s.aiSystemPrompt || '';
+                    document.getElementById('set-logo').value = s.logoUrl || '';
+                    document.getElementById('set-intro').value = s.introVideoUrl || '';
+                    document.getElementById('set-promo').value = s.promoVideoUrl || '';
+
+                    // Products Tab
+                    document.getElementById('admin-product-list').innerHTML = p.map((pr, i) => `
+                        <tr class="hover:bg-[#111] transition">
+                            <td class="px-4 py-3 text-right font-mono text-[#D4AF37]">${Utils.sanitize(pr.Serial)}</td>
+                            <td class="px-4 py-3 text-right"><div class="font-bold">${Utils.sanitize(pr.Name)}</div><div class="text-xs text-gray-500">${Utils.sanitize(pr.Owner)}</div></td>
+                            <td class="px-4 py-3 text-center">${pr.Status === 'Stolen' ? '<span class="text-red-500 text-xs bg-red-900/30 px-2 py-1 rounded">سرقتی</span>' : '<span class="text-green-500 text-xs bg-green-900/30 px-2 py-1 rounded">فعال</span>'}</td>
+                            <td class="px-4 py-3 text-center en-font">${pr.Scans || 0}</td>
+                            <td class="px-4 py-3 text-center"><button onclick="window.Farvam.delProduct(${i})" class="text-red-500 hover:text-red-400 text-xs px-3 py-1 bg-red-900/20 rounded">حذف</button></td>
+                        </tr>`).join('');
+                        
+                    // Customers Tab
+                    document.getElementById('admin-customer-list').innerHTML = c.map(cu => `
+                        <tr class="hover:bg-[#111] transition">
+                            <td class="px-5 py-3 text-right">${Utils.sanitize(cu.name)}</td>
+                            <td class="px-5 py-3 text-right en-font">${Utils.sanitize(cu.phone)}</td>
+                            <td class="px-5 py-3 text-right text-gray-400">${Utils.sanitize(cu.date)}</td>
+                            <td class="px-5 py-3 text-center flex justify-center gap-2">
+                                <a href="https://wa.me/98${cu.phone.substring(1)}" target="_blank" class="text-green-400 hover:text-green-300" title="WhatsApp"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.711.848 2.983.849 3.181 0 5.769-2.585 5.77-5.766 0-3.181-2.589-5.769-5.77-5.769z"></path></svg></a>
+                                <a href="tg://resolve?phone=98${cu.phone.substring(1)}" class="text-blue-400 hover:text-blue-300" title="Telegram"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.892-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                            </td>
+                        </tr>`).join('');
+
+                    // Transfers Tab
+                    document.getElementById('admin-transfer-list').innerHTML = t.map((tr, i) => `
+                        <tr class="hover:bg-[#111] transition">
+                            <td class="px-4 py-3 text-right font-mono text-[#D4AF37]">${Utils.sanitize(tr.serial)}</td>
+                            <td class="px-4 py-3 text-right en-font">${Utils.sanitize(tr.fromPhone)}</td>
+                            <td class="px-4 py-3 text-right"><div class="font-bold">${Utils.sanitize(tr.toName)}</div><div class="text-xs en-font text-gray-500">${Utils.sanitize(tr.toPhone)}</div></td>
+                            <td class="px-4 py-3 text-center">
+                                <button onclick="window.Farvam.approveTransfer(${i})" class="text-green-500 hover:text-green-400 text-xs px-3 py-1 bg-green-900/20 rounded">تأیید</button>
+                                <button onclick="window.Farvam.delTransfer(${i})" class="text-red-500 hover:text-red-400 text-xs px-3 py-1 bg-red-900/20 rounded ml-1">رد</button>
+                            </td>
+                        </tr>`).join('');
+
+                    // Security Tab
+                    document.getElementById('admin-security-list').innerHTML = sec.map(sl => `
+                        <tr class="hover:bg-[#111] transition border-l-2 border-red-500">
+                            <td class="px-4 py-3 text-right text-gray-400 text-xs">${Utils.sanitize(sl.date)}</td>
+                            <td class="px-4 py-3 text-right font-mono text-red-400 font-bold">${Utils.sanitize(sl.serial)}</td>
+                            <td class="px-4 py-3 text-right font-bold text-[#D4AF37] text-xs">${Utils.sanitize(sl.user || 'ناشناس')}</td>
+                            <td class="px-4 py-3 text-right en-font text-xs truncate max-w-[200px]" title="${Utils.sanitize(sl.agent)}">${Utils.sanitize(sl.agent)}</td>
+                        </tr>`).join('');
+                },
+                saveSettings: () => {
+                    DB.save('settings', {
+                        bannerActive: document.getElementById('set-banner-active').checked,
+                        bannerText: document.getElementById('set-banner-txt').value.trim(),
+                        bannerImg: document.getElementById('set-banner-img').value.trim(),
+                        dbApiUrl: document.getElementById('set-db-url').value.trim(),
+                        geminiApiKey: document.getElementById('set-api').value.trim(),
+                        aiSystemPrompt: document.getElementById('set-ai-prompt').value.trim(),
+                        logoUrl: document.getElementById('set-logo').value.trim(),
+                        introVideoUrl: document.getElementById('set-intro').value.trim(),
+                        promoVideoUrl: document.getElementById('set-promo').value.trim()
+                    });
+                    Utils.showToast('تنظیمات ذخیره شد. برای اعمال ریفرش کنید.', 'success');
+                },
+                addProduct: () => {
+                    const serial = document.getElementById('prod-serial').value.trim().toUpperCase();
+                    const name = document.getElementById('prod-name').value.trim();
+                    if(!serial || !name) return Utils.showToast('سریال و نام الزامی است', 'error');
+
+                    let p = DB.get('products');
+                    const idx = p.findIndex(x => x.Serial === serial);
+                    const newProd = {
+                        Serial: serial, Name: name, Owner: document.getElementById('prod-owner').value.trim(),
+                        Purity: document.getElementById('prod-purity').value.trim(),
+                        Weight: document.getElementById('prod-weight').value.trim(),
+                        Status: document.getElementById('prod-status').value,
+                        MediaType: document.getElementById('prod-type').value,
+                        MediaUrl: document.getElementById('prod-url').value.trim(),
+                        Description: document.getElementById('prod-desc').value.trim(),
+                        Scans: idx > -1 ? p[idx].Scans : 0
+                    };
+
+                    if(idx > -1) p[idx] = newProd; else p.push(newProd);
+                    DB.save('products', p); Admin.load();
+                    Utils.showToast('محصول ذخیره شد', 'success');
+                },
+                
+                delProduct: (i) => { const p = DB.get('products'); p.splice(i, 1); DB.save('products', p); Admin.load(); Utils.showToast('حذف شد', 'success'); },
+                approveTransfer: (i) => {
+                    const t = DB.get('transfers'); const req = t[i];
+                    const p = DB.get('products'); const pIdx = p.findIndex(x => x.Serial === req.serial);
+                    if(pIdx > -1) { p[pIdx].Owner = req.toName; DB.save('products', p); }
+                    t.splice(i, 1); DB.save('transfers', t); Admin.load(); Utils.showToast('انتقال انجام شد', 'success');
+                },
+                delTransfer: (i) => { const t = DB.get('transfers'); t.splice(i, 1); DB.save('transfers', t); Admin.load(); Utils.showToast('درخواست رد شد', 'success'); },
+                export: () => {
+                    const data = { settings: DB.get('settings'), products: DB.get('products'), customers: DB.get('customers'), transfers: DB.get('transfers'), security: DB.get('securityLogs') };
+                    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'farvam_master_backup.json';
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                },
+                genDesc: async () => {
+                    const btn = document.getElementById('ai-gen-btn');
+                    const desc = document.getElementById('prod-desc');
+                    const name = document.getElementById('prod-name').value;
+                    const s = DB.get('settings');
+                    if(!name) return Utils.showToast('اول نام محصول را بنویسید', 'error');
+                    if(!s.geminiApiKey) return Utils.showToast('کلید API تنظیم نشده است', 'error');
+                    
+                    btn.innerText = 'در حال نگارش...'; desc.value = '';
+                    try {
+                        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${s.geminiApiKey}`, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: `یک متن توصیفی فوق‌لوکس (حداکثر ۲ خط) برای محصول نقره برند FARVAM با نام "${name}" بنویس.` }] }] })
+                        });
+                        const data = await res.json();
+                        desc.value = data.candidates[0].content.parts[0].text;
+                    } catch(e) { Utils.showToast('خطا در ارتباط با AI', 'error'); }
+                    finally { btn.innerText = 'تولید خودکار با هوش مصنوعی'; }
                 }
-
-                // Simple duplicate check using LocalStorage
-                const existingMembers = JSON.parse(localStorage.getItem('farvam_club') || '[]');
-                if(existingMembers.includes(phone)) {
-                    Utils.showToast('این شماره موبایل قبلاً ثبت شده است.', 'error');
-                    return;
-                }
-
-                // Save
-                existingMembers.push(phone);
-                localStorage.setItem('farvam_club', JSON.stringify(existingMembers));
-                
-                Utils.showToast('ثبت نام شما با موفقیت انجام شد. به باشگاه فاروام خوش آمدید.', 'success');
-                
-                // Clear form
-                nameInput.value = '';
-                phoneInput.value = '';
             };
 
-            // --- 6. INITIALIZATION ---
-            const init = function() {
-                // Initialize 3D effects on specific cards
-                const tiltElements = ['promo-tilt', 'auth-tilt', 'cert-tilt', 'media-tilt', 'specs-tilt', 'club-tilt'];
-                tiltElements.forEach(id => Utils.init3DTilt(id));
-                
-                console.log("FARVAM System Core v1.0.0 Initialized successfully.");
-            };
+            // Init System
+            window.addEventListener('DOMContentLoaded', () => {
+                Particles.init();
+                Utils.initTilt('tilt-search'); Utils.initTilt('active-view');
+                App.init();
+            });
 
-            // Run initialization after DOM is fully loaded
-            document.addEventListener('DOMContentLoaded', init);
-
-            // Expose public methods
             return {
-                handleAuth: handleAuth,
-                handleClubRegistration: handleClubRegistration
+                verifyProduct: App.verify, requestOTP: App.requestOTP, verifyOTP: App.verifyOTP, showTransferModal: App.showTransferModal, submitTransfer: App.submitTransfer,
+                toggleConcierge: Concierge.toggle, sendConciergeMessage: Concierge.send,
+                loginAdmin: Admin.login, switchTab: Admin.switchTab, saveSettings: Admin.saveSettings,
+                addProduct: Admin.addProduct, delProduct: Admin.delProduct, approveTransfer: Admin.approveTransfer, delTransfer: Admin.delTransfer,
+                exportData: Admin.export, generateDesc: Admin.genDesc
             };
-
         })();
     </script>
 </body>
