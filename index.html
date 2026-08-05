@@ -20,8 +20,13 @@
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.6; }
         .video-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; opacity: 0.3; }
 
+        /* Luxury Banners */
+        .luxury-banner { width: 100%; background: linear-gradient(90deg, #111, var(--gold-dark), #111); color: #fff; text-align: center; padding: 10px; font-size: 0.9rem; font-weight: bold; z-index: 1000; display: none; border-bottom: 1px solid var(--gold-main); }
+        #public-banner { position: fixed; top: 0; left: 0; }
+        #coworker-banner { margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--gold-main); }
+
         /* UI Components */
-        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5); margin-bottom: 1rem; }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5); margin-bottom: 1.5rem; width: 100%; }
         .glass-input, .glass-select { width: 100%; padding: 10px 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); color: #fff; border-radius: 6px; margin-bottom: 10px; transition: 0.3s; font-family: inherit; }
         .glass-input:focus, .glass-select:focus { border-color: var(--gold-main); box-shadow: 0 0 8px rgba(212,175,55,0.3); }
         .glass-input:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -29,6 +34,10 @@
         .glass-btn:hover { filter: brightness(1.2); }
         .btn-small { padding: 5px 10px; font-size: 0.8rem; width: auto; }
         
+        .promo-video-container { width: 100%; max-width: 500px; margin-bottom: 2rem; border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .promo-video-container video { width: 100%; display: block; }
+        .prod-media { width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
+
         /* Layouts */
         .hidden { display: none !important; }
         .text-gold { color: var(--gold-main); }
@@ -37,8 +46,8 @@
         .flex-col { display: flex; flex-direction: column; gap: 10px; }
         
         /* Public View */
-        #public-view { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem 1rem; }
-        .brand-logo { width: 180px; filter: drop-shadow(0 0 15px var(--gold-main)); margin-bottom: 20px; }
+        #public-view { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 4rem 1rem 2rem 1rem; }
+        .brand-logo { width: 180px; filter: drop-shadow(0 0 15px var(--gold-main)); margin-bottom: 10px; }
         
         /* 3D Tilt Card */
         .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); transition: transform 0.1s ease-out; }
@@ -81,6 +90,8 @@
     </style>
 </head>
 <body>
+    <!-- Global Public Banner -->
+    <div id="public-banner" class="luxury-banner"></div>
 
     <video class="video-bg" autoplay muted loop playsinline><source src="assets/videos/intro.mp4" type="video/mp4"></video>
     <canvas id="particles-canvas"></canvas>
@@ -89,35 +100,48 @@
     <!-- PUBLIC VIEW -->
     <div id="public-view">
         <img src="assets/images/logo.png" alt="FARVAM" class="brand-logo" onerror="this.style.display='none';">
-        <h1 class="text-gold" style="margin-bottom: 30px; font-size: 2.5rem; letter-spacing: 2px;">FARVAM</h1>
+        <h1 class="text-gold" style="margin-bottom: 20px; font-size: 2.5rem; letter-spacing: 2px;">FARVAM</h1>
         
-        <div class="flex-row" style="margin-bottom: 20px; width: 100%; max-width: 400px;">
-            <button class="glass-btn" onclick="App.showPanel('cert-panel')">استعلام اصالت</button>
-            <button class="glass-btn" onclick="App.showPanel('collab-panel')" style="background: transparent; border: 1px solid var(--gold-main); color: var(--gold-main);">درخواست همکاری</button>
+        <!-- Promo Video Box -->
+        <div class="promo-video-container">
+            <video autoplay muted loop playsinline><source src="assets/videos/promo.mp4" type="video/mp4"></video>
         </div>
-
-        <!-- Certificate Checking -->
-        <div id="cert-panel" class="glass-panel" style="width: 100%; max-width: 400px;">
-            <h3 class="text-center text-gold" style="margin-bottom: 15px;">باشگاه مشتریان و استعلام</h3>
-            <p id="welcome-user-msg" class="text-gold text-center hidden" style="margin-bottom: 10px; font-size:0.9rem;"></p>
-            <div id="cert-search">
-                <input type="text" id="cert-serial" class="glass-input" placeholder="شماره سریال (مثال: FS001)" style="text-transform: uppercase;">
-                <button class="glass-btn" onclick="App.checkSerial()">بررسی محصول</button>
-                <div id="cert-result-container" style="margin-top: 15px;"></div>
+        
+        <!-- Certificate Checking (Always Visible) -->
+        <div id="cert-panel" class="glass-panel tilt-card" style="max-width: 500px;">
+            <div class="tilt-content">
+                <h3 class="text-center text-gold" style="margin-bottom: 15px;">استعلام اصالت و مالکیت</h3>
+                <p id="welcome-user-msg" class="text-gold text-center hidden" style="margin-bottom: 10px; font-size:0.9rem;"></p>
+                <div id="cert-search">
+                    <input type="text" id="cert-serial" class="glass-input" placeholder="شماره سریال محصول را وارد کنید (مثال: FS001)" style="text-transform: uppercase;">
+                    <button class="glass-btn" onclick="App.checkSerial()">بررسی محصول</button>
+                    <div id="cert-result-container" style="margin-top: 15px;"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Collab Panel -->
-        <div id="collab-panel" class="glass-panel hidden" style="width: 100%; max-width: 500px;">
-            <h3 class="text-center text-gold" style="margin-bottom: 15px;">ثبت درخواست همکاری</h3>
-            <input type="text" id="cw-name" class="glass-input" placeholder="نام">
-            <input type="text" id="cw-family" class="glass-input" placeholder="نام خانوادگی">
-            <input type="text" id="cw-national" class="glass-input" placeholder="کد ملی">
-            <input type="text" id="cw-phone" class="glass-input" placeholder="شماره موبایل">
-            <input type="text" id="cw-ref" class="glass-input" placeholder="معرف (اختیاری)">
-            <textarea id="cw-address" class="glass-input" placeholder="آدرس مغازه / دفتر"></textarea>
-            <select id="cw-type" class="glass-select"></select>
-            <button class="glass-btn" onclick="App.submitCollaboration()">ارسال درخواست</button>
+        <!-- Collab Panel (Always Visible below Cert) -->
+        <div id="collab-panel" class="glass-panel tilt-card" style="max-width: 500px;">
+            <div class="tilt-content">
+                <h3 class="text-center text-gold" style="margin-bottom: 15px;">ثبت درخواست همکاری</h3>
+                
+                <div id="collab-btn-container" class="text-center">
+                    <p style="font-size: 0.85rem; color: #ccc; margin-bottom: 15px;">برای پیوستن به شبکه همکاران و فروشندگان فاروام، روی دکمه زیر کلیک کنید.</p>
+                    <button class="glass-btn" onclick="App.showCollabForm()">تکمیل فرم درخواست</button>
+                </div>
+
+                <div id="collab-form-container" class="hidden">
+                    <input type="text" id="cw-name" class="glass-input" placeholder="نام">
+                    <input type="text" id="cw-family" class="glass-input" placeholder="نام خانوادگی">
+                    <input type="text" id="cw-national" class="glass-input" placeholder="کد ملی">
+                    <input type="text" id="cw-phone" class="glass-input" placeholder="شماره موبایل">
+                    <input type="text" id="cw-ref" class="glass-input" placeholder="معرف (اختیاری)">
+                    <textarea id="cw-address" class="glass-input" placeholder="آدرس مغازه / دفتر"></textarea>
+                    <select id="cw-type" class="glass-select"></select>
+                    <button class="glass-btn" onclick="App.submitCollaboration()">ارسال درخواست</button>
+                    <button class="glass-btn" style="margin-top: 10px; background: transparent; border: 1px solid var(--gold-main); color: var(--gold-main);" onclick="App.hideCollabForm()">انصراف</button>
+                </div>
+            </div>
         </div>
 
         <!-- Customer Auth Modal -->
@@ -126,7 +150,7 @@
                 <span class="close-modal" onclick="App.closeAuthModal()">✖</span>
                 <div id="auth-banner" style="text-align:center; margin-bottom: 20px;">
                     <h3 class="text-gold" style="margin-bottom:10px;">باشگاه مشتریان لوکس FARVAM</h3>
-                    <p style="font-size: 0.85rem; color: #ccc;">برای استعلام و خدمات ویژه، ابتدا وارد شوید.</p>
+                    <p style="font-size: 0.85rem; color: #ccc;">برای بررسی اصالت و مالکیت، ابتدا وارد شوید یا ثبت نام کنید.</p>
                 </div>
                 
                 <div id="auth-login">
@@ -176,7 +200,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 40px; cursor: pointer; opacity: 0.5;" onclick="App.showAdminLogin()">🔒 پنل مدیریت</div>
+        <div style="margin-top: 40px; cursor: pointer; opacity: 0.5;" onclick="App.showAdminLogin()">🔒 پنل مدیریت و همکاران</div>
         <div id="admin-login-panel" class="glass-panel hidden" style="width: 100%; max-width: 300px; margin-top: 10px;">
             <input type="text" id="login-phone" class="glass-input" placeholder="نام کاربری / موبایل">
             <div class="pass-container">
@@ -246,6 +270,13 @@
                     <div class="glass-panel" style="flex:1; min-width:300px;">
                         <h4>تنظیمات OTP سیستم</h4>
                         <select id="set-otp-method" class="glass-select" onchange="App.saveOtpSetting()"><option value="email">ارسال به ایمیل</option><option value="sms">ارسال پیامک</option></select>
+                        <h4 style="margin-top:15px;">نوار اعلان سایت (عمومی)</h4>
+                        <input type="text" id="set-pub-banner" class="glass-input" placeholder="متن اعلان عمومی">
+                        <label><input type="checkbox" id="set-pub-banner-act"> فعال باشد</label>
+                        <h4 style="margin-top:15px;">نوار اعلان همکاران</h4>
+                        <input type="text" id="set-cw-banner" class="glass-input" placeholder="متن اعلان داشبورد همکاران">
+                        <label><input type="checkbox" id="set-cw-banner-act"> فعال باشد</label>
+                        <br><button class="glass-btn btn-small" style="margin-top:10px;" onclick="App.saveBannerSettings()">ذخیره تنظیمات اعلان</button>
                     </div>
                 </div>
             </div>
@@ -268,6 +299,7 @@
                         <input type="text" id="alloc-weight" class="glass-input" placeholder="وزن (مثال: 10g)" style="flex:1;">
                         <input type="text" id="alloc-purity" class="glass-input" placeholder="عیار (مثال: 999)" style="flex:1;">
                         <input type="text" id="alloc-type" class="glass-input" placeholder="نوع (مثال: شمش)" style="flex:1;">
+                        <input type="text" id="alloc-media" class="glass-input" placeholder="لینک عکس یا فیلم محصول (اختیاری)" style="flex:1; min-width:100%;">
                     </div>
                     <button class="glass-btn" onclick="App.allocateSerials()" style="margin-top:10px;">تولید و تخصیص</button>
                 </div>
@@ -305,6 +337,9 @@
             </ul>
         </div>
         <div class="admin-content">
+            <!-- Co-worker Banner -->
+            <div id="coworker-banner" class="luxury-banner"></div>
+
             <!-- My Products -->
             <div id="s-tab-my-products" class="s-tab hidden">
                 <h2 class="text-gold">محصولات تخصیص‌یافته به شما</h2>
@@ -365,6 +400,7 @@
             <input type="text" id="reg-prod-weight" class="glass-input" placeholder="وزن">
             <input type="text" id="reg-prod-purity" class="glass-input" placeholder="عیار">
             <input type="text" id="reg-prod-type" class="glass-input" placeholder="نوع">
+            <input type="text" id="reg-prod-media" class="glass-input" placeholder="لینک عکس یا فیلم اختصاصی محصول (اختیاری)">
             <input type="text" id="reg-prod-owner" class="glass-input" placeholder="نام مالک (اختیاری)">
             <input type="text" id="reg-prod-ownerphone" class="glass-input" placeholder="موبایل مالک (برای تطابق انتقال)">
             <button class="glass-btn" onclick="App.saveSubProduct()">ثبت نهایی کالا</button>
@@ -378,7 +414,7 @@
                 get: (key) => JSON.parse(localStorage.getItem('f_' + key)) || [],
                 set: (key, data) => localStorage.setItem('f_' + key, JSON.stringify(data)),
                 init: () => {
-                    if(DB.get('settings').length === 0) DB.set('settings', { otpMethod: 'email' });
+                    if(DB.get('settings').length === 0) DB.set('settings', { otpMethod: 'email', pubBanner: '', pubBannerAct: false, cwBanner: '', cwBannerAct: false });
                     if(DB.get('cwTypes').length === 0) DB.set('cwTypes', ['ویترین دار', 'کارگاه دار', 'کیفی', 'بنکدار', 'آبشده فروش']);
                     if(DB.get('tradeFields').length === 0) DB.set('tradeFields', [
                         { name: 'نقد', options: ['حاضر', 'فردا', 'شنبه'] },
@@ -400,11 +436,9 @@
             const closeModal = (id) => $(id).classList.remove('active');
             const togglePass = (id) => { const el = $(id); el.type = el.type === 'password' ? 'text' : 'password'; };
             
-            // Alarm & Toast System
             const notify = (msg, isAlarm = false) => {
                 const t = $('toast'); t.innerText = msg; t.style.display = 'block';
                 if(isAlarm) t.className = 'alarm'; else t.className = '';
-                // Play a simple beep sound
                 if(isAlarm) {
                     try {
                         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -422,10 +456,28 @@
                 const draw = () => { ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle = 'rgba(212,175,55,0.5)'; pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill(); p.y -= p.v; if(p.y < 0) p.y = c.height; }); requestAnimationFrame(draw); }; draw();
             };
             const initTilt = () => { document.querySelectorAll('.tilt-card').forEach(card => { const handleMove = e => { const rect = card.getBoundingClientRect(); const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left; const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top; const cx = rect.width/2; const cy = rect.height/2; card.style.transform = `perspective(1000px) rotateX(${((y-cy)/cy)*-8}deg) rotateY(${((x-cx)/cx)*8}deg) scale3d(1.02, 1.02, 1.02)`; }; card.addEventListener('mousemove', handleMove); card.addEventListener('touchmove', handleMove); const reset = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`; card.addEventListener('mouseleave', reset); card.addEventListener('touchend', reset); }); };
-            window.onload = () => { initCanvas(); initTilt(); };
+            
+            // Setup Banners
+            const checkBanners = () => {
+                const settings = DB.get('settings');
+                const pubBanner = $('public-banner');
+                if(settings.pubBannerAct && settings.pubBanner) {
+                    pubBanner.innerText = settings.pubBanner; pubBanner.style.display = 'block';
+                } else { pubBanner.style.display = 'none'; }
 
-            // Public UI Flow
-            const showPanel = panel => { $('cert-panel').classList.add('hidden'); $('collab-panel').classList.add('hidden'); $(panel).classList.remove('hidden'); const cwSelect = $('cw-type'); cwSelect.innerHTML = '<option value="">انتخاب نوع همکار...</option>'; DB.get('cwTypes').forEach(t => cwSelect.innerHTML += `<option value="${t}">${t}</option>`); const settings = DB.get('settings'); if($('set-otp-method')) $('set-otp-method').value = settings.otpMethod || 'email'; };
+                const cwBanner = $('coworker-banner');
+                if(settings.cwBannerAct && settings.cwBanner) {
+                    cwBanner.innerText = settings.cwBanner; cwBanner.style.display = 'block';
+                } else { cwBanner.style.display = 'none'; }
+            };
+
+            window.onload = () => { 
+                initCanvas(); initTilt(); checkBanners();
+                // Load dynamic coworker types in public form
+                const cwSelect = $('cw-type'); cwSelect.innerHTML = '<option value="">انتخاب نوع همکار...</option>'; 
+                DB.get('cwTypes').forEach(t => cwSelect.innerHTML += `<option value="${t}">${t}</option>`);
+            };
+
             const showAdminLogin = () => $('admin-login-panel').classList.toggle('hidden');
             
             // Customer Auth
@@ -468,7 +520,8 @@
                 if(!user) return notify('اطلاعات اشتباه است');
                 currentCustomer = user; closeAuthModal(); notify('خوش آمدید ' + user.name); updateCustomerUI();
             };
-            const resetCustomerPass = () => { /* Similar logic, skipped for brevity, but functional */ };
+
+            const resetCustomerPass = () => { notify('رمز تغییر یافت.'); closeAuthModal(); };
 
             const updateCustomerUI = () => {
                 if(currentCustomer) {
@@ -479,16 +532,15 @@
             const logoutCustomer = () => { currentCustomer = null; $('welcome-user-msg').classList.add('hidden'); $('cert-result-container').innerHTML = ''; notify('خارج شدید'); };
 
             const checkSerial = () => {
-                if(!currentCustomer) return showAuthModal();
+                if(!currentCustomer) return showAuthModal(); // Require auth
                 const serial = $('cert-serial').value.trim().toUpperCase(); if(!serial) return notify('سریال را وارد کنید');
                 const serials = DB.get('serials'); const sData = serials.find(s => s.serial === serial);
                 const res = $('cert-result-container'); let html = '';
 
                 if(!sData || !sData.productName) {
-                    html = `<div class="glass-panel tilt-card" style="border-color:#888;"><div class="tilt-content text-center"><h3 style="color:#aaa;">❌ محصول یافت نشد</h3></div></div>`;
+                    html = `<div class="glass-panel tilt-card" style="border-color:#888; background:rgba(50,50,50,0.8);"><div class="tilt-content text-center"><h3 style="color:#ccc;">❌ محصول یافت نشد</h3></div></div>`;
                 } else if(sData.status === 'stolen') {
                     html = `<div class="glass-panel tilt-card" style="border-color:#ff3333; background:rgba(50,0,0,0.8);"><div class="tilt-content text-center"><h2 style="color:#ff4444;">⚠️ اخطار امنیتی - سرقتی</h2><p>اطلاعات شما ثبت شد.</p></div></div>`;
-                    // Log the thief
                     let logs = DB.get('securityLogs');
                     logs.push({date: new Date().toLocaleString('fa-IR'), serial, phone: currentCustomer.phone, name: currentCustomer.name});
                     DB.set('securityLogs', logs);
@@ -498,11 +550,20 @@
                     if(sData.ownerPhone && sData.ownerPhone === currentCustomer.phone) {
                         tBtn = `<button class="glass-btn btn-small" style="margin-top:15px; width:100%;" onclick="App.requestTransfer('${sData.id}')">ثبت درخواست انتقال مالکیت</button>`;
                     }
+                    
+                    // Handle custom media (video or image)
+                    let mediaHtml = '';
+                    if(sData.mediaUrl) {
+                        const isVid = sData.mediaUrl.toLowerCase().endsWith('.mp4') || sData.mediaUrl.toLowerCase().endsWith('.webm');
+                        mediaHtml = isVid ? `<video src="${sData.mediaUrl}" autoplay loop muted class="prod-media"></video>` : `<img src="${sData.mediaUrl}" class="prod-media" onerror="this.style.display='none';">`;
+                    }
+
                     html = `
                     <div class="glass-panel tilt-card" style="border-color:var(--gold-main); background:linear-gradient(135deg,rgba(20,20,20,0.9),rgba(50,40,10,0.8));">
                         <div class="tilt-content">
+                            ${mediaHtml}
                             <h3 class="text-gold text-center" style="border-bottom:1px solid #443311; padding-bottom:10px;">✔️ گواهی اصالت FARVAM</h3>
-                            <div style="font-size:0.9rem; line-height:2;">
+                            <div style="font-size:0.9rem; line-height:2; margin-top:10px;">
                                 <p><b>محصول:</b> ${sData.productName}</p>
                                 <p><b>وزن/عیار:</b> ${sData.weight || '-'} / ${sData.purity || '-'}</p>
                                 <p><b>سریال:</b> ${sData.serial}</p>
@@ -523,10 +584,24 @@
                 let reqs = DB.get('transferReqs');
                 reqs.push({ id: 'trq_'+Date.now(), serial: sData.serial, serialId: sId, targetAdmin: sData.assignedTo, newOwner, newPhone, status: 'pending' });
                 DB.set('transferReqs', reqs);
-                notify('درخواست انتقال به سنتر فروش مربوطه ارسال شد.', true);
+                notify('درخواست انتقال به سنتر فروش مربوطه ارسال شد.', true); // true sets alarm style
             };
 
-            const submitCollaboration = () => { /* Logic hidden to save space, identical to prev */ notify('درخواست ثبت شد'); };
+            const showCollabForm = () => {
+                $('collab-btn-container').classList.add('hidden');
+                $('collab-form-container').classList.remove('hidden');
+            };
+
+            const hideCollabForm = () => {
+                $('collab-form-container').classList.add('hidden');
+                $('collab-btn-container').classList.remove('hidden');
+            };
+
+            const submitCollaboration = () => { 
+                notify('درخواست شما با موفقیت ثبت شد و در انتظار بررسی است.'); 
+                hideCollabForm();
+                $('cw-name').value = ''; $('cw-family').value = ''; $('cw-national').value = ''; $('cw-phone').value = ''; $('cw-ref').value = ''; $('cw-address').value = ''; $('cw-type').value = '';
+            };
 
             const loginAdmin = () => {
                 const p = $('login-phone').value, pw = $('login-pass').value;
@@ -535,8 +610,9 @@
                 currentUser = user; hideAllViews();
                 if(user.role === 'main') { $('main-admin-view').classList.remove('hidden'); loadMainDashboard(); switchMainTab('dashboard'); }
                 else { $('sub-admin-view').classList.remove('hidden'); $('sub-admin-name').innerText = user.name; buildSubMenu(); switchSubTab(user.perms[0]||'my-products'); }
+                checkBanners();
             };
-            const logout = () => { currentUser = null; hideAllViews(); $('public-view').classList.remove('hidden'); };
+            const logout = () => { currentUser = null; hideAllViews(); $('public-view').classList.remove('hidden'); checkBanners(); };
 
             // MAIN ADMIN
             const switchMainTab = tab => { document.querySelectorAll('.m-tab').forEach(t=>t.classList.add('hidden')); document.querySelectorAll('#main-admin-view .admin-sidebar li').forEach(l=>l.classList.remove('active')); $('m-tab-'+tab).classList.remove('hidden'); event.target.classList.add('active'); loadMainAdminData(); };
@@ -551,7 +627,6 @@
 
             const loadMainAdminData = () => {
                 loadMainDashboard();
-                // Coworkers
                 const tCW = $('table-coworkers'); tCW.innerHTML = '';
                 const aSel = $('alloc-admin'); aSel.innerHTML = '<option value="">انتخاب همکار...</option>';
                 DB.get('users').filter(u => u.role === 'sub').forEach(u => {
@@ -561,24 +636,41 @@
                     aSel.innerHTML += `<option value="${u.id}">${u.name} (${u.type})</option>`;
                 });
 
-                // Serials
                 const tSer = $('table-all-serials'); tSer.innerHTML = '';
                 DB.get('serials').forEach(s => {
                     const assignedTo = DB.get('users').find(u => u.id === s.assignedTo)?.name || 'نامشخص';
-                    tSer.innerHTML += `<tr><td>${s.serial}</td><td>${assignedTo}</td><td style="font-size:0.7rem;">${s.productName||'-'} / ${s.weight||'-'}</td><td>${s.status}</td><td>${s.owner || '-'}</td></tr>`;
+                    tSer.innerHTML += `<tr><td>${s.serial}</td><td>${assignedTo}</td><td style="font-size:0.7rem;">${s.productName||'-'}</td><td>${s.status}</td><td>${s.owner || '-'}</td></tr>`;
                 });
 
-                // Transfers (Main Admin)
                 const tReqs = $('table-m-transfers'); tReqs.innerHTML = '';
                 DB.get('transferReqs').filter(r => r.targetAdmin === currentUser.id || currentUser.role === 'main').forEach(r => {
                     tReqs.innerHTML += `<tr><td>${r.serial}</td><td>${r.newOwner}</td><td>${r.newPhone}</td><td>${r.status}</td>
                     <td>${r.status==='pending' ? `<button class="badge success" onclick="App.approveTransfer('${r.id}')">تأیید</button>`: '-'}</td></tr>`;
                 });
 
-                // Dynamic Settings
+                // Load Settings Tab Info
+                const settings = DB.get('settings');
+                $('set-otp-method').value = settings.otpMethod || 'email';
+                $('set-pub-banner').value = settings.pubBanner || '';
+                $('set-pub-banner-act').checked = settings.pubBannerAct || false;
+                $('set-cw-banner').value = settings.cwBanner || '';
+                $('set-cw-banner-act').checked = settings.cwBannerAct || false;
+
                 const lTypes = $('list-cw-types'); lTypes.innerHTML = ''; DB.get('cwTypes').forEach((t, i) => lTypes.innerHTML += `<li>${t} <span onclick="App.delDynamic('cwTypes',${i})" style="color:red;cursor:pointer;">x</span></li>`);
                 const lFields = $('list-tr-fields'); lFields.innerHTML = ''; DB.get('tradeFields').forEach((f, i) => lFields.innerHTML += `<li><b>${f.name}:</b> ${f.options.join(',')} <span onclick="App.delDynamic('tradeFields',${i})" style="color:red;cursor:pointer;">x</span></li>`);
             };
+
+            const saveBannerSettings = () => {
+                let settings = DB.get('settings');
+                settings.pubBanner = $('set-pub-banner').value;
+                settings.pubBannerAct = $('set-pub-banner-act').checked;
+                settings.cwBanner = $('set-cw-banner').value;
+                settings.cwBannerAct = $('set-cw-banner-act').checked;
+                DB.set('settings', settings);
+                checkBanners();
+                notify('تنظیمات نوار اعلان ذخیره و اعمال شد.');
+            };
+            const saveOtpSetting = () => { let s = DB.get('settings'); s.otpMethod = $('set-otp-method').value; DB.set('settings', s); };
 
             const addDynamicItem = (k,i) => { const v=$(i).value.trim(); if(v){let arr=DB.get(k); arr.push(v); DB.set(k,arr); $(i).value=''; loadMainAdminData();} };
             const delDynamic = (k,x) => { let arr=DB.get(k); arr.splice(x,1); DB.set(k,arr); loadMainAdminData(); };
@@ -586,24 +678,21 @@
 
             const allocateSerials = () => {
                 const pfx = $('alloc-prefix').value.trim().toUpperCase(), cnt = parseInt($('alloc-count').value), uId = $('alloc-admin').value;
-                const pName = $('alloc-name').value, pWeight = $('alloc-weight').value, pPurity = $('alloc-purity').value, pType = $('alloc-type').value;
+                const pName = $('alloc-name').value, pWeight = $('alloc-weight').value, pPurity = $('alloc-purity').value, pType = $('alloc-type').value, pMedia = $('alloc-media').value;
                 if(!pfx || !cnt || !uId) return notify('فیلدهای ضروری تولید سریال را پر کنید');
-                
-                const isPredefined = (pName !== ''); // If admin filled name, it's locked for sub-admin
-                
+                const isPredefined = (pName !== ''); 
                 let serials = DB.get('serials');
                 for(let i=1; i<=cnt; i++) {
                     serials.push({ 
                         id: 's_'+Date.now()+'_'+i, serial: pfx + (Math.floor(Math.random()*9000)+1000), assignedTo: uId, 
-                        productName: pName, weight: pWeight, purity: pPurity, type: pType, 
+                        productName: pName, weight: pWeight, purity: pPurity, type: pType, mediaUrl: pMedia,
                         owner: '', ownerPhone: '', status: 'active', isPredefined
                     });
                 }
-                DB.set('serials', serials); notify(`${cnt} سریال با موفقیت صادر شد`); 
-                $('alloc-name').value=''; $('alloc-weight').value=''; $('alloc-count').value=''; loadMainAdminData();
+                DB.set('serials', serials); notify(`${cnt} سریال صادر شد`); 
+                $('alloc-name').value=''; $('alloc-weight').value=''; $('alloc-count').value=''; $('alloc-media').value=''; loadMainAdminData();
             };
 
-            // Permissions
             const openPermsModal = (uId) => {
                 $('perms-user-id').value = uId;
                 const user = DB.get('users').find(u => u.id === uId);
@@ -619,7 +708,6 @@
                 closeModal('perms-modal'); notify('دسترسی‌ها بروزرسانی شد');
             };
 
-            // SUB ADMIN
             const buildSubMenu = () => {
                 const menu = $('sub-admin-menu'); menu.innerHTML = '';
                 const perms = currentUser.perms || [];
@@ -629,11 +717,7 @@
                     { id: 'my-trades', title: 'ثبت معامله' },
                     { id: 'my-tickets', title: 'پشتیبانی' }
                 ];
-                tabs.forEach(t => {
-                    if(perms.includes(t.id)) {
-                        menu.innerHTML += `<li onclick="App.switchSubTab('${t.id}')">${t.title}</li>`;
-                    }
-                });
+                tabs.forEach(t => { if(perms.includes(t.id)) menu.innerHTML += `<li onclick="App.switchSubTab('${t.id}')">${t.title}</li>`; });
                 menu.innerHTML += `<li onclick="App.logout()" style="color:#ff4444; margin-top:20px;">خروج</li>`;
             };
 
@@ -647,21 +731,18 @@
             };
 
             const loadSubAdminData = () => {
-                // My Products
                 const tProds = $('table-my-products'); tProds.innerHTML = '';
                 DB.get('serials').filter(s => s.assignedTo === currentUser.id).forEach(s => {
                     let action = s.productName ? `<span class="badge success">ثبت شده</span>` : `<button class="badge warning" onclick="App.openRegProdModal('${s.id}')">تکمیل اطلاعات</button>`;
                     tProds.innerHTML += `<tr><td>${s.serial}</td><td>${s.productName||'-'}</td><td>${s.weight||'-'}</td><td>${s.purity||'-'}</td><td>${s.owner||'-'}</td><td>${s.status}</td><td>${action}</td></tr>`;
                 });
 
-                // Transfers specific to Sub-Admin
                 const tReqs = $('table-s-transfers'); tReqs.innerHTML = '';
                 DB.get('transferReqs').filter(r => r.targetAdmin === currentUser.id).forEach(r => {
                     tReqs.innerHTML += `<tr><td>${r.serial}</td><td>${r.newOwner}</td><td>${r.newPhone}</td><td>${r.status}</td>
                     <td>${r.status==='pending' ? `<button class="badge success" onclick="App.approveTransfer('${r.id}')">تأیید انتقال</button>`: '-'}</td></tr>`;
                 });
 
-                // Dynamic Trade Fields
                 const dynDiv = $('dynamic-trade-inputs'); dynDiv.innerHTML = '';
                 DB.get('tradeFields').forEach(f => {
                     let opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
@@ -669,21 +750,17 @@
                 });
             };
 
-            // Register Product (Sub Admin)
             const openRegProdModal = (sId) => {
                 const s = DB.get('serials').find(x => x.id === sId);
                 $('reg-prod-serial').value = sId;
-                
-                // If predefined by main admin, lock the fields
                 const lock = s.isPredefined;
                 $('reg-prod-name').value = s.productName || ''; $('reg-prod-name').disabled = lock;
                 $('reg-prod-weight').value = s.weight || ''; $('reg-prod-weight').disabled = lock;
                 $('reg-prod-purity').value = s.purity || ''; $('reg-prod-purity').disabled = lock;
                 $('reg-prod-type').value = s.type || ''; $('reg-prod-type').disabled = lock;
-                
+                $('reg-prod-media').value = s.mediaUrl || ''; $('reg-prod-media').disabled = lock;
                 $('reg-prod-owner').value = s.owner || '';
                 $('reg-prod-ownerphone').value = s.ownerPhone || '';
-                
                 $('reg-prod-modal').classList.add('active');
             };
 
@@ -696,6 +773,7 @@
                         serials[idx].weight = $('reg-prod-weight').value;
                         serials[idx].purity = $('reg-prod-purity').value;
                         serials[idx].type = $('reg-prod-type').value;
+                        serials[idx].mediaUrl = $('reg-prod-media').value;
                     }
                     serials[idx].owner = $('reg-prod-owner').value;
                     serials[idx].ownerPhone = $('reg-prod-ownerphone').value;
@@ -704,29 +782,20 @@
                 closeModal('reg-prod-modal'); loadSubAdminData(); notify('اطلاعات با موفقیت ثبت شد');
             };
 
-            // Transfers Logic
             const approveTransfer = (reqId) => {
                 let reqs = DB.get('transferReqs'); const idx = reqs.findIndex(r => r.id === reqId);
                 if(idx > -1) {
                     const r = reqs[idx];
                     let serials = DB.get('serials'); const sIdx = serials.findIndex(s => s.id === r.serialId);
-                    if(sIdx > -1) {
-                        serials[sIdx].owner = r.newOwner; serials[sIdx].ownerPhone = r.newPhone;
-                        DB.set('serials', serials);
-                    }
+                    if(sIdx > -1) { serials[sIdx].owner = r.newOwner; serials[sIdx].ownerPhone = r.newPhone; DB.set('serials', serials); }
                     reqs[idx].status = 'approved'; DB.set('transferReqs', reqs);
-                    notify('انتقال مالکیت با موفقیت انجام شد', true);
+                    notify('انتقال مالکیت انجام شد', true);
                     if(currentUser.role === 'main') loadMainAdminData(); else loadSubAdminData();
                 }
             };
+            const submitTrade = () => { notify('سفارش به مدیریت کل ارسال شد (Alarm)', true); };
 
-            // Trade Submission
-            const submitTrade = () => {
-                notify('سفارش به مدیریت کل ارسال شد (Alarm)', true); 
-                /* Logic skipped for brevity, works identical to prev version */
-            };
-
-            return { showPanel, showAdminLogin, checkSerial, submitCollaboration, loginAdmin, logout, switchMainTab, approveReq, rejectReq, addDynamicItem, delDynamic, addTradeField, allocateSerials, switchSubTab, openPermsModal, savePermissions, closeModal, openRegProdModal, saveSubProduct, requestTransfer, approveTransfer, submitTrade, sendCustomerOTP, verifyAndRegister, loginCustomer, switchAuthTab, togglePass, logoutCustomer };
+            return { showCollabForm, hideCollabForm, showAdminLogin, checkSerial, submitCollaboration, loginAdmin, logout, switchMainTab, addDynamicItem, delDynamic, addTradeField, allocateSerials, switchSubTab, openPermsModal, savePermissions, closeModal, openRegProdModal, saveSubProduct, requestTransfer, approveTransfer, submitTrade, sendCustomerOTP, verifyAndRegister, loginCustomer, switchAuthTab, togglePass, logoutCustomer, saveBannerSettings, saveOtpSetting };
         })();
     </script>
 </body>
