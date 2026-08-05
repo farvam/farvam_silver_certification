@@ -15,7 +15,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         body { background-color: var(--black-matte); color: var(--text-main); font-family: var(--font-main); overflow-x: hidden; }
         
-        /* Optimized Backgrounds */
+        /* Backgrounds */
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.6; }
         .video-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; opacity: 0.3; }
 
@@ -38,6 +38,10 @@
         #public-view { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem 1rem; }
         .brand-logo { width: 180px; filter: drop-shadow(0 0 15px var(--gold-main)); margin-bottom: 20px; }
         
+        /* 3D Tilt Card */
+        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); transition: transform 0.1s ease-out; }
+        .tilt-content { transform: translateZ(30px); }
+
         /* Admin Panels */
         .admin-layout { display: flex; min-height: 100vh; background: #0f0f0f; z-index: 10; position: relative; }
         .admin-sidebar { width: 260px; background: #050505; border-left: 1px solid var(--glass-border); padding: 1.5rem 1rem; }
@@ -55,6 +59,19 @@
 
         /* Toast */
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--gold-main); color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        /* Luxury Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 2rem; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(212,175,55,0.2); transform: translateY(-20px); transition: 0.3s; position: relative; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; left: 15px; cursor: pointer; color: var(--gold-main); font-size: 1.2rem; transition: 0.2s; }
+        .close-modal:hover { color: #fff; transform: scale(1.1); }
+        
+        /* Password Eye Icon Container */
+        .pass-container { position: relative; width: 100%; }
+        .pass-container input { width: 100%; padding-left: 40px; }
+        .pass-eye { position: absolute; left: 15px; top: 10px; cursor: pointer; color: #aaa; z-index: 10; font-size: 1.1rem; }
         
         /* Chat/Ticket Box */
         .chat-box { height: 300px; overflow-y: auto; border: 1px solid #333; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.5); border-radius: 6px; }
@@ -83,14 +100,13 @@
         <!-- Panel: Certificate Check (Customer) -->
         <div id="cert-panel" class="glass-panel" style="width: 100%; max-width: 400px;">
             <h3 class="text-center text-gold" style="margin-bottom: 15px;">باشگاه مشتریان و استعلام</h3>
-            <div id="cert-login">
-                <input type="text" id="cust-phone" class="glass-input" placeholder="شماره موبایل (مثال: 0912...)">
-                <button class="glass-btn" onclick="App.verifyCustomer()">ورود و استعلام</button>
-            </div>
-            <div id="cert-search" class="hidden">
+            <div id="cert-search">
+                <p id="welcome-user-msg" class="text-gold text-center hidden" style="margin-bottom: 10px; font-size:0.9rem;"></p>
                 <input type="text" id="cert-serial" class="glass-input" placeholder="شماره سریال (مثال: FS001)" style="text-transform: uppercase;">
                 <button class="glass-btn" onclick="App.checkSerial()">بررسی محصول</button>
-                <div id="cert-result" style="margin-top: 15px; font-size: 0.9rem; line-height: 1.8;"></div>
+                
+                <!-- This will hold the Luxury 3D Result Cards -->
+                <div id="cert-result-container" style="margin-top: 15px;"></div>
             </div>
         </div>
 
@@ -107,13 +123,81 @@
             <button class="glass-btn" onclick="App.submitCollaboration()">ارسال درخواست</button>
         </div>
 
+        <!-- Luxury Auth Modal for Customers -->
+        <div id="auth-modal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-modal" onclick="App.closeAuthModal()">✖</span>
+                <div id="auth-banner" style="text-align:center; margin-bottom: 20px;">
+                    <h3 class="text-gold" style="margin-bottom:10px;">باشگاه مشتریان لوکس FARVAM</h3>
+                    <p style="font-size: 0.85rem; color: #ccc;">برای استعلام اصالت، درخواست انتقال مالکیت و بهره‌مندی از خدمات ویژه، لطفاً ابتدا وارد حساب کاربری خود شوید یا حساب ایجاد کنید.</p>
+                </div>
+                
+                <!-- Login Tab -->
+                <div id="auth-login">
+                    <input type="text" id="login-c-phone" class="glass-input" placeholder="شماره موبایل یا ایمیل">
+                    <div class="pass-container">
+                        <input type="password" id="login-c-pass" class="glass-input" placeholder="رمز عبور">
+                        <span class="pass-eye" onclick="App.togglePass('login-c-pass')">👁️</span>
+                    </div>
+                    <button class="glass-btn" onclick="App.loginCustomer()">ورود به حساب</button>
+                    <div class="flex-row" style="margin-top:15px; justify-content:space-between; font-size:0.8rem;">
+                        <span style="color:var(--gold-main); cursor:pointer;" onclick="App.switchAuthTab('register')">ایجاد حساب جدید</span>
+                        <span style="color:var(--gold-main); cursor:pointer;" onclick="App.switchAuthTab('forgot')">فراموشی رمز</span>
+                    </div>
+                </div>
+
+                <!-- Register Tab -->
+                <div id="auth-register" class="hidden">
+                    <input type="text" id="reg-c-name" class="glass-input" placeholder="نام و نام خانوادگی">
+                    <input type="text" id="reg-c-phone" class="glass-input" placeholder="شماره موبایل (09...)">
+                    <input type="email" id="reg-c-email" class="glass-input" placeholder="ایمیل معتبر">
+                    <div class="pass-container">
+                        <input type="password" id="reg-c-pass" class="glass-input" placeholder="رمز عبور">
+                        <span class="pass-eye" onclick="App.togglePass('reg-c-pass')">👁️</span>
+                    </div>
+                    <button class="glass-btn" id="btn-send-otp" onclick="App.sendCustomerOTP('register')">دریافت کد تأیید</button>
+                    
+                    <div id="reg-otp-section" class="hidden" style="margin-top:10px;">
+                        <p id="otp-hint" style="font-size:0.75rem; color:#aaa; margin-bottom:5px; text-align:center;"></p>
+                        <input type="text" id="reg-c-otp" class="glass-input" placeholder="کد تأیید">
+                        <button class="glass-btn" onclick="App.verifyAndRegister()">تأیید و ثبت‌نام</button>
+                    </div>
+                    <div style="margin-top:15px; text-align:center; font-size:0.8rem;">
+                        <span style="color:var(--gold-main); cursor:pointer;" onclick="App.switchAuthTab('login')">بازگشت به ورود</span>
+                    </div>
+                </div>
+
+                <!-- Forgot Pass Tab -->
+                <div id="auth-forgot" class="hidden">
+                    <input type="text" id="forgot-c-id" class="glass-input" placeholder="ایمیل یا موبایل ثبت شده">
+                    <button class="glass-btn" id="btn-forgot-otp" onclick="App.sendCustomerOTP('forgot')">ارسال لینک/کد بازیابی</button>
+                    
+                    <div id="forgot-otp-section" class="hidden" style="margin-top:10px;">
+                        <p id="otp-forgot-hint" style="font-size:0.75rem; color:#aaa; margin-bottom:5px; text-align:center;"></p>
+                        <input type="text" id="forgot-c-otp" class="glass-input" placeholder="کد دریافت شده">
+                        <div class="pass-container">
+                            <input type="password" id="forgot-c-newpass" class="glass-input" placeholder="رمز عبور جدید">
+                            <span class="pass-eye" onclick="App.togglePass('forgot-c-newpass')">👁️</span>
+                        </div>
+                        <button class="glass-btn" onclick="App.resetCustomerPass()">تغییر رمز</button>
+                    </div>
+                    <div style="margin-top:15px; text-align:center; font-size:0.8rem;">
+                        <span style="color:var(--gold-main); cursor:pointer;" onclick="App.switchAuthTab('login')">بازگشت به ورود</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Admin Login Trigger -->
         <div style="margin-top: 40px; cursor: pointer; opacity: 0.5;" onclick="App.showAdminLogin()">🔒 پنل مدیریت و همکاران</div>
         
         <!-- Admin Login Form -->
         <div id="admin-login-panel" class="glass-panel hidden" style="width: 100%; max-width: 300px; margin-top: 10px;">
             <input type="text" id="login-phone" class="glass-input" placeholder="نام کاربری / موبایل">
-            <input type="password" id="login-pass" class="glass-input" placeholder="رمز عبور">
+            <div class="pass-container">
+                <input type="password" id="login-pass" class="glass-input" placeholder="رمز عبور">
+                <span class="pass-eye" onclick="App.togglePass('login-pass')">👁️</span>
+            </div>
             <button class="glass-btn" onclick="App.loginAdmin()">ورود به سیستم</button>
         </div>
     </div>
@@ -152,6 +236,20 @@
             <!-- Dynamic Settings -->
             <div id="m-tab-dynamic" class="m-tab hidden">
                 <h2 class="text-gold">تنظیمات پایه‌ای و داینامیک</h2>
+                
+                <!-- Config Auth Method -->
+                <div class="glass-panel" style="margin-bottom:15px;">
+                    <h4>تنظیمات سیستم اعتبار سنجی مشتریان (OTP)</h4>
+                    <div class="flex-row" style="margin-top:10px; align-items:center;">
+                        <span>روش ارسال کد تأیید:</span>
+                        <select id="set-otp-method" class="glass-select" style="width:200px; margin-bottom:0;" onchange="App.saveOtpSetting()">
+                            <option value="email">ارسال به ایمیل (فعلی)</option>
+                            <option value="sms">ارسال پیامک به موبایل</option>
+                        </select>
+                        <span style="font-size:0.8rem; color:#aaa; margin-right:10px;">(این تنظیم، نحوه ارسال فرم فراموشی رمز و ثبت‌نام را تغییر می‌دهد)</span>
+                    </div>
+                </div>
+
                 <div class="flex-row">
                     <!-- Coworker Types -->
                     <div class="glass-panel" style="flex:1; min-width:300px;">
@@ -224,7 +322,7 @@
             <div id="s-tab-my-products" class="s-tab">
                 <h2 class="text-gold">محصولات و سریال‌های تخصیص‌یافته به شما</h2>
                 <table>
-                    <thead><tr><th>سریال</th><th>نام محصول ثبت شده</th><th>مالک فعلی</th><th>وضعیت</th><th>عملیات (انتقال/ثبت)</th></tr></thead>
+                    <thead><tr><th>سریال</th><th>نام محصول ثبت شده</th><th>مالک فعلی</th><th>شماره مالک (مخفی)</th><th>وضعیت</th><th>عملیات (انتقال/ثبت)</th></tr></thead>
                     <tbody id="table-my-products"></tbody>
                 </table>
             </div>
@@ -262,12 +360,15 @@
                 get: (key) => JSON.parse(localStorage.getItem('f_' + key)) || [],
                 set: (key, data) => localStorage.setItem('f_' + key, JSON.stringify(data)),
                 init: () => {
+                    if(DB.get('settings').length === 0 || !DB.get('settings').otpMethod) DB.set('settings', { otpMethod: 'email' });
                     if(DB.get('cwTypes').length === 0) DB.set('cwTypes', ['ویترین دار', 'کارگاه دار', 'کیفی', 'بنکدار', 'آبشده فروش']);
                     if(DB.get('tradeFields').length === 0) DB.set('tradeFields', [
                         { name: 'نقد', options: ['حاضر', 'فردا', 'شنبه'] },
                         { name: 'نوع معامله', options: ['دلار', 'تومان'] },
                     ]);
                     if(DB.get('rejectReasons').length === 0) DB.set('rejectReasons', ['شما طلا بدهکار هستید', 'شما تومان بدهکار هستید', 'بازار پر نوسان است']);
+                    if(DB.get('customers').length === 0) DB.set('customers', []);
+                    
                     // Create default main admin if not exists
                     let users = DB.get('users');
                     if(!users.find(u => u.phone === 'admin')) {
@@ -278,13 +379,20 @@
             };
             DB.init();
 
-            let currentUser = null; // Can be main admin, sub admin, or customer
+            let currentUser = null; // Can be main admin, sub admin
+            let currentCustomer = null; // Customer logged into public site
+            let generatedOTP = null;
 
             // --- UI Utilities ---
             const $ = id => document.getElementById(id);
             const showToast = msg => { const t = $('toast'); t.innerText = msg; t.style.display = 'block'; setTimeout(()=> t.style.display='none', 3000); };
             const hideAllViews = () => { $('public-view').classList.add('hidden'); $('main-admin-view').classList.add('hidden'); $('sub-admin-view').classList.add('hidden'); };
             
+            const togglePass = (id) => {
+                const el = $(id);
+                el.type = el.type === 'password' ? 'text' : 'password';
+            };
+
             // Background Canvas (Optimized, lightweight)
             const initCanvas = () => {
                 const c = $('particles-canvas'); const ctx = c.getContext('2d');
@@ -296,6 +404,27 @@
                     requestAnimationFrame(draw);
                 }; draw();
             }; initCanvas();
+            
+            // 3D Tilt Initialization
+            const initTilt = () => {
+                const cards = document.querySelectorAll('.tilt-card');
+                const handleMove = (e, card) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                    const cx = rect.width / 2; const cy = rect.height / 2;
+                    const tiltX = ((y - cy) / cy) * -8;
+                    const tiltY = ((x - cx) / cx) * 8;
+                    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+                };
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', e => handleMove(e, card));
+                    card.addEventListener('touchmove', e => handleMove(e, card));
+                    const reset = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    card.addEventListener('mouseleave', reset);
+                    card.addEventListener('touchend', reset);
+                });
+            };
 
             // --- Public Flow ---
             const showPanel = panel => { $('cert-panel').classList.add('hidden'); $('collab-panel').classList.add('hidden'); $(panel).classList.remove('hidden'); loadDynamicDropdowns(); };
@@ -304,33 +433,167 @@
             const loadDynamicDropdowns = () => {
                 const cwSelect = $('cw-type'); cwSelect.innerHTML = '<option value="">انتخاب نوع همکار...</option>';
                 DB.get('cwTypes').forEach(t => cwSelect.innerHTML += `<option value="${t}">${t}</option>`);
+                
+                const settings = DB.get('settings');
+                if($('set-otp-method')) $('set-otp-method').value = settings.otpMethod || 'email';
             };
 
-            const verifyCustomer = () => {
-                const phone = $('cust-phone').value.trim();
-                if(!phone) return showToast('شماره الزامی است');
-                $('cert-login').classList.add('hidden'); $('cert-search').classList.remove('hidden'); showToast('لاگین مشتری شبیه‌سازی شد.');
+            const saveOtpSetting = () => {
+                const settings = DB.get('settings');
+                settings.otpMethod = $('set-otp-method').value;
+                DB.set('settings', settings);
+                showToast('تنظیمات OTP با موفقیت بروزرسانی شد.');
+            };
+
+            // --- Customer Auth Flow ---
+            const showAuthModal = () => { $('auth-modal').classList.add('active'); };
+            const closeAuthModal = () => { $('auth-modal').classList.remove('active'); };
+            const switchAuthTab = tab => {
+                $('auth-login').classList.add('hidden'); $('auth-register').classList.add('hidden'); $('auth-forgot').classList.add('hidden');
+                $('auth-'+tab).classList.remove('hidden');
+            };
+
+            const sendCustomerOTP = (flow) => {
+                const settings = DB.get('settings');
+                const method = settings.otpMethod || 'email';
+                let target = '';
+                
+                if(flow === 'register') {
+                    const n = $('reg-c-name').value, p = $('reg-c-phone').value, e = $('reg-c-email').value, pw = $('reg-c-pass').value;
+                    if(!n || !p || !e || !pw) return showToast('تمام فیلدها الزامی است');
+                    target = method === 'email' ? e : p;
+                    $('btn-send-otp').classList.add('hidden');
+                    $('reg-otp-section').classList.remove('hidden');
+                    $('otp-hint').innerText = `کد تأیید به ${target} ارسال شد (دمو: 1234)`;
+                } else if(flow === 'forgot') {
+                    const id = $('forgot-c-id').value;
+                    if(!id) return showToast('ایمیل یا موبایل را وارد کنید');
+                    const users = DB.get('customers');
+                    const u = users.find(x => x.phone === id || x.email === id);
+                    if(!u) return showToast('کاربری با این مشخصات یافت نشد');
+                    target = method === 'email' ? u.email : u.phone;
+                    $('btn-forgot-otp').classList.add('hidden');
+                    $('forgot-otp-section').classList.remove('hidden');
+                    $('otp-forgot-hint').innerText = `کد بازیابی به ${target} ارسال شد (دمو: 1234)`;
+                }
+                generatedOTP = '1234';
+            };
+
+            const verifyAndRegister = () => {
+                const otp = $('reg-c-otp').value;
+                if(otp !== generatedOTP) return showToast('کد اشتباه است');
+                
+                const n = $('reg-c-name').value, p = $('reg-c-phone').value, e = $('reg-c-email').value, pw = $('reg-c-pass').value;
+                let customers = DB.get('customers');
+                if(customers.find(c => c.phone === p || c.email === e)) return showToast('این موبایل یا ایمیل قبلاً ثبت شده');
+                
+                const newCustomer = { id: 'c_'+Date.now(), name: n, phone: p, email: e, pass: pw, scans: [] };
+                customers.push(newCustomer);
+                DB.set('customers', customers);
+                currentCustomer = newCustomer;
+                closeAuthModal();
+                showToast('ثبت‌نام و ورود موفقیت‌آمیز بود');
+                updateCustomerUI();
+            };
+
+            const loginCustomer = () => {
+                const id = $('login-c-phone').value, pw = $('login-c-pass').value;
+                const customers = DB.get('customers');
+                const user = customers.find(c => (c.phone === id || c.email === id) && c.pass === pw);
+                if(!user) return showToast('شماره یا رمز عبور اشتباه است');
+                currentCustomer = user;
+                closeAuthModal();
+                showToast('خوش آمدید ' + user.name);
+                updateCustomerUI();
+            };
+
+            const resetCustomerPass = () => {
+                const otp = $('forgot-c-otp').value, newPw = $('forgot-c-newpass').value, id = $('forgot-c-id').value;
+                if(otp !== generatedOTP) return showToast('کد اشتباه است');
+                if(!newPw) return showToast('رمز جدید را وارد کنید');
+                
+                let customers = DB.get('customers');
+                const idx = customers.findIndex(c => c.phone === id || c.email === id);
+                if(idx > -1) {
+                    customers[idx].pass = newPw;
+                    DB.set('customers', customers);
+                    showToast('رمز عبور تغییر کرد. لطفاً وارد شوید.');
+                    switchAuthTab('login');
+                }
+            };
+
+            const updateCustomerUI = () => {
+                if(currentCustomer) {
+                    $('welcome-user-msg').innerText = `خوش آمدید، ${currentCustomer.name} | `;
+                    let logoutBtn = document.createElement('span');
+                    logoutBtn.innerText = 'خروج'; logoutBtn.style.cursor = 'pointer'; logoutBtn.style.color = 'var(--gold-light)';
+                    logoutBtn.onclick = () => { currentCustomer = null; $('welcome-user-msg').classList.add('hidden'); $('cert-result-container').innerHTML = ''; showToast('خارج شدید'); };
+                    $('welcome-user-msg').appendChild(logoutBtn);
+                    $('welcome-user-msg').classList.remove('hidden');
+                }
             };
 
             const checkSerial = () => {
-                const serial = $('cert-serial').value.trim().toUpperCase();
-                const serials = DB.get('serials'); const sData = serials.find(s => s.serial === serial);
-                const res = $('cert-result');
-                if(!sData || !sData.productName) { res.innerHTML = '<span class="text-gold">❌ محصول یافت نشد یا ثبت نشده است.</span>'; return; }
-                if(sData.status === 'stolen') { res.innerHTML = '<span style="color:#ff4444;">⚠️ سرقتی! این محصول تحت پیگرد است.</span>'; return; }
-                
-                // Fetch the admin who registered it to show as Sales Center
-                const users = DB.get('users');
-                const center = users.find(u => u.id === sData.assignedTo)?.name || 'مرکزی';
+                if(!currentCustomer) {
+                    showAuthModal();
+                    return;
+                }
 
-                res.innerHTML = `
-                    <div style="border:1px solid var(--gold-main); padding:10px; border-radius:8px;">
-                        <h4 class="text-gold text-center">گواهی اصالت FARVAM</h4>
-                        <hr style="border-color:#333; margin:5px 0;">
-                        <p><b>محصول:</b> ${sData.productName}</p>
-                        <p><b>مالک فعلی:</b> ${sData.owner || 'مجموعه'}</p>
-                        <p><b>سنتر فروش (ثبت کننده):</b> ${center}</p>
+                const serial = $('cert-serial').value.trim().toUpperCase();
+                if(!serial) return showToast('لطفاً شماره سریال را وارد کنید');
+
+                const serials = DB.get('serials'); 
+                const sData = serials.find(s => s.serial === serial);
+                const resContainer = $('cert-result-container');
+                
+                let html = '';
+
+                if(!sData || !sData.productName) { 
+                    // Not found or not registered card
+                    html = `
+                    <div class="glass-panel tilt-card" style="border-color: #888; box-shadow: 0 10px 30px rgba(255,255,255,0.05); background: rgba(30,30,30,0.8);">
+                        <div class="tilt-content text-center">
+                            <h3 style="color:#aaa; margin-bottom:10px;">❌ محصول یافت نشد</h3>
+                            <p style="color:#ccc;">این سریال در سیستم FARVAM ثبت نشده و یا اصالت آن مورد تأیید نیست.</p>
+                        </div>
                     </div>`;
+                } else if(sData.status === 'stolen') { 
+                    // Stolen card
+                    html = `
+                    <div class="glass-panel tilt-card" style="border-color: #ff3333; box-shadow: 0 10px 40px rgba(255,0,0,0.3); background: rgba(50,0,0,0.8);">
+                        <div class="tilt-content text-center">
+                            <h2 style="color:#ff4444; margin-bottom:10px;">⚠️ اخطار امنیتی - سرقتی</h2>
+                            <p style="color:#eee; font-size:0.9rem;">این محصول به عنوان سرقت‌شده ثبت گردیده است. اطلاعات لاگین شما در سیستم امنیتی ثبت شد.</p>
+                        </div>
+                    </div>`;
+                } else {
+                    // Valid Approved Card
+                    const users = DB.get('users');
+                    const center = users.find(u => u.id === sData.assignedTo)?.name || 'مرکزی';
+
+                    let transferBtnHtml = '';
+                    // Check if current user phone matches the hidden owner phone
+                    if(sData.ownerPhone && sData.ownerPhone === currentCustomer.phone) {
+                        transferBtnHtml = `<button class="glass-btn btn-small" style="margin-top:15px; font-size:0.8rem; width:100%;" onclick="alert('درخواست انتقال به مدیریت ارسال شد.')">ثبت درخواست انتقال مالکیت</button>`;
+                    }
+
+                    html = `
+                    <div class="glass-panel tilt-card" style="border-color: var(--gold-main); box-shadow: 0 10px 40px rgba(212,175,55,0.15); background: linear-gradient(135deg, rgba(20,20,20,0.9), rgba(50,40,10,0.8));">
+                        <div class="tilt-content">
+                            <h3 class="text-gold text-center" style="margin-bottom:10px; border-bottom:1px solid #443311; padding-bottom:10px;">✔️ گواهی اصالت FARVAM</h3>
+                            <div style="font-size:0.9rem; line-height:2;">
+                                <p><b>محصول:</b> ${sData.productName}</p>
+                                <p><b>شماره سریال:</b> ${sData.serial}</p>
+                                <p><b>مالک فعلی:</b> ${sData.owner || 'مجموعه FARVAM'}</p>
+                                <p><b>سنتر فروش:</b> ${center}</p>
+                            </div>
+                            ${transferBtnHtml}
+                        </div>
+                    </div>`;
+                }
+
+                resContainer.innerHTML = html;
+                initTilt(); // re-initialize 3D effect for the newly injected card
             };
 
             const submitCollaboration = () => {
@@ -373,7 +636,9 @@
                 const aSel = $('alloc-admin'); aSel.innerHTML = '<option value="">انتخاب همکار...</option>';
                 const tSel = $('ticket-user-select'); tSel.innerHTML = '<option value="">انتخاب همکار برای گفتگو...</option>';
                 DB.get('users').filter(u => u.role === 'sub').forEach(u => {
-                    tCW.innerHTML += `<tr><td>${u.name}</td><td>${u.type}</td><td>${u.phone}</td><td>${u.pass}</td><td><button class="badge" onclick="alert('بخش تعیین دسترسی فیلدها در این دمو شبیه‌سازی شده است.')">تنظیم دسترسی</button></td></tr>`;
+                    tCW.innerHTML += `<tr><td>${u.name}</td><td>${u.type}</td><td>${u.phone}</td>
+                    <td><span class="pass-container"><input type="password" value="${u.pass}" readonly style="background:transparent; border:none; color:#ccc; width:60px;"><span class="pass-eye" onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'" style="position:static; padding-right:10px;">👁️</span></span></td>
+                    <td><button class="badge" onclick="alert('بخش تعیین دسترسی فیلدها در این دمو شبیه‌سازی شده است.')">تنظیم دسترسی</button></td></tr>`;
                     aSel.innerHTML += `<option value="${u.id}">${u.name} (${u.type})</option>`;
                     tSel.innerHTML += `<option value="${u.id}">${u.name}</option>`;
                 });
@@ -440,7 +705,7 @@
                 if(!pfx || !cnt || !uId) return showToast('تمام فیلدها الزامی است');
                 let serials = DB.get('serials');
                 for(let i=1; i<=cnt; i++) {
-                    serials.push({ id: 's_'+Date.now()+'_'+i, serial: pfx + (Math.floor(Math.random()*9000)+1000), assignedTo: uId, productName: '', owner: '', status: 'active' });
+                    serials.push({ id: 's_'+Date.now()+'_'+i, serial: pfx + (Math.floor(Math.random()*9000)+1000), assignedTo: uId, productName: '', owner: '', ownerPhone: '', status: 'active' });
                 }
                 DB.set('serials', serials); showToast(`${cnt} سریال اختصاص یافت.`); loadMainAdminData();
             };
@@ -464,7 +729,7 @@
                     let action = s.productName ? 
                         `<button class="badge warning" onclick="App.transferOwner('${s.id}')">انتقال مالک</button>` : 
                         `<button class="badge success" onclick="App.registerProduct('${s.id}')">ثبت کالا</button>`;
-                    tProds.innerHTML += `<tr><td>${s.serial}</td><td>${s.productName || '-'}</td><td>${s.owner || '-'}</td><td>${s.status}</td><td>${action}</td></tr>`;
+                    tProds.innerHTML += `<tr><td>${s.serial}</td><td>${s.productName || '-'}</td><td>${s.owner || '-'}</td><td style="font-size:0.75rem; color:#aaa;">${s.ownerPhone || 'ثبت نشده'}</td><td>${s.status}</td><td>${action}</td></tr>`;
                 });
 
                 // Trade Form dynamic fields
@@ -491,8 +756,9 @@
             };
             const transferOwner = sId => {
                 const owner = prompt('نام مالک جدید:'); if(!owner) return;
+                const ownerPhone = prompt('شماره موبایل مالک جدید (برای تطابق استعلام و انتقال):'); if(!ownerPhone) return;
                 let serials = DB.get('serials'); let s = serials.find(x=>x.id === sId);
-                s.owner = owner; DB.set('serials', serials); loadSubAdminData(); showToast('مالکیت منتقل شد');
+                s.owner = owner; s.ownerPhone = ownerPhone; DB.set('serials', serials); loadSubAdminData(); showToast('مالکیت منتقل شد');
             };
 
             const submitTrade = () => {
@@ -540,7 +806,8 @@
                 loadTickets();
             };
 
-            return { showPanel, showAdminLogin, verifyCustomer, checkSerial, submitCollaboration, loginAdmin, logout, switchMainTab, approveReq, rejectReq, addDynamicItem, delDynamic, addTradeField, allocateSerials, actTrade, switchSubTab, registerProduct, transferOwner, submitTrade, loadTickets, sendTicket };
+            return { showPanel, showAdminLogin, checkSerial, submitCollaboration, loginAdmin, logout, switchMainTab, approveReq, rejectReq, addDynamicItem, delDynamic, addTradeField, allocateSerials, actTrade, switchSubTab, registerProduct, transferOwner, submitTrade, loadTickets, sendTicket,
+            showAuthModal, closeAuthModal, switchAuthTab, sendCustomerOTP, verifyAndRegister, loginCustomer, resetCustomerPass, saveOtpSetting, togglePass };
         })();
     </script>
 </body>
