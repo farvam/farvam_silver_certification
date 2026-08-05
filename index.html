@@ -3,674 +3,544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FARVAM | Luxury Silver Certification</title>
+    <title>FARVAM | Luxury Silver Certification & ERP</title>
     <style>
         /* ================= GOLDEN RULES & LUXURY CSS ================= */
         :root {
-            --gold-main: #d4af37;
-            --gold-light: #fcf6ba;
-            --gold-dark: #aa771c;
-            --black-matte: #0a0a0a;
-            --glass-bg: rgba(20, 20, 20, 0.6);
-            --glass-border: rgba(212, 175, 55, 0.2);
-            --text-main: #eaeaea;
+            --gold-main: #d4af37; --gold-light: #fcf6ba; --gold-dark: #aa771c;
+            --black-matte: #0a0a0a; --glass-bg: rgba(20, 20, 20, 0.7);
+            --glass-border: rgba(212, 175, 55, 0.3); --text-main: #eaeaea;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body {
-            background-color: var(--black-matte); color: var(--text-main);
-            font-family: var(--font-main); overflow-x: hidden; scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        body { background-color: var(--black-matte); color: var(--text-main); font-family: var(--font-main); overflow-x: hidden; }
         
-        /* 3D Gold Particles Canvas */
-        #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        /* Optimized Backgrounds */
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.6; }
+        .video-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; opacity: 0.3; }
+
+        /* UI Components */
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5); margin-bottom: 1rem; }
+        .glass-input, .glass-select { width: 100%; padding: 10px 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); color: #fff; border-radius: 6px; margin-bottom: 10px; transition: 0.3s; font-family: inherit; }
+        .glass-input:focus, .glass-select:focus { border-color: var(--gold-main); box-shadow: 0 0 8px rgba(212,175,55,0.3); }
+        .glass-btn { background: linear-gradient(45deg, var(--gold-dark), var(--gold-main)); color: #000; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; }
+        .glass-btn:hover { filter: brightness(1.2); }
+        .btn-small { padding: 5px 10px; font-size: 0.8rem; width: auto; }
         
-        /* Glassmorphism Classes */
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            padding: 2rem;
-        }
-        .glass-input {
-            width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
-            color: var(--gold-light); border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s;
-        }
-        .glass-input:focus { border-color: var(--gold-main); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-        .glass-btn {
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-main), var(--gold-light));
-            color: #000; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer;
-            font-weight: bold; transition: 0.3s; text-transform: uppercase; width: 100%;
-        }
-        .glass-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px var(--gold-main); }
-        
-        /* Announcement Banner */
-        #announcement-banner {
-            position: fixed; top: 0; left: 0; width: 100%; background: linear-gradient(90deg, #111, var(--gold-dark), #111);
-            color: #fff; text-align: center; padding: 10px; z-index: 1000; display: none; font-size: 0.9rem;
-        }
-
-        /* Toast Notifications */
-        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { padding: 15px 25px; border-radius: 8px; color: #fff; background: var(--glass-bg); border-left: 4px solid var(--gold-main); animation: slideIn 0.3s ease forwards; backdrop-filter: blur(10px); }
-        .toast.error { border-left-color: #ff3333; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        /* Public View Layout */
-        #public-view { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .section-full { width: 100%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; padding: 2rem 1rem; }
-        
-        /* Media & Logo */
-        .video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.5; }
-        .brand-logo { width: 200px; filter: drop-shadow(0 0 20px var(--gold-main)); animation: fadeIn 2s ease forwards; animation-delay: 1s; opacity: 0; }
-        .glass-arrow { margin-top: 50px; font-size: 2rem; color: var(--gold-main); animation: bounce 2s infinite, fadeIn 2s forwards; animation-delay: 2.5s; opacity: 0; }
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(15px); } }
-
-        /* 3D Tilt Card */
-        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); transition: transform 0.1s ease-out; }
-        .tilt-content { transform: translateZ(50px); }
-
-        /* Tables & Admin */
-        #admin-view { display: none; width: 100%; min-height: 100vh; background: #111; color: #eee; }
-        .admin-layout { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 250px; background: #0a0a0a; border-left: 1px solid var(--glass-border); padding: 1rem; }
-        .admin-sidebar ul { list-style: none; }
-        .admin-sidebar li { padding: 12px; margin-bottom: 5px; cursor: pointer; border-radius: 5px; transition: 0.3s; }
-        .admin-sidebar li:hover, .admin-sidebar li.active { background: var(--gold-dark); color: #000; }
-        .admin-content { flex: 1; padding: 2rem; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #333; }
-        th { color: var(--gold-main); }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: #333; }
-        .badge.stolen { background: #ff3333; color: white; }
-
-        /* Hidden Utility */
+        /* Layouts */
         .hidden { display: none !important; }
         .text-gold { color: var(--gold-main); }
+        .text-center { text-align: center; }
+        .flex-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .flex-col { display: flex; flex-direction: column; gap: 10px; }
         
-        /* Footer */
-        footer { width: 100%; padding: 20px; text-align: center; border-top: 1px solid #333; margin-top: auto; }
-        .admin-lock { cursor: pointer; opacity: 0.3; transition: 0.3s; }
-        .admin-lock:hover { opacity: 1; color: var(--gold-main); }
+        /* Public View */
+        #public-view { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem 1rem; }
+        .brand-logo { width: 180px; filter: drop-shadow(0 0 15px var(--gold-main)); margin-bottom: 20px; }
+        
+        /* Admin Panels */
+        .admin-layout { display: flex; min-height: 100vh; background: #0f0f0f; z-index: 10; position: relative; }
+        .admin-sidebar { width: 260px; background: #050505; border-left: 1px solid var(--glass-border); padding: 1.5rem 1rem; }
+        .admin-sidebar ul { list-style: none; }
+        .admin-sidebar li { padding: 10px; margin-bottom: 5px; cursor: pointer; border-radius: 4px; border: 1px solid transparent; transition: 0.2s; }
+        .admin-sidebar li:hover, .admin-sidebar li.active { background: rgba(212,175,55,0.1); border-color: var(--gold-dark); color: var(--gold-light); }
+        .admin-content { flex: 1; padding: 2rem; overflow-y: auto; height: 100vh; }
+        
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; background: rgba(0,0,0,0.4); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 10px; text-align: right; border-bottom: 1px solid #222; }
+        th { color: var(--gold-main); background: rgba(20,20,20,0.8); }
+        .badge { padding: 3px 6px; border-radius: 4px; font-size: 0.75rem; background: #333; color: #fff; }
+        .badge.success { background: #28a745; } .badge.danger { background: #dc3545; } .badge.warning { background: #ffc107; color: #000; }
+
+        /* Toast */
+        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--gold-main); color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        /* Chat/Ticket Box */
+        .chat-box { height: 300px; overflow-y: auto; border: 1px solid #333; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.5); border-radius: 6px; }
+        .chat-msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 6px; width: fit-content; max-width: 80%; }
+        .chat-msg.mine { background: var(--gold-dark); color: #000; margin-right: auto; }
+        .chat-msg.other { background: #222; color: #fff; margin-left: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Canvas for Gold Particles -->
+    <video class="video-bg" autoplay muted loop playsinline><source src="assets/videos/intro.mp4" type="video/mp4"></video>
     <canvas id="particles-canvas"></canvas>
+    <div id="toast">پیام سیستم</div>
 
-    <!-- Announcement Banner -->
-    <div id="announcement-banner"></div>
-
-    <!-- Toast Notifications -->
-    <div id="toast-container"></div>
-
-    <!-- ================= PUBLIC VIEW ================= -->
+    <!-- ================= PUBLIC & ONBOARDING VIEW ================= -->
     <div id="public-view">
+        <img src="assets/images/logo.png" alt="FARVAM" class="brand-logo" onerror="this.style.display='none';">
+        <h1 class="text-gold" style="margin-bottom: 30px; font-size: 2.5rem; letter-spacing: 2px;">FARVAM</h1>
         
-        <!-- Intro Section -->
-        <section class="section-full">
-            <video class="video-bg" autoplay muted loop playsinline>
-                <source src="assets/videos/intro.mp4" type="video/mp4">
-            </video>
-            <img src="assets/images/logo.png" alt="FARVAM Logo" class="brand-logo" onerror="this.style.display='none';">
-            <h1 class="brand-logo text-gold" style="margin-top: 20px; font-size: 2.5rem; text-shadow: 0 0 10px var(--gold-main);">FARVAM</h1>
-            <div class="glass-arrow">↓</div>
-        </section>
+        <!-- Toggle Buttons -->
+        <div class="flex-row" style="margin-bottom: 20px; width: 100%; max-width: 400px;">
+            <button class="glass-btn" onclick="App.showPanel('cert-panel')">استعلام اصالت</button>
+            <button class="glass-btn" onclick="App.showPanel('collab-panel')" style="background: transparent; border: 1px solid var(--gold-main); color: var(--gold-main);">درخواست همکاری</button>
+        </div>
 
-        <!-- Customer Club (Must Login to Check Certificate) -->
-        <section class="section-full" id="club-section">
-            <div class="glass-panel tilt-card" style="width: 100%; max-width: 400px;" id="club-card">
-                <div class="tilt-content text-center">
-                    <h2 class="text-gold" style="margin-bottom: 1rem; text-align: center;">باشگاه مشتریان FARVAM</h2>
-                    <p style="font-size: 0.9rem; margin-bottom: 1rem; text-align: center;">برای استعلام اصالت کالا، ابتدا وارد شوید</p>
-                    
-                    <div id="step-phone">
-                        <input type="text" id="club-name" class="glass-input" placeholder="نام و نام خانوادگی">
-                        <input type="text" id="club-phone" class="glass-input" placeholder="شماره موبایل (مثال: 0912...)">
-                        <button class="glass-btn" onclick="App.sendOTP()">دریافت کد تأیید</button>
-                    </div>
-                    
-                    <div id="step-otp" class="hidden">
-                        <p style="margin-bottom: 10px; font-size: 0.8rem; text-align: center;">کد ارسال شده به موبایل خود را وارد کنید (دمو: 1234)</p>
-                        <input type="text" id="club-otp" class="glass-input" placeholder="کد تأیید ۴ رقمی">
-                        <button class="glass-btn" onclick="App.verifyOTP()">تأیید و ورود</button>
-                    </div>
-                </div>
+        <!-- Panel: Certificate Check (Customer) -->
+        <div id="cert-panel" class="glass-panel" style="width: 100%; max-width: 400px;">
+            <h3 class="text-center text-gold" style="margin-bottom: 15px;">باشگاه مشتریان و استعلام</h3>
+            <div id="cert-login">
+                <input type="text" id="cust-phone" class="glass-input" placeholder="شماره موبایل (مثال: 0912...)">
+                <button class="glass-btn" onclick="App.verifyCustomer()">ورود و استعلام</button>
             </div>
-        </section>
-
-        <!-- Certificate Check Section (Locked by default) -->
-        <section class="section-full hidden" id="cert-section">
-            <div class="glass-panel tilt-card" style="width: 100%; max-width: 500px;" id="cert-card">
-                <div class="tilt-content">
-                    <h2 class="text-gold" style="margin-bottom: 1.5rem; text-align: center;">استعلام اصالت محصول</h2>
-                    <input type="text" id="serial-input" class="glass-input" placeholder="شماره سریال محصول را وارد کنید (مثال: FS0001)" style="text-transform: uppercase;">
-                    <button class="glass-btn" onclick="App.checkCertificate()">بررسی اصالت</button>
-
-                    <!-- Result Box -->
-                    <div id="cert-result" class="hidden" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 15px;">
-                        <!-- Injected by JS -->
-                    </div>
-                </div>
+            <div id="cert-search" class="hidden">
+                <input type="text" id="cert-serial" class="glass-input" placeholder="شماره سریال (مثال: FS001)" style="text-transform: uppercase;">
+                <button class="glass-btn" onclick="App.checkSerial()">بررسی محصول</button>
+                <div id="cert-result" style="margin-top: 15px; font-size: 0.9rem; line-height: 1.8;"></div>
             </div>
-        </section>
+        </div>
 
-        <footer>
-            <p>© 2026 FARVAM Luxury Silver. All Rights Reserved.</p>
-            <span class="admin-lock" onclick="App.promptAdminLogin()">🔒 ورود مدیریت</span>
-        </footer>
+        <!-- Panel: Co-worker Registration -->
+        <div id="collab-panel" class="glass-panel hidden" style="width: 100%; max-width: 500px;">
+            <h3 class="text-center text-gold" style="margin-bottom: 15px;">ثبت درخواست همکاری</h3>
+            <input type="text" id="cw-name" class="glass-input" placeholder="نام">
+            <input type="text" id="cw-family" class="glass-input" placeholder="نام خانوادگی">
+            <input type="text" id="cw-national" class="glass-input" placeholder="کد ملی">
+            <input type="text" id="cw-phone" class="glass-input" placeholder="شماره موبایل">
+            <input type="text" id="cw-ref" class="glass-input" placeholder="معرف (اختیاری)">
+            <textarea id="cw-address" class="glass-input" placeholder="آدرس مغازه / دفتر"></textarea>
+            <select id="cw-type" class="glass-select"></select>
+            <button class="glass-btn" onclick="App.submitCollaboration()">ارسال درخواست</button>
+        </div>
+
+        <!-- Admin Login Trigger -->
+        <div style="margin-top: 40px; cursor: pointer; opacity: 0.5;" onclick="App.showAdminLogin()">🔒 پنل مدیریت و همکاران</div>
+        
+        <!-- Admin Login Form -->
+        <div id="admin-login-panel" class="glass-panel hidden" style="width: 100%; max-width: 300px; margin-top: 10px;">
+            <input type="text" id="login-phone" class="glass-input" placeholder="نام کاربری / موبایل">
+            <input type="password" id="login-pass" class="glass-input" placeholder="رمز عبور">
+            <button class="glass-btn" onclick="App.loginAdmin()">ورود به سیستم</button>
+        </div>
     </div>
 
-
-    <!-- ================= ADMIN SUPER PANEL ================= -->
-    <div id="admin-view">
-        <div class="admin-layout">
-            <div class="admin-sidebar">
-                <h3 class="text-gold" style="margin-bottom: 2rem; text-align: center;">FARVAM SUPER PANEL</h3>
-                <ul>
-                    <li class="active" onclick="App.switchAdminTab('dashboard')">داشبورد</li>
-                    <li onclick="App.switchAdminTab('roles')">دسترسی‌ها و نقش‌ها</li>
-                    <li onclick="App.switchAdminTab('categories')">دسته‌بندی (داینامیک)</li>
-                    <li onclick="App.switchAdminTab('products')">مدیریت محصولات</li>
-                    <li onclick="App.switchAdminTab('serials')">صدور سریال / مالکیت</li>
-                    <li onclick="App.switchAdminTab('security')">امنیت و سرقت</li>
-                    <li onclick="App.switchAdminTab('settings')">تنظیمات سیستم</li>
-                    <li onclick="App.logoutAdmin()" style="color: #ff3333; margin-top: 2rem;">خروج</li>
-                </ul>
+    <!-- ================= MAIN ADMIN ERP ================= -->
+    <div id="main-admin-view" class="admin-layout hidden">
+        <div class="admin-sidebar">
+            <h3 class="text-gold text-center" style="margin-bottom: 20px;">FARVAM ERP<br><small style="font-size:0.7rem; color:#aaa;">(Main Admin)</small></h3>
+            <ul>
+                <li onclick="App.switchMainTab('reqs')" class="active">درخواست‌های همکاری</li>
+                <li onclick="App.switchMainTab('coworkers')">مدیریت همکاران (دسترسی)</li>
+                <li onclick="App.switchMainTab('dynamic')">تنظیمات داینامیک</li>
+                <li onclick="App.switchMainTab('serials')">تخصیص سریال و مالکیت</li>
+                <li onclick="App.switchMainTab('trades')">تأیید معاملات</li>
+                <li onclick="App.switchMainTab('tickets')">پشتیبانی و تیکت‌ها</li>
+                <li onclick="App.logout()" style="color: #ff4444; margin-top: 20px;">خروج</li>
+            </ul>
+        </div>
+        <div class="admin-content">
+            <!-- Requests -->
+            <div id="m-tab-reqs" class="m-tab">
+                <h2 class="text-gold">درخواست‌های همکاری در انتظار</h2>
+                <table>
+                    <thead><tr><th>نام</th><th>کد ملی</th><th>نوع</th><th>موبایل</th><th>عملیات</th></tr></thead>
+                    <tbody id="table-collab-reqs"></tbody>
+                </table>
             </div>
-            
-            <div class="admin-content">
-                <!-- Dashboard Tab -->
-                <div id="tab-dashboard" class="admin-tab">
-                    <h2>داشبورد مدیریتی</h2>
-                    <p style="margin-top: 10px; color: #aaa;">به سیستم ERP و مدیریت اصالت FARVAM خوش آمدید.</p>
-                    <div style="display: flex; gap: 20px; margin-top: 20px;">
-                        <div class="glass-panel" style="flex: 1; text-align: center;">
-                            <h3 id="stat-products">0</h3><p>محصولات</p>
+            <!-- Co-workers -->
+            <div id="m-tab-coworkers" class="m-tab hidden">
+                <h2 class="text-gold">لیست همکاران و سطح دسترسی</h2>
+                <table>
+                    <thead><tr><th>نام</th><th>نوع</th><th>موبایل</th><th>رمز عبور</th><th>عملیات / دسترسی</th></tr></thead>
+                    <tbody id="table-coworkers"></tbody>
+                </table>
+            </div>
+            <!-- Dynamic Settings -->
+            <div id="m-tab-dynamic" class="m-tab hidden">
+                <h2 class="text-gold">تنظیمات پایه‌ای و داینامیک</h2>
+                <div class="flex-row">
+                    <!-- Coworker Types -->
+                    <div class="glass-panel" style="flex:1; min-width:300px;">
+                        <h4>انواع همکار</h4>
+                        <div class="flex-row" style="margin-top:10px;"><input type="text" id="dyn-cw-type" class="glass-input" placeholder="مثال: کیفی"><button class="glass-btn btn-small" onclick="App.addDynamicItem('cwTypes', 'dyn-cw-type')">افزودن</button></div>
+                        <ul id="list-cw-types" style="margin-top:10px; padding-right:15px;"></ul>
+                    </div>
+                    <!-- Trade Fields -->
+                    <div class="glass-panel" style="flex:1; min-width:300px;">
+                        <h4>مشخصه‌های معامله (فیلدها)</h4>
+                        <div class="flex-row" style="margin-top:10px;">
+                            <input type="text" id="dyn-tr-name" class="glass-input" placeholder="نام فیلد (مثال: نقد)">
+                            <input type="text" id="dyn-tr-opts" class="glass-input" placeholder="گزینه‌ها با کاما (حاضر,فردا)">
+                            <button class="glass-btn btn-small" onclick="App.addTradeField()">افزودن</button>
                         </div>
-                        <div class="glass-panel" style="flex: 1; text-align: center;">
-                            <h3 id="stat-customers">0</h3><p>مشتریان</p>
-                        </div>
-                        <div class="glass-panel" style="flex: 1; text-align: center;">
-                            <h3 id="stat-stolen" style="color: #ff3333;">0</h3><p>گزارش سرقت</p>
-                        </div>
+                        <ul id="list-tr-fields" style="margin-top:10px; padding-right:15px;"></ul>
                     </div>
                 </div>
-
-                <!-- Roles Tab (RBAC) -->
-                <div id="tab-roles" class="admin-tab hidden">
-                    <h2>مدیریت نقش‌ها و همکاران</h2>
-                    <div class="glass-panel" style="margin-top: 15px;">
-                        <input type="text" id="role-name" class="glass-input" placeholder="نام نقش (مثال: بنکدار، کیفی)">
-                        <button class="glass-btn" onclick="App.addRole()">افزودن نقش</button>
-                    </div>
-                    <table id="roles-table">
-                        <thead><tr><th>نام نقش</th><th>عملیات</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
+            </div>
+            <!-- Serials & Allocation -->
+            <div id="m-tab-serials" class="m-tab hidden">
+                <h2 class="text-gold">تولید و تخصیص سریال به همکار</h2>
+                <div class="glass-panel flex-row">
+                    <input type="text" id="alloc-prefix" class="glass-input" placeholder="پیشوند سریال (مثال: FS)" style="width:150px;">
+                    <input type="number" id="alloc-count" class="glass-input" placeholder="تعداد" style="width:100px;">
+                    <select id="alloc-admin" class="glass-select" style="flex:1;"></select>
+                    <button class="glass-btn" onclick="App.allocateSerials()" style="width:150px;">تولید و تخصیص</button>
                 </div>
-
-                <!-- Categories Tab (Dynamic EAV) -->
-                <div id="tab-categories" class="admin-tab hidden">
-                    <h2>دسته‌بندی‌های پویا (Dynamic Forms)</h2>
-                    <div class="glass-panel" style="margin-top: 15px;">
-                        <input type="text" id="cat-name" class="glass-input" placeholder="نام دسته (مثال: طلا آبشده)">
-                        <input type="text" id="cat-fields" class="glass-input" placeholder="فیلدهای اختصاصی با کاما (مثال: وزن,عیار,تعداد)">
-                        <button class="glass-btn" onclick="App.addCategory()">ساخت دسته داینامیک</button>
-                    </div>
-                    <table id="categories-table">
-                        <thead><tr><th>نام دسته</th><th>فیلدها</th><th>عملیات</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
+                <table>
+                    <thead><tr><th>سریال</th><th>تخصیص به</th><th>وضعیت استفاده</th><th>مالک فعلی</th></tr></thead>
+                    <tbody id="table-all-serials"></tbody>
+                </table>
+            </div>
+            <!-- Trades Approvals -->
+            <div id="m-tab-trades" class="m-tab hidden">
+                <h2 class="text-gold">مدیریت و تأیید معاملات</h2>
+                <table>
+                    <thead><tr><th>ثبت کننده</th><th>محصول / لینک</th><th>مشخصات</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                    <tbody id="table-all-trades"></tbody>
+                </table>
+            </div>
+            <!-- Tickets -->
+            <div id="m-tab-tickets" class="m-tab hidden">
+                <h2 class="text-gold">تیکت‌ها و پیام‌های همکاران</h2>
+                <div class="flex-row">
+                    <div style="flex:1;"><select id="ticket-user-select" class="glass-select" onchange="App.loadTickets()"></select></div>
                 </div>
-
-                <!-- Products Tab -->
-                <div id="tab-products" class="admin-tab hidden">
-                    <h2>مدیریت محصولات</h2>
-                    <div class="glass-panel" style="margin-top: 15px;">
-                        <select id="prod-cat" class="glass-input" onchange="App.renderDynamicProductFields()">
-                            <option value="">انتخاب دسته بندی...</option>
-                        </select>
-                        <input type="text" id="prod-name" class="glass-input" placeholder="نام محصول">
-                        <div id="dynamic-fields-container"></div>
-                        <button class="glass-btn" onclick="App.addProduct()">ثبت محصول</button>
-                    </div>
-                    <table id="products-table">
-                        <thead><tr><th>نام</th><th>دسته</th><th>ویژگی‌ها</th><th>عملیات</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
+                <div id="m-chat-box" class="chat-box"></div>
+                <div class="flex-row">
+                    <input type="text" id="m-chat-input" class="glass-input" placeholder="پاسخ به همکار...">
+                    <button class="glass-btn btn-small" style="width:100px;" onclick="App.sendTicket('main')">ارسال</button>
                 </div>
-
-                <!-- Serials & Ownership Tab -->
-                <div id="tab-serials" class="admin-tab hidden">
-                    <h2>دفتر کل مالکیت و سریال‌ها</h2>
-                    <div class="glass-panel" style="margin-top: 15px;">
-                        <input type="text" id="serial-gen" class="glass-input" placeholder="شماره سریال جدید (مثال: FS0002)">
-                        <select id="serial-prod" class="glass-input"><option value="">انتخاب محصول...</option></select>
-                        <select id="serial-status" class="glass-input">
-                            <option value="active">فعال و معتبر</option>
-                            <option value="stolen">سرقت شده (Anti-Theft)</option>
-                        </select>
-                        <button class="glass-btn" onclick="App.issueSerial()">صدور سریال</button>
-                    </div>
-                    <table id="serials-table">
-                        <thead><tr><th>سریال</th><th>محصول</th><th>مالک فعلی</th><th>وضعیت</th><th>تغییر وضعیت</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-
-                <!-- Security Tab -->
-                <div id="tab-security" class="admin-tab hidden">
-                    <h2>لاگ‌های امنیتی (ردیابی سارقین)</h2>
-                    <table id="security-table">
-                        <thead><tr><th>تاریخ</th><th>سریال سرقتی</th><th>شماره موبایل اسکن کننده</th><th>نام اسکن کننده</th><th>سیستم</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-
-                <!-- Settings Tab -->
-                <div id="tab-settings" class="admin-tab hidden">
-                    <h2>تنظیمات سیستم و ارتباط ابری</h2>
-                    <div class="glass-panel" style="margin-top: 15px;">
-                        <h4 class="text-gold">بنر اعلانات</h4>
-                        <input type="text" id="set-banner-text" class="glass-input" placeholder="متن بنر (خالی = غیرفعال)">
-                        <br><br>
-                        <h4 class="text-gold">اتصال به Supabase (اختیاری برای آینده)</h4>
-                        <input type="text" id="set-supa-url" class="glass-input" placeholder="Supabase Project URL">
-                        <input type="password" id="set-supa-key" class="glass-input" placeholder="Supabase Anon Key">
-                        <button class="glass-btn" onclick="App.saveSettings()">ذخیره تنظیمات</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT APP CORE ================= -->
+    <!-- ================= SUB ADMIN (CO-WORKER) PANEL ================= -->
+    <div id="sub-admin-view" class="admin-layout hidden">
+        <div class="admin-sidebar">
+            <h3 class="text-gold text-center" style="margin-bottom: 20px;" id="sub-admin-name">همکار</h3>
+            <ul>
+                <li onclick="App.switchSubTab('my-products')" class="active">محصولات من (تخصیصی)</li>
+                <li onclick="App.switchSubTab('my-trades')">ثبت معامله / سفارش</li>
+                <li onclick="App.switchSubTab('my-tickets')">پشتیبانی</li>
+                <li onclick="App.logout()" style="color: #ff4444; margin-top: 20px;">خروج</li>
+            </ul>
+        </div>
+        <div class="admin-content">
+            <!-- Assigned Products -->
+            <div id="s-tab-my-products" class="s-tab">
+                <h2 class="text-gold">محصولات و سریال‌های تخصیص‌یافته به شما</h2>
+                <table>
+                    <thead><tr><th>سریال</th><th>نام محصول ثبت شده</th><th>مالک فعلی</th><th>وضعیت</th><th>عملیات (انتقال/ثبت)</th></tr></thead>
+                    <tbody id="table-my-products"></tbody>
+                </table>
+            </div>
+            <!-- Trades -->
+            <div id="s-tab-my-trades" class="s-tab hidden">
+                <h2 class="text-gold">ثبت معامله جدید</h2>
+                <div class="glass-panel flex-col">
+                    <input type="text" id="trade-product-info" class="glass-input" placeholder="نام محصول یا لینک از سایت دیگر">
+                    <div id="dynamic-trade-inputs" class="flex-row"></div>
+                    <button class="glass-btn" onclick="App.submitTrade()">ثبت جهت تأیید مدیریت</button>
+                </div>
+                <h3 class="text-gold" style="margin-top:20px;">تاریخچه معاملات من</h3>
+                <table>
+                    <thead><tr><th>محصول</th><th>مشخصات</th><th>وضعیت</th><th>پاسخ مدیریت</th></tr></thead>
+                    <tbody id="table-my-trades-history"></tbody>
+                </table>
+            </div>
+            <!-- Tickets -->
+            <div id="s-tab-my-tickets" class="s-tab hidden">
+                <h2 class="text-gold">گفتگو با مدیریت مرکزی</h2>
+                <div id="s-chat-box" class="chat-box"></div>
+                <div class="flex-row">
+                    <input type="text" id="s-chat-input" class="glass-input" placeholder="پیام خود را بنویسید...">
+                    <button class="glass-btn btn-small" style="width:100px;" onclick="App.sendTicket('sub')">ارسال</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= APPLICATION LOGIC ================= -->
     <script>
         const App = (function() {
-            // --- 1. Database Simulator (Local Storage) ---
+            // --- Database (LocalStorage Simulation) ---
             const DB = {
-                get: (collection) => JSON.parse(localStorage.getItem('farvam_' + collection)) || [],
-                set: (collection, data) => localStorage.setItem('farvam_' + collection, JSON.stringify(data)),
-                update: (collection, id, newData) => {
-                    let data = DB.get(collection);
-                    let idx = data.findIndex(i => i.id === id);
-                    if(idx > -1) { data[idx] = {...data[idx], ...newData}; DB.set(collection, data); }
-                },
-                delete: (collection, id) => {
-                    let data = DB.get(collection);
-                    DB.set(collection, data.filter(i => i.id !== id));
-                }
-            };
-
-            // Init Default Data if empty
-            if(DB.get('settings').length === 0) DB.set('settings', { bannerText: '', supaUrl: '', supaKey: '' });
-            if(DB.get('categories').length === 0) {
-                DB.set('categories', [{ id: 'cat1', name: 'طلا آبشده', fields: ['وزن', 'عیار'] }]);
-            }
-
-            // State
-            let currentUser = null; // Customer logged in
-            let isAdmin = false;
-
-            // --- 2. Utility / UI Functions ---
-            const $ = id => document.getElementById(id);
-            const showToast = (msg, type = 'success') => {
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.innerText = msg;
-                $('toast-container').appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            };
-            const generateId = () => Math.random().toString(36).substr(2, 9);
-            const sanitize = str => str.replace(/[&<>'"]/g, 
-                tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
-
-            // --- 3. 3D Particles & Tilt ---
-            const initParticles = () => {
-                const canvas = $('particles-canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-                let particles = [];
-                for(let i=0; i<50; i++) {
-                    particles.push({
-                        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                        r: Math.random() * 2 + 1, d: Math.random() * 50,
-                        vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5
-                    });
-                }
-                const draw = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = 'rgba(212, 175, 55, 0.6)';
-                    particles.forEach(p => {
-                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
-                        p.x += p.vx; p.y += p.vy;
-                        if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                        if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                    });
-                    requestAnimationFrame(draw);
-                };
-                draw();
-            };
-
-            const initTilt = () => {
-                const cards = document.querySelectorAll('.tilt-card');
-                const handleMove = (e, card) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-                    const cx = rect.width / 2; const cy = rect.height / 2;
-                    const tiltX = ((y - cy) / cy) * -10;
-                    const tiltY = ((x - cx) / cx) * 10;
-                    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
-                };
-                cards.forEach(card => {
-                    card.addEventListener('mousemove', e => handleMove(e, card));
-                    card.addEventListener('touchmove', e => handleMove(e, card));
-                    const reset = () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                    card.addEventListener('mouseleave', reset);
-                    card.addEventListener('touchend', reset);
-                });
-            };
-
-            // --- 4. Customer Club (OTP Logic) ---
-            const sendOTP = () => {
-                const name = $('club-name').value.trim();
-                const phone = $('club-phone').value.trim();
-                if(!name || !phone) return showToast('لطفاً نام و شماره را وارد کنید', 'error');
-                $('step-phone').classList.add('hidden');
-                $('step-otp').classList.remove('hidden');
-                showToast('کد تأیید ارسال شد (برای تست 1234 را وارد کنید)');
-            };
-
-            const verifyOTP = () => {
-                const otp = $('club-otp').value.trim();
-                if(otp !== '1234') return showToast('کد نامعتبر است', 'error');
-                
-                // Register/Login User
-                const name = $('club-name').value.trim();
-                const phone = $('club-phone').value.trim();
-                let customers = DB.get('customers');
-                let user = customers.find(c => c.phone === phone);
-                if(!user) {
-                    user = { id: generateId(), name, phone, scans: [] };
-                    customers.push(user);
-                    DB.set('customers', customers);
-                }
-                currentUser = user;
-                
-                showToast('ورود موفقیت آمیز بود');
-                $('club-section').classList.add('hidden');
-                $('cert-section').classList.remove('hidden'); // Unlock Cert check
-            };
-
-            // --- 5. Certificate Check & Security ---
-            const checkCertificate = () => {
-                const serial = sanitize($('serial-input').value.trim().toUpperCase());
-                if(!serial) return;
-                
-                const serials = DB.get('serials');
-                const products = DB.get('products');
-                const resultBox = $('cert-result');
-                resultBox.classList.remove('hidden');
-
-                const foundSerial = serials.find(s => s.serial === serial);
-                
-                if(!foundSerial) {
-                    resultBox.innerHTML = `<h3 style="color:#ff3333;">❌ اصالت تأیید نشد</h3><p>این سریال در سیستم FARVAM ثبت نشده است.</p>`;
-                    return;
-                }
-
-                // Security Check: Is it Stolen?
-                if(foundSerial.status === 'stolen') {
-                    resultBox.innerHTML = `<h3 style="color:#ff3333;">⚠️ اخطار امنیتی - کالای سرقتی</h3>
-                    <p>این کالا به عنوان سرقت شده در سیستم ثبت شده است. اطلاعات شما جهت پیگیری قانونی ثبت گردید.</p>`;
-                    
-                    // Log the thief
-                    let logs = DB.get('securityLogs');
-                    logs.push({
-                        id: generateId(), date: new Date().toLocaleString('fa-IR'),
-                        serial: serial, phone: currentUser.phone, name: currentUser.name,
-                        device: navigator.userAgent
-                    });
-                    DB.set('securityLogs', logs);
-                    return;
-                }
-
-                // Valid Product
-                const prod = products.find(p => p.id === foundSerial.productId);
-                let dynHtml = '';
-                if(prod && prod.dynamicData) {
-                    for(let key in prod.dynamicData) {
-                        dynHtml += `<li><strong>${key}:</strong> ${prod.dynamicData[key]}</li>`;
+                get: (key) => JSON.parse(localStorage.getItem('f_' + key)) || [],
+                set: (key, data) => localStorage.setItem('f_' + key, JSON.stringify(data)),
+                init: () => {
+                    if(DB.get('cwTypes').length === 0) DB.set('cwTypes', ['ویترین دار', 'کارگاه دار', 'کیفی', 'بنکدار', 'آبشده فروش']);
+                    if(DB.get('tradeFields').length === 0) DB.set('tradeFields', [
+                        { name: 'نقد', options: ['حاضر', 'فردا', 'شنبه'] },
+                        { name: 'نوع معامله', options: ['دلار', 'تومان'] },
+                    ]);
+                    if(DB.get('rejectReasons').length === 0) DB.set('rejectReasons', ['شما طلا بدهکار هستید', 'شما تومان بدهکار هستید', 'بازار پر نوسان است']);
+                    // Create default main admin if not exists
+                    let users = DB.get('users');
+                    if(!users.find(u => u.phone === 'admin')) {
+                        users.push({ id: 'admin', phone: 'admin', pass: 'admin123', role: 'main', name: 'مدیریت کل' });
+                        DB.set('users', users);
                     }
                 }
+            };
+            DB.init();
 
-                resultBox.innerHTML = `
-                    <h3 class="text-gold">✔️ گواهی اصالت FARVAM</h3>
-                    <ul style="list-style:none; margin-top:10px; font-size:0.9rem; line-height:1.8;">
-                        <li><strong>سریال:</strong> ${serial}</li>
-                        <li><strong>نام محصول:</strong> ${prod ? prod.name : 'نامشخص'}</li>
-                        ${dynHtml}
-                        <li><strong>مالک فعلی:</strong> ${foundSerial.owner || 'FARVAM'}</li>
-                    </ul>
-                    <button class="glass-btn" style="margin-top:15px; font-size:0.8rem;" onclick="alert('درخواست انتقال به سیستم ادمین ارسال شد.')">درخواست انتقال مالکیت</button>
-                `;
+            let currentUser = null; // Can be main admin, sub admin, or customer
 
-                // Update scan count
-                let customers = DB.get('customers');
-                let idx = customers.findIndex(c => c.id === currentUser.id);
-                if(idx > -1) {
-                    customers[idx].scans.push(serial);
-                    DB.set('customers', customers);
-                }
+            // --- UI Utilities ---
+            const $ = id => document.getElementById(id);
+            const showToast = msg => { const t = $('toast'); t.innerText = msg; t.style.display = 'block'; setTimeout(()=> t.style.display='none', 3000); };
+            const hideAllViews = () => { $('public-view').classList.add('hidden'); $('main-admin-view').classList.add('hidden'); $('sub-admin-view').classList.add('hidden'); };
+            
+            // Background Canvas (Optimized, lightweight)
+            const initCanvas = () => {
+                const c = $('particles-canvas'); const ctx = c.getContext('2d');
+                c.width = window.innerWidth; c.height = window.innerHeight;
+                let pts = Array.from({length: 30}, () => ({x: Math.random()*c.width, y: Math.random()*c.height, v: Math.random()*0.5+0.1}));
+                const draw = () => {
+                    ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle = 'rgba(212,175,55,0.5)';
+                    pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill(); p.y -= p.v; if(p.y < 0) p.y = c.height; });
+                    requestAnimationFrame(draw);
+                }; draw();
+            }; initCanvas();
+
+            // --- Public Flow ---
+            const showPanel = panel => { $('cert-panel').classList.add('hidden'); $('collab-panel').classList.add('hidden'); $(panel).classList.remove('hidden'); loadDynamicDropdowns(); };
+            const showAdminLogin = () => { $('admin-login-panel').classList.toggle('hidden'); };
+            
+            const loadDynamicDropdowns = () => {
+                const cwSelect = $('cw-type'); cwSelect.innerHTML = '<option value="">انتخاب نوع همکار...</option>';
+                DB.get('cwTypes').forEach(t => cwSelect.innerHTML += `<option value="${t}">${t}</option>`);
             };
 
-            // --- 6. Admin Panel Functions ---
-            const promptAdminLogin = () => {
-                const pass = prompt('رمز عبور مدیریت را وارد کنید:');
-                if(pass === 'admin123') {
-                    isAdmin = true;
-                    $('public-view').classList.add('hidden');
-                    $('admin-view').style.display = 'block';
-                    loadAdminData();
-                } else if(pass !== null) {
-                    alert('رمز عبور اشتباه است.');
-                }
+            const verifyCustomer = () => {
+                const phone = $('cust-phone').value.trim();
+                if(!phone) return showToast('شماره الزامی است');
+                $('cert-login').classList.add('hidden'); $('cert-search').classList.remove('hidden'); showToast('لاگین مشتری شبیه‌سازی شد.');
             };
 
-            const logoutAdmin = () => {
-                isAdmin = false;
-                $('admin-view').style.display = 'none';
-                $('public-view').classList.remove('hidden');
+            const checkSerial = () => {
+                const serial = $('cert-serial').value.trim().toUpperCase();
+                const serials = DB.get('serials'); const sData = serials.find(s => s.serial === serial);
+                const res = $('cert-result');
+                if(!sData || !sData.productName) { res.innerHTML = '<span class="text-gold">❌ محصول یافت نشد یا ثبت نشده است.</span>'; return; }
+                if(sData.status === 'stolen') { res.innerHTML = '<span style="color:#ff4444;">⚠️ سرقتی! این محصول تحت پیگرد است.</span>'; return; }
+                
+                // Fetch the admin who registered it to show as Sales Center
+                const users = DB.get('users');
+                const center = users.find(u => u.id === sData.assignedTo)?.name || 'مرکزی';
+
+                res.innerHTML = `
+                    <div style="border:1px solid var(--gold-main); padding:10px; border-radius:8px;">
+                        <h4 class="text-gold text-center">گواهی اصالت FARVAM</h4>
+                        <hr style="border-color:#333; margin:5px 0;">
+                        <p><b>محصول:</b> ${sData.productName}</p>
+                        <p><b>مالک فعلی:</b> ${sData.owner || 'مجموعه'}</p>
+                        <p><b>سنتر فروش (ثبت کننده):</b> ${center}</p>
+                    </div>`;
             };
 
-            const switchAdminTab = (tabName) => {
-                document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
-                document.querySelectorAll('.admin-sidebar li').forEach(t => t.classList.remove('active'));
-                $('tab-' + tabName).classList.remove('hidden');
-                event.target.classList.add('active');
-                loadAdminData();
+            const submitCollaboration = () => {
+                const data = {
+                    id: Date.now().toString(), name: $('cw-name').value, family: $('cw-family').value,
+                    national: $('cw-national').value, phone: $('cw-phone').value, ref: $('cw-ref').value,
+                    address: $('cw-address').value, type: $('cw-type').value, status: 'pending'
+                };
+                if(!data.name || !data.phone || !data.type) return showToast('فیلدهای اصلی را پر کنید');
+                const reqs = DB.get('collabReqs'); reqs.push(data); DB.set('collabReqs', reqs);
+                showToast('درخواست ثبت شد و منتظر تأیید مدیریت است.'); showPanel('cert-panel');
             };
 
-            const loadAdminData = () => {
-                // Dashboard
-                $('stat-products').innerText = DB.get('products').length;
-                $('stat-customers').innerText = DB.get('customers').length;
-                $('stat-stolen').innerText = DB.get('securityLogs').length;
+            // --- Authentication Flow ---
+            const loginAdmin = () => {
+                const p = $('login-phone').value, pw = $('login-pass').value;
+                const user = DB.get('users').find(u => u.phone === p && u.pass === pw);
+                if(!user) return showToast('اطلاعات ورود اشتباه است');
+                currentUser = user;
+                hideAllViews();
+                if(user.role === 'main') { $('main-admin-view').classList.remove('hidden'); loadMainAdminData(); }
+                else { $('sub-admin-view').classList.remove('hidden'); $('sub-admin-name').innerText = user.name; loadSubAdminData(); }
+            };
 
-                // Roles
-                const tbodyRoles = $('roles-table').querySelector('tbody');
-                tbodyRoles.innerHTML = '';
-                DB.get('roles').forEach(r => {
-                    tbodyRoles.innerHTML += `<tr><td>${r.name}</td><td><button class="badge" onclick="App.deleteItem('roles','${r.id}')">حذف</button></td></tr>`;
+            const logout = () => { currentUser = null; hideAllViews(); $('public-view').classList.remove('hidden'); };
+
+            // --- MAIN ADMIN LOGIC ---
+            const switchMainTab = tab => { document.querySelectorAll('.m-tab').forEach(t=>t.classList.add('hidden')); document.querySelectorAll('#main-admin-view .admin-sidebar li').forEach(l=>l.classList.remove('active')); $('m-tab-'+tab).classList.remove('hidden'); event.target.classList.add('active'); loadMainAdminData(); };
+            
+            const loadMainAdminData = () => {
+                // 1. Collab Requests
+                const tReqs = $('table-collab-reqs'); tReqs.innerHTML = '';
+                DB.get('collabReqs').filter(r => r.status === 'pending').forEach(r => {
+                    tReqs.innerHTML += `<tr><td>${r.name} ${r.family}</td><td>${r.national}</td><td>${r.type}</td><td>${r.phone}</td>
+                    <td><button class="badge success" onclick="App.approveReq('${r.id}')">تأیید</button> <button class="badge danger" onclick="App.rejectReq('${r.id}')">رد</button></td></tr>`;
+                });
+                
+                // 2. Co-workers List
+                const tCW = $('table-coworkers'); tCW.innerHTML = '';
+                const aSel = $('alloc-admin'); aSel.innerHTML = '<option value="">انتخاب همکار...</option>';
+                const tSel = $('ticket-user-select'); tSel.innerHTML = '<option value="">انتخاب همکار برای گفتگو...</option>';
+                DB.get('users').filter(u => u.role === 'sub').forEach(u => {
+                    tCW.innerHTML += `<tr><td>${u.name}</td><td>${u.type}</td><td>${u.phone}</td><td>${u.pass}</td><td><button class="badge" onclick="alert('بخش تعیین دسترسی فیلدها در این دمو شبیه‌سازی شده است.')">تنظیم دسترسی</button></td></tr>`;
+                    aSel.innerHTML += `<option value="${u.id}">${u.name} (${u.type})</option>`;
+                    tSel.innerHTML += `<option value="${u.id}">${u.name}</option>`;
                 });
 
-                // Categories
-                const tbodyCats = $('categories-table').querySelector('tbody');
-                tbodyCats.innerHTML = '';
-                const catSelect = $('prod-cat');
-                catSelect.innerHTML = '<option value="">انتخاب دسته بندی...</option>';
-                DB.get('categories').forEach(c => {
-                    tbodyCats.innerHTML += `<tr><td>${c.name}</td><td>${c.fields.join(', ')}</td><td><button class="badge" onclick="App.deleteItem('categories','${c.id}')">حذف</button></td></tr>`;
-                    catSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-                });
+                // 3. Dynamic Settings
+                const lTypes = $('list-cw-types'); lTypes.innerHTML = '';
+                DB.get('cwTypes').forEach((t, i) => lTypes.innerHTML += `<li style="margin-bottom:5px;">${t} <span style="color:red; cursor:pointer; float:left;" onclick="App.delDynamic('cwTypes',${i})">x</span></li>`);
+                
+                const lFields = $('list-tr-fields'); lFields.innerHTML = '';
+                DB.get('tradeFields').forEach((f, i) => lFields.innerHTML += `<li style="margin-bottom:5px; border-bottom:1px solid #333; padding-bottom:5px;"><b>${f.name}:</b> ${f.options.join(' | ')} <span style="color:red; cursor:pointer; float:left;" onclick="App.delDynamic('tradeFields',${i})">x</span></li>`);
 
-                // Products
-                const tbodyProds = $('products-table').querySelector('tbody');
-                tbodyProds.innerHTML = '';
-                const prodSelect = $('serial-prod');
-                prodSelect.innerHTML = '<option value="">انتخاب محصول...</option>';
-                DB.get('products').forEach(p => {
-                    const catName = DB.get('categories').find(c => c.id === p.catId)?.name || '';
-                    tbodyProds.innerHTML += `<tr><td>${p.name}</td><td>${catName}</td><td>${JSON.stringify(p.dynamicData)}</td><td><button class="badge" onclick="App.deleteItem('products','${p.id}')">حذف</button></td></tr>`;
-                    prodSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`;
-                });
-
-                // Serials
-                const tbodySerials = $('serials-table').querySelector('tbody');
-                tbodySerials.innerHTML = '';
+                // 4. Serials
+                const tSer = $('table-all-serials'); tSer.innerHTML = '';
                 DB.get('serials').forEach(s => {
-                    const pName = DB.get('products').find(p => p.id === s.productId)?.name || '';
-                    const stClass = s.status === 'stolen' ? 'badge stolen' : 'badge';
-                    tbodySerials.innerHTML += `<tr>
-                        <td>${s.serial}</td><td>${pName}</td><td>${s.owner || 'مجموعه'}</td>
-                        <td><span class="${stClass}">${s.status}</span></td>
-                        <td><button class="badge" onclick="App.toggleStolen('${s.id}')">تغییر سرقت</button></td>
-                    </tr>`;
+                    const assignedTo = DB.get('users').find(u => u.id === s.assignedTo)?.name || 'نامشخص';
+                    tSer.innerHTML += `<tr><td>${s.serial}</td><td>${assignedTo}</td><td>${s.productName ? '<span class="badge success">ثبت شده</span>' : '<span class="badge warning">خالی</span>'}</td><td>${s.owner || '-'}</td></tr>`;
                 });
 
-                // Security Logs
-                const tbodyLogs = $('security-table').querySelector('tbody');
-                tbodyLogs.innerHTML = '';
-                DB.get('securityLogs').forEach(l => {
-                    tbodyLogs.innerHTML += `<tr><td>${l.date}</td><td>${l.serial}</td><td>${l.phone}</td><td>${l.name}</td><td>${l.device.substring(0,30)}...</td></tr>`;
+                // 5. Trades Approval
+                const tTrades = $('table-all-trades'); tTrades.innerHTML = '';
+                const rejs = DB.get('rejectReasons');
+                let rejOpts = rejs.map(r => `<option value="${r}">${r}</option>`).join('');
+                DB.get('trades').forEach(t => {
+                    const creator = DB.get('users').find(u=>u.id === t.creatorId)?.name || '';
+                    let actionHtml = t.status === 'pending' ? 
+                        `<button class="badge success" onclick="App.actTrade('${t.id}', 'approved')">تأیید</button>
+                         <select id="rej-${t.id}" style="background:#000; color:#fff; border:none; border-radius:3px; padding:2px;"><option value="">دلیل رد...</option>${rejOpts}</select>
+                         <button class="badge danger" onclick="App.actTrade('${t.id}', 'rejected')">رد</button>` 
+                        : `<span class="badge ${t.status==='approved'?'success':'danger'}">${t.status}</span>`;
+                    
+                    tTrades.innerHTML += `<tr><td>${creator}</td><td>${t.info}</td><td style="font-size:0.75rem;">${JSON.stringify(t.fields)}</td><td>${t.status}</td><td>${actionHtml}</td></tr>`;
                 });
-
-                // Settings
-                const settings = DB.get('settings');
-                $('set-banner-text').value = settings.bannerText || '';
-                $('set-supa-url').value = settings.supaUrl || '';
-                $('set-supa-key').value = settings.supaKey || '';
             };
 
-            // --- Admin CRUD Actions ---
-            const addRole = () => {
-                const name = $('role-name').value;
-                if(!name) return;
-                const roles = DB.get('roles');
-                roles.push({id: generateId(), name});
-                DB.set('roles', roles);
-                $('role-name').value = ''; loadAdminData();
-            };
-
-            const addCategory = () => {
-                const name = $('cat-name').value;
-                const fields = $('cat-fields').value.split(',').map(f => f.trim()).filter(f => f);
-                if(!name || fields.length===0) return alert('نام و فیلدها الزامی است');
-                const cats = DB.get('categories');
-                cats.push({id: generateId(), name, fields});
-                DB.set('categories', cats);
-                $('cat-name').value = ''; $('cat-fields').value = ''; loadAdminData();
-            };
-
-            const renderDynamicProductFields = () => {
-                const catId = $('prod-cat').value;
-                const container = $('dynamic-fields-container');
-                container.innerHTML = '';
-                if(!catId) return;
-                const cat = DB.get('categories').find(c => c.id === catId);
-                if(cat) {
-                    cat.fields.forEach(f => {
-                        container.innerHTML += `<input type="text" class="glass-input dyn-field" data-key="${f}" placeholder="${f}">`;
-                    });
+            const approveReq = id => {
+                let reqs = DB.get('collabReqs'); const idx = reqs.findIndex(r => r.id === id);
+                if(idx > -1) {
+                    const r = reqs[idx];
+                    let users = DB.get('users');
+                    const pass = Math.floor(1000 + Math.random() * 9000).toString(); // Auto gen pass
+                    users.push({ id: 'sub_'+Date.now(), role: 'sub', phone: r.phone, pass: pass, name: r.name + ' ' + r.family, type: r.type, permissions: 'all' });
+                    DB.set('users', users);
+                    reqs[idx].status = 'approved'; DB.set('collabReqs', reqs);
+                    showToast('همکار تأیید شد. رمز عبور: ' + pass); loadMainAdminData();
                 }
             };
+            const rejectReq = id => { let reqs = DB.get('collabReqs'); const idx = reqs.findIndex(r => r.id === id); if(idx > -1) { reqs[idx].status = 'rejected'; DB.set('collabReqs', reqs); loadMainAdminData(); } };
 
-            const addProduct = () => {
-                const catId = $('prod-cat').value;
-                const name = $('prod-name').value;
-                if(!catId || !name) return alert('اطلاعات ناقص است');
-                
-                let dynamicData = {};
-                document.querySelectorAll('.dyn-field').forEach(inp => {
-                    dynamicData[inp.getAttribute('data-key')] = inp.value;
-                });
-
-                const prods = DB.get('products');
-                prods.push({id: generateId(), catId, name, dynamicData, author: 'Admin Main'});
-                DB.set('products', prods);
-                $('prod-name').value = ''; renderDynamicProductFields(); loadAdminData();
+            const addDynamicItem = (key, inputId) => {
+                const val = $(inputId).value.trim(); if(!val) return;
+                const arr = DB.get(key); arr.push(val); DB.set(key, arr); $(inputId).value = ''; loadMainAdminData();
+            };
+            const delDynamic = (key, idx) => { const arr = DB.get(key); arr.splice(idx, 1); DB.set(key, arr); loadMainAdminData(); };
+            
+            const addTradeField = () => {
+                const n = $('dyn-tr-name').value.trim(), o = $('dyn-tr-opts').value.split(',').map(s=>s.trim()).filter(s=>s);
+                if(!n || o.length===0) return;
+                const f = DB.get('tradeFields'); f.push({name: n, options: o}); DB.set('tradeFields', f);
+                $('dyn-tr-name').value=''; $('dyn-tr-opts').value=''; loadMainAdminData();
             };
 
-            const issueSerial = () => {
-                const serial = $('serial-gen').value.trim().toUpperCase();
-                const productId = $('serial-prod').value;
-                const status = $('serial-status').value;
-                if(!serial || !productId) return alert('سریال و محصول الزامی است');
-                
-                const serials = DB.get('serials');
-                if(serials.find(s => s.serial === serial)) return alert('سریال تکراری است');
-                
-                serials.push({id: generateId(), serial, productId, status, owner: '', history: []});
-                DB.set('serials', serials);
-                $('serial-gen').value = ''; loadAdminData();
-            };
-
-            const toggleStolen = (id) => {
+            const allocateSerials = () => {
+                const pfx = $('alloc-prefix').value.trim().toUpperCase(), cnt = parseInt($('alloc-count').value), uId = $('alloc-admin').value;
+                if(!pfx || !cnt || !uId) return showToast('تمام فیلدها الزامی است');
                 let serials = DB.get('serials');
-                let s = serials.find(i => i.id === id);
-                if(s) {
-                    s.status = s.status === 'active' ? 'stolen' : 'active';
-                    DB.set('serials', serials);
-                    loadAdminData();
+                for(let i=1; i<=cnt; i++) {
+                    serials.push({ id: 's_'+Date.now()+'_'+i, serial: pfx + (Math.floor(Math.random()*9000)+1000), assignedTo: uId, productName: '', owner: '', status: 'active' });
+                }
+                DB.set('serials', serials); showToast(`${cnt} سریال اختصاص یافت.`); loadMainAdminData();
+            };
+
+            const actTrade = (tId, act) => {
+                let trades = DB.get('trades'); let t = trades.find(x=>x.id === tId);
+                if(t) {
+                    t.status = act;
+                    if(act === 'rejected') t.rejectReason = $(`rej-${tId}`).value || 'نامشخص';
+                    DB.set('trades', trades); loadMainAdminData();
                 }
             };
 
-            const deleteItem = (collection, id) => {
-                if(confirm('آیا مطمئن هستید؟')) {
-                    DB.delete(collection, id);
-                    loadAdminData();
-                }
-            };
+            // --- SUB ADMIN LOGIC ---
+            const switchSubTab = tab => { document.querySelectorAll('.s-tab').forEach(t=>t.classList.add('hidden')); document.querySelectorAll('#sub-admin-view .admin-sidebar li').forEach(l=>l.classList.remove('active')); $('s-tab-'+tab).classList.remove('hidden'); event.target.classList.add('active'); loadSubAdminData(); };
 
-            const saveSettings = () => {
-                const bannerText = $('set-banner-text').value;
-                DB.set('settings', {
-                    bannerText: bannerText,
-                    supaUrl: $('set-supa-url').value,
-                    supaKey: $('set-supa-key').value
+            const loadSubAdminData = () => {
+                // My Products (Assigned to me)
+                const tProds = $('table-my-products'); tProds.innerHTML = '';
+                DB.get('serials').filter(s => s.assignedTo === currentUser.id).forEach(s => {
+                    let action = s.productName ? 
+                        `<button class="badge warning" onclick="App.transferOwner('${s.id}')">انتقال مالک</button>` : 
+                        `<button class="badge success" onclick="App.registerProduct('${s.id}')">ثبت کالا</button>`;
+                    tProds.innerHTML += `<tr><td>${s.serial}</td><td>${s.productName || '-'}</td><td>${s.owner || '-'}</td><td>${s.status}</td><td>${action}</td></tr>`;
                 });
-                showToast('تنظیمات ذخیره شد');
-                checkBanner();
+
+                // Trade Form dynamic fields
+                const dynDiv = $('dynamic-trade-inputs'); dynDiv.innerHTML = '';
+                DB.get('tradeFields').forEach(f => {
+                    let opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
+                    dynDiv.innerHTML += `<select class="glass-select dyn-tr-f" data-name="${f.name}" style="flex:1; min-width:150px;"><option value="">${f.name}...</option>${opts}</select>`;
+                });
+
+                // My Trades History
+                const tTrades = $('table-my-trades-history'); tTrades.innerHTML = '';
+                DB.get('trades').filter(t => t.creatorId === currentUser.id).forEach(t => {
+                    let ans = t.status === 'rejected' ? `<span style="color:#ff4444;">دلیل: ${t.rejectReason}</span>` : '-';
+                    tTrades.innerHTML += `<tr><td>${t.info}</td><td style="font-size:0.75rem;">${JSON.stringify(t.fields)}</td><td><span class="badge ${t.status==='pending'?'warning':(t.status==='approved'?'success':'danger')}">${t.status}</span></td><td>${ans}</td></tr>`;
+                });
+
+                loadTickets();
             };
 
-            const checkBanner = () => {
-                const settings = DB.get('settings');
-                const banner = $('announcement-banner');
-                if(settings.bannerText && !isAdmin) {
-                    banner.innerText = settings.bannerText;
-                    banner.style.display = 'block';
+            const registerProduct = sId => {
+                const name = prompt('نام محصول را وارد کنید:'); if(!name) return;
+                let serials = DB.get('serials'); let s = serials.find(x=>x.id === sId);
+                s.productName = name; DB.set('serials', serials); loadSubAdminData(); showToast('کالا به سریال متصل شد');
+            };
+            const transferOwner = sId => {
+                const owner = prompt('نام مالک جدید:'); if(!owner) return;
+                let serials = DB.get('serials'); let s = serials.find(x=>x.id === sId);
+                s.owner = owner; DB.set('serials', serials); loadSubAdminData(); showToast('مالکیت منتقل شد');
+            };
+
+            const submitTrade = () => {
+                const info = $('trade-product-info').value.trim(); if(!info) return showToast('نام یا لینک کالا الزامی است');
+                let fields = {};
+                document.querySelectorAll('.dyn-tr-f').forEach(s => { if(s.value) fields[s.getAttribute('data-name')] = s.value; });
+                
+                let trades = DB.get('trades');
+                trades.push({ id: 'tr_'+Date.now(), creatorId: currentUser.id, info, fields, status: 'pending' });
+                DB.set('trades', trades); $('trade-product-info').value = ''; loadSubAdminData(); showToast('معامله برای تأیید ارسال شد.');
+            };
+
+            // --- TICKETING SYSTEM ---
+            const loadTickets = () => {
+                const tickets = DB.get('tickets');
+                let chatBox, partnerId;
+                if(currentUser.role === 'main') {
+                    chatBox = $('m-chat-box'); partnerId = $('ticket-user-select').value;
+                    if(!partnerId) { chatBox.innerHTML = '<p class="text-center">یک همکار انتخاب کنید</p>'; return; }
                 } else {
-                    banner.style.display = 'none';
+                    chatBox = $('s-chat-box'); partnerId = currentUser.id;
                 }
+                
+                chatBox.innerHTML = '';
+                tickets.filter(t => (t.from === partnerId && t.to === 'admin') || (t.to === partnerId && t.from === 'admin')).forEach(t => {
+                    const isMine = t.from === (currentUser.role==='main' ? 'admin' : currentUser.id);
+                    chatBox.innerHTML += `<div class="chat-msg ${isMine ? 'mine' : 'other'}">${t.msg} <br><small style="font-size:0.6rem; opacity:0.6;">${t.time}</small></div>`;
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
             };
 
-            // Init App
-            window.onload = () => {
-                initParticles();
-                initTilt();
-                checkBanner();
+            const sendTicket = (panelType) => {
+                const msg = $(panelType === 'main' ? 'm-chat-input' : 's-chat-input').value.trim();
+                if(!msg) return;
+                let to = 'admin', from = currentUser.id;
+                if(currentUser.role === 'main') {
+                    to = $('ticket-user-select').value; from = 'admin';
+                    if(!to) return showToast('ابتدا همکار را انتخاب کنید');
+                }
+                
+                let t = DB.get('tickets');
+                t.push({ from, to, msg, time: new Date().toLocaleTimeString('fa-IR') });
+                DB.set('tickets', t);
+                $(panelType === 'main' ? 'm-chat-input' : 's-chat-input').value = '';
+                loadTickets();
             };
 
-            return {
-                sendOTP, verifyOTP, checkCertificate,
-                promptAdminLogin, logoutAdmin, switchAdminTab,
-                addRole, addCategory, renderDynamicProductFields, addProduct, issueSerial,
-                deleteItem, toggleStolen, saveSettings
-            };
+            return { showPanel, showAdminLogin, verifyCustomer, checkSerial, submitCollaboration, loginAdmin, logout, switchMainTab, approveReq, rejectReq, addDynamicItem, delDynamic, addTradeField, allocateSerials, actTrade, switchSubTab, registerProduct, transferOwner, submitTrade, loadTickets, sendTicket };
         })();
     </script>
 </body>
