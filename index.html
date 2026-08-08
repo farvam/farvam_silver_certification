@@ -106,7 +106,6 @@
             .admin-content { padding: 4rem 1rem 1rem 1rem; width: 100%; }
         }
 
-        /* Charts & Tables */
         .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
         .chart-box { background: #080808; border: 1px solid #222; border-radius: 1rem; padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); height: 300px; position: relative; }
         
@@ -229,7 +228,6 @@
         </footer>
     </main>
 
-    
     <!-- Login Modal -->
     <div id="modal-login" class="modal-overlay" onclick="if(event.target===this) Farvam.Utils.hideModal('modal-login')">
         <div class="modal-content w-full max-w-sm p-8 text-center relative">
@@ -707,7 +705,8 @@
                 },
                 showModal: id => Utils.$(id).classList.add('show'),
                 hideModal: id => Utils.$(id).classList.remove('show'),
-                hideAll: () => { Utils.$('view-public').classList.add('hide'); Utils.$('view-admin').classList.add('hide'); Utils.$('view-sub').classList.add('hide'); document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('show')); }
+                hideAll: () => { Utils.$('view-public').classList.add('hide'); Utils.$('view-admin').classList.add('hide'); Utils.$('view-sub').classList.add('hide'); document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('show')); },
+                togglePwd: id => { const e = Utils.$(id); e.type = e.type === 'password' ? 'text' : 'password'; }
             };
 
             // --- 2. DB (Simulated Enterprise DB) ---
@@ -721,9 +720,9 @@
                 srl: [], trd: [], req: [], cus: [], trn: [], sec: [], tck: []
             };
             const DB = {
-                get: k => JSON.parse(localStorage.getItem('f4_'+k)) || defs[k] || [],
-                set: (k, v) => localStorage.setItem('f4_'+k, JSON.stringify(v)),
-                init: () => { Object.keys(defs).forEach(k => { if(!localStorage.getItem('f4_'+k)) DB.set(k, defs[k]); }); }
+                get: k => JSON.parse(localStorage.getItem('f5_'+k)) || defs[k] || [],
+                set: (k, v) => localStorage.setItem('f5_'+k, JSON.stringify(v)),
+                init: () => { Object.keys(defs).forEach(k => { if(!localStorage.getItem('f5_'+k)) DB.set(k, defs[k]); }); }
             };
 
             let currU = null; // User object or phone
@@ -757,7 +756,7 @@
                     const reset = () => el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`;
                     el.addEventListener('mousemove', move); el.addEventListener('mouseleave', reset); el.addEventListener('touchmove', move, {passive:true}); el.addEventListener('touchend', reset);
                 },
-                alarm: () => { const a = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'); a.play().catch(e=>{}); } // Silent tiny ding placeholder
+                alarm: () => { const a = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU'); a.play().catch(e=>{}); } // Silent tiny ding
             };
 
             // --- 4. AUTH & PUBLIC ---
@@ -771,13 +770,13 @@
                 verifyOTP: () => {
                     if(Utils.$('c-otp').value !== '1234') return Utils.toast('کد اشتباه است','error');
                     const n = Utils.$('c-name').value, p = Utils.$('c-phone').value;
-                    let c = DB.get('cus'); if(!c.find(x=>x.phone===p)) { c.push({id:Utils.generateId||Date.now(), name:n, phone:p, date:new Date().toLocaleDateString('fa-IR'), scans:0}); DB.set('cus', c); }
+                    let c = DB.get('cus'); if(!c.find(x=>x.phone===p)) { c.push({id:Date.now(), name:n, phone:p, date:new Date().toLocaleDateString('fa-IR'), scans:0}); DB.set('cus', c); }
                     currU = p; Utils.$('cert-lock-overlay').style.opacity='0'; setTimeout(()=>Utils.$('cert-lock-overlay').classList.add('hide'),400); Utils.toast('لاگین امن موفق');
                 },
                 loginAdmin: () => {
                     const u = Utils.$('l-user').value, p = Utils.$('l-pass').value; const s = DB.get('set');
                     let usr = DB.get('usr').find(x=>x.phone===u && x.pass===p);
-                    if(u===s.adUsr && p===s.adPw) usr = {id:'u_main', role:'main', name:'فرماندهی'}; // Master override
+                    if(u===s.adUsr && p===s.adPw) usr = {id:'u_main', role:'main', name:'فرماندهی'};
                     if(!usr) return Utils.toast('ورود ناموفق','error');
                     currU = usr; Utils.hideAll();
                     if(usr.role==='main') { Utils.$('view-admin').classList.remove('hide'); Admin.init(); } else { Utils.$('view-sub').classList.remove('hide'); Sub.init(); }
@@ -800,7 +799,6 @@
                         return c.innerHTML = `<div class="bg-[#110000] border border-red-900 rounded-3xl p-10 text-center pulse-red shadow-2xl"><h2 class="text-3xl font-bold text-red-500 mb-4">⚠️ هشدار: کالای سرقتی</h2><p class="text-red-200">کد ${srl} مفقودی است. هویت شما ثبت شد.</p></div>`;
                     }
 
-                    // Update Scans
                     d.scans = (d.scans||0)+1; let sList = DB.get('srl'); sList[sList.findIndex(x=>x.id===d.id)] = d; DB.set('srl', sList);
                     let cus = DB.get('cus'); let cuIdx = cus.findIndex(x=>x.phone===currU); if(cuIdx>-1){ cus[cuIdx].scans=(cus[cuIdx].scans||0)+1; DB.set('cus',cus); }
 
@@ -838,7 +836,7 @@
                 }
             };
 
-            // --- 5. MAIN ADMIN CORE (Enterprise 10x) ---
+            // --- 5. MAIN ADMIN CORE ---
             const Admin = {
                 init: () => {
                     const s = DB.get('set');
@@ -862,22 +860,18 @@
                 load: () => {
                     const usr = DB.get('usr').filter(u=>u.role==='sub'), srl = DB.get('srl'), trd = DB.get('trd'), req = DB.get('req'), cus = DB.get('cus'), trn = DB.get('trn'), sec = DB.get('sec'), cat = DB.get('cat');
                     
-                    // KPIs & Badges
+                    // KPIs
                     Utils.$('kpi-prods').innerText = srl.length; Utils.$('kpi-cws').innerText = usr.length; Utils.$('kpi-trades').innerText = trd.filter(t=>t.status==='pending').length;
                     Utils.$('bdg-trd').innerText=trd.filter(t=>t.status==='pending').length; Utils.$('bdg-trd').classList.toggle('hide', Utils.$('bdg-trd').innerText==='0');
                     Utils.$('bdg-trn').innerText=trn.length; Utils.$('bdg-trn').classList.toggle('hide', trn.length===0);
                     Utils.$('bdg-sec').innerText=sec.length; Utils.$('bdg-sec').classList.toggle('hide', sec.length===0);
 
-                    // Reqs
+                    // Reqs & Coworkers
                     Utils.$('tbl-reqs').innerHTML = req.filter(r=>r.status==='pending').map(r=>`<tr><td>${r.name} ${r.family}</td><td>${r.national}</td><td class="en-font">${r.phone}</td><td>${r.type}</td><td><button onclick="Farvam.Admin.actReq(${r.id},'app')" class="badge badge-green cursor-pointer">تأیید</button><button onclick="Farvam.Admin.actReq(${r.id},'rej')" class="badge badge-red cursor-pointer ml-1">رد</button></td></tr>`).join('');
-                    
-                    // Coworkers
                     Utils.$('tbl-cws').innerHTML = usr.map(u=>`<tr><td>${u.name}</td><td>${u.type}</td><td class="en-font">${u.phone}</td><td class="en-font text-xs">${u.pass}</td><td><button onclick="Farvam.Admin.openRBAC('${u.id}')" class="badge badge-gold cursor-pointer">دسترسی (RBAC)</button></td></tr>`).join('');
-                    
-                    // Custs
                     Utils.$('tbl-custs').innerHTML = cus.map(c=>`<tr><td>${c.name}</td><td class="en-font">${c.phone}</td><td class="text-xs text-gray-500">${c.date}</td><td class="en-font">${c.scans||0}</td></tr>`).join('');
                     
-                    // Ledger (Alloc)
+                    // Ledger
                     let aSel = Utils.$('leg-cw'); aSel.innerHTML = '<option value="u_main">مرکزی (خودم)</option>'; usr.forEach(u=>aSel.innerHTML+=`<option value="${u.id}">${u.name}</option>`);
                     let cSel = Utils.$('leg-cat'); cSel.innerHTML = '<option value="">بدون دسته (تکمیل با همکار)</option>'; cat.forEach(c=>cSel.innerHTML+=`<option value="${c.id}">${c.name}</option>`);
                     Utils.$('tbl-ledger').innerHTML = srl.map(s=>`<tr><td class="en-font text-[#D4AF37]">${s.serial}</td><td>${s.name||'-'}</td><td>${DB.get('usr').find(u=>u.id===s.assignedTo)?.name||'مرکزی'}</td><td>${s.owner||'-'}</td><td><span class="badge ${s.status==='stolen'?'badge-red':'badge-green'}">${s.status}</span></td></tr>`).join('');
@@ -898,7 +892,7 @@
                     Utils.$('tbl-transfers').innerHTML = trn.map(t=>`<tr><td class="en-font text-[#D4AF37]">${t.serial}</td><td class="en-font">${t.fromPhone}</td><td>${t.toName} <span class="en-font text-xs text-gray-500">(${t.toPhone})</span></td><td class="text-xs">${new Date(t.id).toLocaleDateString('fa-IR')}</td><td><button onclick="Farvam.Admin.actTrn(${t.id},'app')" class="badge badge-green cursor-pointer">تأیید</button><button onclick="Farvam.Admin.actTrn(${t.id},'rej')" class="badge badge-red cursor-pointer ml-1">رد</button></td></tr>`).join('');
                     Utils.$('tbl-sec').innerHTML = sec.map(s=>`<tr><td class="text-xs">${s.date}</td><td class="en-font text-red-500 font-bold">${s.serial}</td><td><div class="text-[#D4AF37] font-bold">${s.user}</div><div class="en-font text-xs text-gray-400">${s.phone}</div></td><td class="text-xs en-font truncate max-w-[150px]" title="${s.agent}">${s.agent}</td></tr>`).join('');
 
-                    // Load Settings safely (Handling IDs carefully)
+                    // Settings load
                     const set = DB.get('set');
                     if(Utils.$('cfg-pub-ban-on')) Utils.$('cfg-pub-ban-on').checked = set.banPubOn;
                     if(Utils.$('cfg-pub-ban-txt')) Utils.$('cfg-pub-ban-txt').value = set.banPubTxt || '';
@@ -910,8 +904,6 @@
                     if(Utils.$('cfg-ai-key')) Utils.$('cfg-ai-key').value = set.aiKey || '';
                     if(Utils.$('cfg-ai-prm')) Utils.$('cfg-ai-prm').value = set.aiPrm || '';
                     if(Utils.$('cfg-db-url')) Utils.$('cfg-db-url').value = set.dbUrl || '';
-                    if(Utils.$('cfg-ad-usr')) Utils.$('cfg-ad-usr').value = set.adUsr || '';
-                    if(Utils.$('cfg-ad-pw')) Utils.$('cfg-ad-pw').value = set.adPw || '';
 
                     Farvam.Ticketing.load('main');
                 },
@@ -930,7 +922,6 @@
                     crt('ch-tickets', 'bar', ['باز','بسته'], [DB.get('tck').length||0, 10], 'تیکت‌ها', g);
                     crt('ch-growth', 'line', ['Q1','Q2'], [50,120], 'رشد کل', b);
                 },
-                // Operations
                 actReq: (id, act) => {
                     let r = DB.get('req'); let idx = r.findIndex(x=>x.id===id); if(idx===-1) return;
                     if(act==='app') {
@@ -969,20 +960,12 @@
                     t.splice(idx,1); DB.set('trn',t); Admin.load(); Utils.toast('عملیات انتقال انجام شد');
                 },
                 saveSettings: () => {
-                    // Safe saving to prevent null errors
                     const set = {
-                        banPubOn: Utils.$('cfg-pub-ban-on')?.checked || false,
-                        banPubTxt: Utils.$('cfg-pub-ban-txt')?.value || '',
-                        banSubOn: Utils.$('cfg-sub-ban-on')?.checked || false,
-                        banSubTxt: Utils.$('cfg-sub-ban-txt')?.value || '',
-                        logo: Utils.$('cfg-logo')?.value || '',
-                        bg: Utils.$('cfg-vid-bg')?.value || '',
-                        promo: Utils.$('cfg-vid-pro')?.value || '',
-                        aiKey: Utils.$('cfg-ai-key')?.value || '',
-                        aiPrm: Utils.$('cfg-ai-prm')?.value || '',
-                        dbUrl: Utils.$('cfg-db-url')?.value || '',
-                        adUsr: Utils.$('cfg-ad-usr')?.value || 'admin',
-                        adPw: Utils.$('cfg-ad-pw')?.value || 'admin123'
+                        banPubOn: Utils.$('cfg-pub-ban-on')?.checked || false, banPubTxt: Utils.$('cfg-pub-ban-txt')?.value || '',
+                        banSubOn: Utils.$('cfg-sub-ban-on')?.checked || false, banSubTxt: Utils.$('cfg-sub-ban-txt')?.value || '',
+                        logo: Utils.$('cfg-logo')?.value || '', bg: Utils.$('cfg-vid-bg')?.value || '', promo: Utils.$('cfg-vid-pro')?.value || '',
+                        aiKey: Utils.$('cfg-ai-key')?.value || '', aiPrm: Utils.$('cfg-ai-prm')?.value || '', dbUrl: Utils.$('cfg-db-url')?.value || '',
+                        adUsr: Utils.$('cfg-ad-usr')?.value || 'admin', adPw: Utils.$('cfg-ad-pw')?.value || 'admin123'
                     };
                     DB.set('set', set); Utils.toast('هسته سیستم بروزرسانی شد'); setTimeout(()=>location.reload(), 1000);
                 }
@@ -999,13 +982,11 @@
                     Sub.load();
                 },
                 load: () => {
-                    // Prods
                     Utils.$('tbl-s-prods').innerHTML = DB.get('srl').filter(s=>s.assignedTo===currU.id).map(s=>{
                         let act = s.name ? `<span class="badge badge-green">ثبت شده</span>` : `<button onclick="Farvam.Sub.openFill('${s.id}')" class="badge badge-gold cursor-pointer">ثبت کالا</button>`;
                         return `<tr><td class="en-font text-[#D4AF37]">${s.serial}</td><td>${s.name||'-'}</td><td>${s.owner||'-'}</td><td><span class="badge ${s.status==='stolen'?'badge-red':'badge-green'}">${s.status}</span></td><td>${act}</td></tr>`;
                     }).join('');
 
-                    // Trade Form
                     let tf = Utils.$('s-tr-dyn'); tf.innerHTML = ''; DB.get('trF').forEach(f => tf.innerHTML+=`<select class="luxury-input !mb-0 s-dyn-tf" data-name="${f.name}"><option value="">${f.name}...</option>${f.opts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`);
                     Utils.$('tbl-s-trades').innerHTML = DB.get('trd').filter(t=>t.creator===currU.id).map(t=>`<tr><td>${t.info}</td><td class="text-xs text-gray-500">${JSON.stringify(t.dyn)}</td><td><span class="badge">${t.status}</span></td><td>${t.status==='rej'?t.rej:'-'}</td></tr>`).join('');
                     
