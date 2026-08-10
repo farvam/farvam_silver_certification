@@ -124,9 +124,51 @@
         .chart-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
         @media (min-width: 768px) { .chart-grid { grid-template-columns: 1fr 1fr; } }
         .chart-box { background: #080808; border: 1px solid #222; border-radius: 1rem; padding: 1rem; height: 300px; }
+
+        /* ================= LUXURY 3D / DREAMY VISUAL LAYER ================= */
+        .aurora-wrap { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; mix-blend-mode: screen; animation: auroraFloat 18s ease-in-out infinite; }
+        .aurora-blob.b1 { width: 42vw; height: 42vw; top: -10%; right: -10%; background: radial-gradient(circle, rgba(212,175,55,0.55), transparent 70%); animation-delay: 0s; }
+        .aurora-blob.b2 { width: 36vw; height: 36vw; bottom: -15%; left: -8%; background: radial-gradient(circle, rgba(138,109,28,0.5), transparent 70%); animation-delay: -6s; }
+        .aurora-blob.b3 { width: 28vw; height: 28vw; top: 40%; left: 30%; background: radial-gradient(circle, rgba(249,241,204,0.25), transparent 70%); animation-delay: -12s; }
+        @keyframes auroraFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(4%, -6%) scale(1.08); } 66% { transform: translate(-5%, 5%) scale(0.95); } }
+
+        .tilt-3d { transform-style: preserve-3d; perspective: 1200px; transition: transform 0.15s ease-out; }
+        .tilt-3d-inner { transform-style: preserve-3d; transition: transform 0.15s ease-out; }
+
+        .glass-panel { position: relative; overflow: hidden; }
+        .glass-panel::before { content:''; position: absolute; top:0; left:-150%; width: 60%; height: 100%; background: linear-gradient(120deg, transparent, rgba(212,175,55,0.12), transparent); transform: skewX(-20deg); transition: left 0.8s ease; pointer-events: none; }
+        .glass-panel:hover::before { left: 150%; }
+
+        .luxury-3d-card { background: linear-gradient(155deg, #0d0d0d 0%, #060606 60%, #0d0d0d 100%); border: 1px solid rgba(212,175,55,0.25); border-radius: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04); position: relative; transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer; }
+        .luxury-3d-card:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.18), inset 0 1px 0 rgba(255,255,255,0.08); }
+        .luxury-3d-card .card-glow { position: absolute; inset: -1px; border-radius: inherit; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(212,175,55,0.15), transparent 40%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .luxury-3d-card:hover .card-glow { opacity: 1; }
+
+        .float-orb { animation: floatOrb 6s ease-in-out infinite; }
+        @keyframes floatOrb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+        .dreamy-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent); }
+
+        .price-chain-step { background: #0a0a0a; border: 1px dashed #333; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 0.75rem; color: #999; position: relative; }
+        .price-chain-arrow { color: var(--gold-dark); font-size: 1.2rem; text-align: center; }
+
+        .status-pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.7rem; font-weight: bold; border: 1px solid; }
+        .status-pending { background: rgba(212,175,55,0.08); color: var(--gold-main); border-color: var(--gold-dark); }
+        .status-approved { background: rgba(16,185,129,0.08); color: #10b981; border-color: #10b981; }
+        .status-rejected { background: rgba(239,68,68,0.08); color: #ef4444; border-color: #ef4444; }
+        .status-cancelled { background: rgba(148,163,184,0.08); color: #94a3b8; border-color: #64748b; }
+        .status-final { background: rgba(59,130,246,0.08); color: #60a5fa; border-color: #3b82f6; }
+
+        .step-track { display: flex; align-items: center; gap: 0.25rem; }
+        .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #222; border: 1px solid #333; }
+        .step-dot.done { background: var(--gold-main); border-color: var(--gold-main); box-shadow: 0 0 8px rgba(212,175,55,0.6); }
+        .step-line { flex: 1; height: 2px; background: #222; }
+        .step-line.done { background: var(--gold-main); }
     </style>
 </head>
 <body>
+    <div class="aurora-wrap"><div class="aurora-blob b1"></div><div class="aurora-blob b2"></div><div class="aurora-blob b3"></div></div>
     <div id="scroll-progress"></div>
     <canvas id="particle-canvas"></canvas>
     
@@ -197,8 +239,8 @@
             </div>
 
             <div class="w-full max-w-2xl mx-auto flex flex-col gap-8" id="vip-section">
-                <div id="tilt-cert" class="w-full hover:shadow-[0_0_50px_rgba(212,175,55,0.15)] transition-shadow duration-500 rounded-[1.5rem]">
-                    <div class="glass-panel p-8 md:p-12 text-center relative overflow-hidden">
+                <div id="tilt-cert" class="w-full hover:shadow-[0_0_50px_rgba(212,175,55,0.15)] transition-shadow duration-500 rounded-[1.5rem] tilt-3d">
+                    <div class="glass-panel p-8 md:p-12 text-center relative overflow-hidden tilt-3d-inner">
                         
                         <div id="cert-lock-overlay" class="absolute inset-0 bg-black/85 backdrop-blur-md z-20 flex flex-col items-center justify-center p-6 transition-opacity duration-500">
                             <div class="flex gap-4 mb-4 text-[#D4AF37]">
@@ -214,9 +256,10 @@
                                 <button type="submit" id="btn-otp-req" class="luxury-btn !py-3 !text-sm btn-pulse">دریافت کد ورود امن</button>
                             </form>
                             <form id="form-otp-2" onsubmit="event.preventDefault(); FARVAM.Auth.verifyOTP();" class="w-full max-w-sm flex flex-col gap-3 hide">
-                                <p class="text-xs text-[#D4AF37]">کد تأیید ارسال شد (کد تست: 1234)</p>
-                                <input type="text" id="c-otp" class="luxury-input en-font !text-xl tracking-[10px] text-center" placeholder="----" maxlength="4" required>
+                                <p class="text-xs text-gray-400">کد تأیید ۴ رقمی برای شماره وارد شده پیامک شد.</p>
+                                <input type="text" id="c-otp" class="luxury-input en-font !text-xl tracking-[10px] text-center" placeholder="----" maxlength="4" inputmode="numeric" autocomplete="one-time-code" required>
                                 <button type="submit" class="luxury-btn !py-3 !text-sm">تأیید و ورود به پنل</button>
+                                <button type="button" onclick="FARVAM.Auth.reqOTP(true)" class="text-xs text-gray-500 hover:text-[#D4AF37] bg-transparent border-none cursor-pointer">ارسال مجدد کد</button>
                             </form>
                         </div>
 
@@ -304,8 +347,11 @@
             <form id="form-collab-modal" onsubmit="event.preventDefault(); FARVAM.Public.submitCollab();" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input type="text" id="cw-n" class="luxury-input !text-sm !p-3" placeholder="نام" required>
                 <input type="text" id="cw-f" class="luxury-input !text-sm !p-3" placeholder="نام خانوادگی" required>
-                <input type="text" id="cw-nc" class="luxury-input en-font !text-sm !p-3 text-left" placeholder="National Code" required>
-                <input type="tel" id="cw-p" class="luxury-input en-font !text-sm !p-3 text-left" placeholder="09..." required>
+                <div>
+                    <input type="text" id="cw-nc" class="luxury-input en-font !text-sm !p-3 text-left" placeholder="National Code" maxlength="10" inputmode="numeric" oninput="FARVAM.Utils.liveValidateNC(this)" required>
+                    <p id="cw-nc-err" class="text-[10px] text-red-400 mt-1 hide">کد ملی نامعتبر است</p>
+                </div>
+                <input type="tel" id="cw-p" class="luxury-input en-font !text-sm !p-3 text-left" placeholder="09..." pattern="^09[0-9]{9}$" required>
                 <select id="cw-t" class="glass-select !text-sm !p-3" required><option value="">انتخاب رسته شغلی...</option></select>
                 <input type="text" id="cw-r" class="luxury-input !text-sm !p-3" placeholder="کد معرف (اختیاری)">
                 <textarea id="cw-a" class="luxury-input !text-sm !p-3 md:col-span-2 h-24 resize-none" placeholder="آدرس دقیق دفتر یا فروشگاه" required></textarea>
@@ -318,13 +364,14 @@
         <div class="modal-content w-full max-w-sm p-8 text-center relative">
             <button onclick="FARVAM.Utils.hideModal('modal-login')" class="absolute top-4 left-4 text-gray-500 hover:text-white bg-transparent border-none cursor-pointer">✕</button>
             <h3 class="text-2xl font-bold mb-2 text-[#D4AF37]">ورود پرسنل</h3>
-            <p class="text-xs text-gray-500 mb-6">ادمین کل: admin / admin123</p>
+            <p class="text-xs text-gray-500 mb-6">دسترسی ویژه پرسنل و سنترهای همکار FARVAM</p>
             <form onsubmit="event.preventDefault(); FARVAM.Auth.loginAdmin();" class="flex flex-col gap-4">
-                <input type="text" id="l-user" class="luxury-input en-font !text-center" placeholder="موبایل (نام کاربری)">
+                <input type="text" id="l-user" class="luxury-input en-font !text-center" placeholder="موبایل (نام کاربری)" autocomplete="username" required>
                 <div class="relative">
-                    <input type="password" id="l-pass" class="luxury-input en-font !text-center" placeholder="رمز عبور">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400" onclick="FARVAM.Utils.togglePwd('l-pass')">👁️</span>
+                    <input type="password" id="l-pass" class="luxury-input en-font !text-center" placeholder="رمز عبور" autocomplete="current-password" required>
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400" onclick="FARVAM.Utils.togglePwd('l-pass')" role="button" aria-label="نمایش رمز عبور">👁️</span>
                 </div>
+                <div id="l-err" class="text-xs text-red-400 hide"></div>
                 <button type="submit" class="luxury-btn !py-3 mt-2">ورود به سیستم</button>
             </form>
         </div>
@@ -381,6 +428,16 @@
             <div class="sidebar-header">
                 <h2 class="text-[#D4AF37] font-bold text-xl tracking-widest en-font">FARVAM ERP</h2>
                 <p class="text-xs text-gray-500 mt-1 uppercase" id="admin-role-lbl">Command Center</p>
+                <div class="flex items-center justify-center gap-3 mt-3">
+                    <button onclick="FARVAM.Admin.toggleNotif()" class="relative bg-[#111] border border-[#333] rounded-full w-9 h-9 flex items-center justify-center text-gray-300 hover:text-[#D4AF37] hover:border-[#D4AF37] transition cursor-pointer" aria-label="اعلان‌ها">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"></path></svg>
+                        <span id="notif-dot" class="absolute -top-1 -left-1 w-4 h-4 bg-red-500 rounded-full text-[9px] flex items-center justify-center text-white hide">0</span>
+                    </button>
+                    <button onclick="FARVAM.Utils.openPwdModal()" class="bg-[#111] border border-[#333] rounded-full w-9 h-9 flex items-center justify-center text-gray-300 hover:text-[#D4AF37] hover:border-[#D4AF37] transition cursor-pointer" aria-label="تغییر رمز عبور">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"></path></svg>
+                    </button>
+                </div>
+                <div id="notif-panel" class="hide absolute left-4 right-4 top-32 md:top-24 bg-[#080808] border border-[#D4AF37]/40 rounded-xl shadow-2xl z-50 text-right max-h-72 overflow-y-auto"></div>
             </div>
             <nav class="admin-nav" id="nav-main">
                 <div class="nav-item"><button class="nav-btn active" onclick="FARVAM.Admin.switchTab('dashboard', this)"><span>داشبورد اصلی</span></button></div>
@@ -393,10 +450,25 @@
                     <div class="nav-submenu"><ul><li onclick="FARVAM.Admin.switchTab('cen-custs', this)">باشگاه مشتریان (CRM)</li><li onclick="FARVAM.Admin.switchTab('eav-cat', this)">فیلدساز داینامیک (EAV)</li></ul></div>
                 </div>
                 <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Admin.switchTab('ledger', this)"><span>تخصیص سریال (Ledger)</span></button></div>
+                <div class="nav-item">
+                    <button class="nav-btn" onclick="FARVAM.Admin.toggleAcc(this)"><span>کاتالوگ و قیمت‌گذاری</span><span>▼</span></button>
+                    <div class="nav-submenu"><ul>
+                        <li onclick="FARVAM.Admin.switchTab('catalog', this)">دسته‌ها، زیردسته‌ها و محصولات</li>
+                        <li onclick="FARVAM.Admin.switchTab('tx-settings', this)">فیلدها، شروط، تخفیف و انواع همکار</li>
+                    </ul></div>
+                </div>
                 <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Admin.switchTab('app-trades', this)"><span>میز معاملات <span id="bdg-trd" class="badge badge-gold hide ml-2">0</span></span></button></div>
+                <div class="nav-item">
+                    <button class="nav-btn" onclick="FARVAM.Admin.toggleAcc(this)"><span>سفارشات <span id="bdg-ord" class="badge badge-gold hide ml-2">0</span></span><span>▼</span></button>
+                    <div class="nav-submenu"><ul>
+                        <li onclick="FARVAM.Admin.switchTab('orders', this)">لیست سفارشات</li>
+                        <li onclick="FARVAM.Admin.switchTab('order-settings', this)">تنظیمات سفارشات</li>
+                    </ul></div>
+                </div>
                 <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Admin.switchTab('app-transfers', this)"><span>انتقال مالکیت <span id="bdg-trn" class="badge badge-gold hide ml-2">0</span></span></button></div>
                 <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Admin.switchTab('set-ui', this)"><span>تنظیمات سیستم</span></button></div>
                 <div class="nav-item"><button class="nav-btn !text-red-500" onclick="FARVAM.Admin.switchTab('security', this)"><span>مانیتورینگ سرقت <span id="bdg-sec" class="badge badge-red hide ml-2">0</span></span></button></div>
+                <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Admin.switchTab('audit', this)"><span>گزارش فعالیت (Audit)</span></button></div>
             </nav>
             <div class="p-4 border-t border-[#1a1a1a]"><button onclick="FARVAM.Auth.logout()" class="w-full bg-red-900/20 text-red-400 py-2 rounded-lg border border-red-900/50 hover:bg-red-900/40 transition text-sm cursor-pointer">خروج امن</button></div>
         </aside>
@@ -417,10 +489,26 @@
                 </div>
             </div>
 
-            <div id="tab-cw-reqs" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">درخواست‌های همکاری</h2><div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>کد ملی</th><th>موبایل</th><th>نقش</th><th>عملیات</th></tr></thead><tbody id="tbl-reqs"></tbody></table></div></div>
-            <div id="tab-cw-manage" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">مدیریت شبکه و دسترسی</h2><div class="overflow-x-auto"><table><thead><tr><th>نام سنتر</th><th>موبایل</th><th>رمز عبور</th><th>عملیات امنیتی</th></tr></thead><tbody id="tbl-cws"></tbody></table></div></div>
+            <div id="tab-cw-reqs" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">درخواست‌های همکاری</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4"><input type="text" id="srch-reqs" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1" placeholder="جستجو بر اساس نام، کد ملی یا موبایل..."></div>
+                <div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>کد ملی</th><th>موبایل</th><th>نقش</th><th>عملیات</th></tr></thead><tbody id="tbl-reqs"></tbody></table></div>
+                <p id="reqs-empty" class="text-center text-gray-600 text-sm py-8 hide">درخواست در انتظاری یافت نشد.</p>
+            </div>
+            <div id="tab-cw-manage" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">مدیریت شبکه و دسترسی</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <input type="text" id="srch-cws" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1" placeholder="جستجو بر اساس نام یا موبایل...">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-cws', 'centers')" class="luxury-btn !w-auto !py-3 !px-6 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>نام سنتر</th><th>موبایل</th><th>رمز عبور</th><th>وضعیت</th><th>عملیات امنیتی</th></tr></thead><tbody id="tbl-cws"></tbody></table></div>
+            </div>
             <div id="tab-cw-tickets" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">پشتیبانی همکاران</h2><div class="max-w-3xl flex flex-col gap-4"><select id="sel-tick-user" class="luxury-input !bg-[#111]" onchange="FARVAM.Admin.loadTickets()"></select><div id="chat-box-main" class="chat-container"></div><form onsubmit="event.preventDefault(); FARVAM.Admin.sendTicket();" class="flex gap-2"><input type="text" id="chat-inp-main" class="luxury-input !mb-0 flex-1" placeholder="تایپ پیام..."><button type="submit" class="luxury-btn !w-auto !py-0 !px-8">ارسال</button></form></div></div>
-            <div id="tab-cen-custs" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">باشگاه مشتریان (CRM)</h2><div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>موبایل</th><th>دفعات استعلام</th></tr></thead><tbody id="tbl-custs"></tbody></table></div></div>
+            <div id="tab-cen-custs" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">باشگاه مشتریان (CRM)</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <input type="text" id="srch-custs" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1" placeholder="جستجو بر اساس نام یا موبایل...">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-custs', 'customers')" class="luxury-btn !w-auto !py-3 !px-6 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>موبایل</th><th>تاریخ عضویت</th><th>دفعات استعلام</th></tr></thead><tbody id="tbl-custs"></tbody></table></div>
+            </div>
             
             <div id="tab-ledger" class="a-tab hide">
                 <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">تخصیص سریال (Ledger)</h2>
@@ -435,7 +523,11 @@
                     <div id="leg-dyn-container" class="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                     <div class="md:col-span-3"><button onclick="FARVAM.Admin.issueSerials()" class="luxury-btn !py-3">تولید و ثبت در شبکه</button></div>
                 </div>
-                <div class="overflow-x-auto"><table><thead><tr><th>سریال</th><th>محصول</th><th>سنتر تخصیصی</th><th>وضعیت</th></tr></thead><tbody id="tbl-ledger"></tbody></table></div>
+                <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <input type="text" id="srch-ledger" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1 en-font" placeholder="Search serial or product...">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-ledger', 'ledger')" class="luxury-btn !w-auto !py-3 !px-6 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>سریال</th><th>محصول</th><th>سنتر تخصیصی</th><th>مالک</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tbl-ledger"></tbody></table></div>
             </div>
 
             <div id="tab-eav-cat" class="a-tab hide">
@@ -445,19 +537,235 @@
                     <div class="flex-1"><label class="text-xs text-gray-500 block mb-1">فیلدها (با کاما)</label><input type="text" id="eav-c-fields" class="luxury-input !mb-0" placeholder="وزن,عیار,رنگ"></div>
                     <button onclick="FARVAM.Admin.addCategory()" class="luxury-btn !w-auto !py-3">ساخت ساختار</button>
                 </div>
-                <div class="overflow-x-auto"><table><thead><tr><th>دسته</th><th>ساختار فیلدها</th></tr></thead><tbody id="tbl-cats"></tbody></table></div>
+                <div class="overflow-x-auto"><table><thead><tr><th>دسته</th><th>ساختار فیلدها</th><th>عملیات</th></tr></thead><tbody id="tbl-cats"></tbody></table></div>
             </div>
 
-            <div id="tab-app-trades" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">میز معاملات</h2><div class="overflow-x-auto"><table><thead><tr><th>ثبت کننده</th><th>اطلاعات</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tbl-trades"></tbody></table></div></div>
+            <div id="tab-catalog" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">دسته‌ها، زیردسته‌ها و محصولات</h2>
+                <p class="text-xs text-gray-500 mb-6 leading-relaxed">این کاتالوگ، پایه مشترک محاسبه قیمت معاملات و همچنین انتخاب محصول در سفارشات است. زنجیره محاسبه: فی ← فرمول دسته ← فرمول زیردسته ← فرمول محصول ← قیمت پایه ← قیمت نهایی.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Categories -->
+                    <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                        <h3 class="text-sm font-bold text-[#D4AF37] mb-3">دسته‌های اصلی</h3>
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" id="cat-new-name" class="luxury-input !mb-0 !py-2 text-sm" placeholder="نام دسته جدید">
+                            <button onclick="FARVAM.Catalog.addCat()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button>
+                        </div>
+                        <div id="cat-list" class="space-y-2 max-h-[420px] overflow-y-auto"></div>
+                    </div>
+                    <!-- Subcategories -->
+                    <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                        <h3 class="text-sm font-bold text-[#D4AF37] mb-3">زیردسته‌های <span id="sub-of-cat-lbl" class="text-white">—</span></h3>
+                        <div id="sub-add-box" class="flex gap-2 mb-3 hide">
+                            <input type="text" id="sub-new-name" class="luxury-input !mb-0 !py-2 text-sm" placeholder="نام زیردسته جدید">
+                            <button onclick="FARVAM.Catalog.addSub()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button>
+                        </div>
+                        <p id="sub-empty-hint" class="text-xs text-gray-600">ابتدا یک دسته را از ستون سمت راست انتخاب کنید.</p>
+                        <div id="sub-list" class="space-y-2 max-h-[420px] overflow-y-auto"></div>
+                    </div>
+                    <!-- Products -->
+                    <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                        <h3 class="text-sm font-bold text-[#D4AF37] mb-3">محصولات <span id="prod-of-sub-lbl" class="text-white">—</span></h3>
+                        <div id="prod-add-box" class="flex gap-2 mb-3 hide">
+                            <input type="text" id="prod-new-name" class="luxury-input !mb-0 !py-2 text-sm" placeholder="نام محصول جدید">
+                            <button onclick="FARVAM.Catalog.addProd()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button>
+                        </div>
+                        <p id="prod-empty-hint" class="text-xs text-gray-600">ابتدا یک زیردسته را انتخاب کنید.</p>
+                        <div id="prod-list" class="space-y-2 max-h-[420px] overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <div class="dreamy-divider my-8"></div>
+                <div id="prod-detail-box" class="hide bg-[#080808] p-6 rounded-2xl border border-[#D4AF37]/30">
+                    <h3 class="text-lg font-bold text-[#D4AF37] mb-1">تنظیمات محصول: <span id="prod-detail-name" class="text-white"></span></h3>
+                    <p class="text-xs text-gray-500 mb-5">واحد، فی، فرمول، قیمت پایه، اجرت و قیمت اختصاصی هر نوع همکار برای این محصول.</p>
+                    <input type="hidden" id="prod-detail-id">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                        <div><label class="text-xs text-gray-500 mb-1 block">واحد محصول</label>
+                            <select id="pd-unit" class="glass-select !mb-0">
+                                <option value="count">تعدادی</option>
+                                <option value="weight">وزنی (گرم)</option>
+                                <option value="both">تعداد + وزن</option>
+                            </select>
+                        </div>
+                        <div><label class="text-xs text-gray-500 mb-1 block">ارز قیمت‌گذاری</label>
+                            <select id="pd-currency" class="glass-select !mb-0"><option value="IRT">تومان</option><option value="USD">دلار</option></select>
+                        </div>
+                        <div><label class="text-xs text-gray-500 mb-1 block">قیمت پایه هر واحد</label><input type="number" id="pd-base" class="luxury-input !mb-0 en-font" placeholder="0"></div>
+                    </div>
+
+                    <div class="bg-[#050505] border border-[#222] rounded-xl p-4 mb-5">
+                        <p class="text-xs text-[#D4AF37] mb-3 font-bold">زنجیره فی و فرمول (اختیاری — اگر خالی بماند مقدار بدون تغییر عبور می‌کند)</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="text-[11px] text-gray-500 mb-1 block">فی این محصول (خالی = استفاده از فی زیردسته)</label><input type="number" id="pd-fee" class="luxury-input !mb-0 en-font" placeholder="مثلاً 45000000"></div>
+                            <div><label class="text-[11px] text-gray-500 mb-1 block">فرمول محصول — متغیر x = خروجی مرحله قبل</label><input type="text" id="pd-formula" class="luxury-input !mb-0 en-font text-left" dir="ltr" placeholder="x * 1.02 + 5000"></div>
+                        </div>
+                        <div id="pd-chain-preview" class="mt-3 text-xs text-gray-500"></div>
+                    </div>
+
+                    <div class="bg-[#050505] border border-[#222] rounded-xl p-4 mb-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <p class="text-xs text-[#D4AF37] font-bold">اجرت محصول</p>
+                            <label class="flex items-center gap-2 text-xs text-gray-300 cursor-pointer"><input type="checkbox" id="pd-ojrat-on" class="accent-[#D4AF37]" onchange="FARVAM.Catalog.toggleOjratBox()"> فعال</label>
+                        </div>
+                        <div id="pd-ojrat-box" class="hide">
+                            <label class="text-[11px] text-gray-500 mb-1 block">فرمول اجرت — متغیر w = وزن پایه، درصد را با w*0.05 وارد کنید</label>
+                            <input type="text" id="pd-ojrat-formula" class="luxury-input !mb-0 en-font text-left" dir="ltr" placeholder="w * 0.05">
+                            <p class="text-[11px] text-gray-600 mt-2">اجرت به وزن نهایی افزوده می‌شود: وزن نهایی = وزن پایه + اجرت. این فرمول به‌صورت پیش‌فرض برای همه انواع همکار اعمال می‌شود مگر مقدار اختصاصی زیر تعریف شود.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#050505] border border-[#222] rounded-xl p-4 mb-5">
+                        <p class="text-xs text-[#D4AF37] font-bold mb-3">قیمت/اجرت اختصاصی برای هر نوع همکار (اختیاری)</p>
+                        <div id="pd-agent-pricing" class="space-y-2"></div>
+                    </div>
+
+                    <button onclick="FARVAM.Catalog.saveProductDetail()" class="luxury-btn !py-3">ذخیره تنظیمات محصول</button>
+                </div>
+            </div>
+
+            <div id="tab-tx-settings" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">فیلدها، شروط، تخفیف و انواع همکار (معاملات)</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                        <h3 class="text-sm font-bold text-[#D4AF37] mb-3">انواع همکار</h3>
+                        <div class="flex gap-2 mb-3"><input type="text" id="at-new-name" class="luxury-input !mb-0 !py-2 text-sm" placeholder="نام نوع همکار جدید"><button onclick="FARVAM.TxSettings.addAgentType()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button></div>
+                        <div id="agent-types-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+                    </div>
+                    <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                        <h3 class="text-sm font-bold text-[#D4AF37] mb-3">دلایل رد معامله</h3>
+                        <div class="flex gap-2 mb-3"><input type="text" id="txr-new" class="luxury-input !mb-0 !py-2 text-sm" placeholder="متن دلیل رد جدید"><button onclick="FARVAM.TxSettings.addReason()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button></div>
+                        <div id="tx-reasons-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222] mb-8">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-bold text-[#D4AF37]">فیلدهای داینامیک معامله (مشخصه‌ها)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                        <input type="text" id="txf-label" class="luxury-input !mb-0 text-sm md:col-span-2" placeholder="نام مشخصه (مثلاً وضعیت نقد)">
+                        <select id="txf-type" class="glass-select !mb-0 text-sm">
+                            <option value="text">متن</option><option value="number">عدد</option><option value="select">انتخاب یک گزینه</option>
+                            <option value="multiselect">انتخاب چند گزینه</option><option value="date">تاریخ</option><option value="time">زمان</option><option value="bool">بله/خیر</option>
+                        </select>
+                        <input type="text" id="txf-options" class="luxury-input !mb-0 text-sm" placeholder="گزینه‌ها (با کاما) — نقد حاضر,فردا,شنبه">
+                        <select id="txf-scope" class="glass-select !mb-0 text-sm"><option value="global">همه معاملات (عمومی)</option></select>
+                        <label class="flex items-center gap-2 text-xs text-gray-300 md:col-span-2"><input type="checkbox" id="txf-required" class="accent-[#D4AF37]"> فیلد اجباری باشد</label>
+                        <button onclick="FARVAM.TxSettings.addField()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap md:col-span-3">افزودن مشخصه</button>
+                    </div>
+                    <div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>نوع</th><th>گزینه‌ها</th><th>سطح اعمال</th><th>اجباری</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tbl-tx-fields"></tbody></table></div>
+                </div>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                    <h3 class="text-sm font-bold text-[#D4AF37] mb-3">قوانین تخفیف داینامیک</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-6 gap-3 mb-4">
+                        <input type="text" id="dc-name" class="luxury-input !mb-0 text-sm md:col-span-2" placeholder="نام قانون تخفیف">
+                        <select id="dc-field" class="glass-select !mb-0 text-sm"><option value="weight">وزن (گرم)</option><option value="qty">تعداد</option><option value="amount">مبلغ نهایی</option></select>
+                        <input type="number" id="dc-threshold" class="luxury-input !mb-0 text-sm en-font" placeholder="حداقل مقدار">
+                        <select id="dc-type" class="glass-select !mb-0 text-sm"><option value="percent">درصدی</option><option value="amount">مبلغ ثابت</option></select>
+                        <input type="number" id="dc-value" class="luxury-input !mb-0 text-sm en-font" placeholder="مقدار تخفیف">
+                        <button onclick="FARVAM.TxSettings.addDiscount()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap md:col-span-6">افزودن قانون تخفیف</button>
+                    </div>
+                    <div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>شرط</th><th>نوع تخفیف</th><th>مقدار</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tbl-discounts"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="tab-app-trades" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">میز معاملات</h2>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                    <input type="text" id="srch-trades" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 md:col-span-2" placeholder="جستجو بر اساس همکار یا محصول...">
+                    <select id="flt-trd-status" onchange="FARVAM.Admin.load()" class="glass-select !mb-0"><option value="">همه وضعیت‌ها</option><option value="pending">در انتظار تأیید</option><option value="approved">تأیید شده</option><option value="rejected">رد شده</option><option value="cancelled">لغو شده</option></select>
+                    <select id="flt-trd-optype" onchange="FARVAM.Admin.load()" class="glass-select !mb-0"><option value="">خرید و فروش</option><option value="buy">فقط خرید</option><option value="sell">فقط فروش</option></select>
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-trades', 'transactions')" class="luxury-btn !w-auto !py-3 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>#</th><th>همکار</th><th>محصول</th><th>نوع</th><th>مقدار</th><th>قیمت نهایی</th><th>وضعیت</th><th>زمان ثبت</th><th>عملیات</th></tr></thead><tbody id="tbl-trades"></tbody></table></div>
+            </div>
+
+            <div id="tab-orders" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">لیست سفارشات</h2>
+                <p class="text-xs text-gray-500 mb-4">سفارش یک درخواست دریافت محصول است و شامل خرید/فروش یا قیمت‌گذاری نیست.</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                    <input type="text" id="srch-orders" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 md:col-span-2" placeholder="جستجو بر اساس همکار یا محصول...">
+                    <select id="flt-ord-status" onchange="FARVAM.Admin.load()" class="glass-select !mb-0"><option value="">همه وضعیت‌ها</option></select>
+                    <input type="date" id="flt-ord-date" onchange="FARVAM.Admin.load()" class="luxury-input !mb-0 en-font">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-orders', 'orders')" class="luxury-btn !w-auto !py-3 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>#</th><th>همکار</th><th>محصول</th><th>مقدار</th><th>وضعیت</th><th>زمان دریافت</th><th>ثبت</th><th>عملیات</th></tr></thead><tbody id="tbl-orders"></tbody></table></div>
+            </div>
+
+            <div id="tab-order-settings" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">تنظیمات سفارشات</h2>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222] mb-6">
+                    <h3 class="text-sm font-bold text-[#D4AF37] mb-3">وضعیت‌های سفارش</h3>
+                    <div class="flex gap-2 mb-3"><input type="text" id="ost-new" class="luxury-input !mb-0 !py-2 text-sm" placeholder="نام وضعیت جدید"><button onclick="FARVAM.OrderSettings.addStatus()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button></div>
+                    <div id="order-status-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
+                </div>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222] mb-6">
+                    <h3 class="text-sm font-bold text-[#D4AF37] mb-3">دلایل رد سفارش</h3>
+                    <div class="flex gap-2 mb-3"><input type="text" id="ordr-new" class="luxury-input !mb-0 !py-2 text-sm" placeholder="متن دلیل رد جدید"><button onclick="FARVAM.OrderSettings.addReason()" class="luxury-btn !w-auto !py-2 !px-4 text-xs whitespace-nowrap">افزودن</button></div>
+                    <div id="order-reasons-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
+                </div>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222] mb-6">
+                    <label class="flex items-center gap-2 text-sm text-gray-300 cursor-pointer"><input type="checkbox" id="ost-sub-cancel" class="accent-[#D4AF37]" onchange="FARVAM.OrderSettings.toggleSubCancel()"> اجازه لغو سفارش توسط همکار (ادمین کوچک) پیش از تحویل</label>
+                </div>
+
+                <div class="bg-[#080808] p-5 rounded-2xl border border-[#222]">
+                    <h3 class="text-sm font-bold text-[#D4AF37] mb-3">فیلدهای داینامیک سفارش</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                        <input type="text" id="orf-label" class="luxury-input !mb-0 text-sm md:col-span-2" placeholder="نام فیلد">
+                        <select id="orf-type" class="glass-select !mb-0 text-sm">
+                            <option value="text">متن</option><option value="number">عدد</option><option value="select">انتخابی</option>
+                            <option value="multiselect">چندانتخابی</option><option value="date">تاریخ</option><option value="time">زمان</option><option value="bool">بله/خیر</option>
+                        </select>
+                        <input type="text" id="orf-options" class="luxury-input !mb-0 text-sm" placeholder="گزینه‌ها (با کاما)">
+                        <label class="flex items-center gap-2 text-xs text-gray-300"><input type="checkbox" id="orf-required" class="accent-[#D4AF37]"> اجباری</label>
+                        <button onclick="FARVAM.OrderSettings.addField()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap md:col-span-3">افزودن فیلد</button>
+                    </div>
+                    <div class="overflow-x-auto"><table><thead><tr><th>نام</th><th>نوع</th><th>گزینه‌ها</th><th>اجباری</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tbl-order-fields"></tbody></table></div>
+                </div>
+            </div>
+
             <div id="tab-app-transfers" class="a-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">کارتابل انتقال</h2><div class="overflow-x-auto"><table><thead><tr><th>سریال</th><th>مبدأ</th><th>مقصد</th><th>عملیات</th></tr></thead><tbody id="tbl-transfers"></tbody></table></div></div>
-            <div id="tab-security" class="a-tab hide"><h2 class="text-2xl font-bold text-red-500 mb-6 border-b border-[#222] pb-2">لاگ سرقت</h2><div class="overflow-x-auto"><table><thead><tr><th>زمان</th><th>سریال</th><th>فرد اسکن کننده</th><th>مرورگر</th></tr></thead><tbody id="tbl-sec"></tbody></table></div></div>
+            <div id="tab-security" class="a-tab hide"><h2 class="text-2xl font-bold text-red-500 mb-6 border-b border-[#222] pb-2">لاگ سرقت</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <input type="text" id="srch-sec" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1 en-font" placeholder="Search serial...">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-sec', 'theft-log')" class="luxury-btn !w-auto !py-3 !px-6 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>زمان</th><th>سریال</th><th>فرد اسکن کننده</th><th>موبایل</th><th>مرورگر</th></tr></thead><tbody id="tbl-sec"></tbody></table></div>
+            </div>
             
+            <div id="tab-audit" class="a-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">گزارش فعالیت سیستم</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <input type="text" id="srch-audit" oninput="FARVAM.Admin.load()" class="luxury-input !mb-0 flex-1" placeholder="جستجو در گزارش فعالیت...">
+                    <button onclick="FARVAM.Utils.exportCSV('tbl-audit', 'audit-log')" class="luxury-btn !w-auto !py-3 !px-6 text-xs whitespace-nowrap">خروجی CSV</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>زمان</th><th>کاربر</th><th>رویداد</th></tr></thead><tbody id="tbl-audit"></tbody></table></div>
+            </div>
+
             <div id="tab-set-ui" class="a-tab hide max-w-2xl">
                 <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">تنظیمات اصلی</h2>
                 <div class="bg-[#080808] p-6 rounded-2xl border border-[#222] space-y-4">
                     <div><label class="text-xs text-gray-500 block mb-1">متن بنر عمومی</label><input type="text" id="cfg-pub-ban-txt" class="luxury-input"></div>
-                    <div><label class="text-xs text-gray-500 block mb-1">Gemini API Key</label><input type="password" id="cfg-ai-key" class="luxury-input en-font text-left" dir="ltr"></div>
-                    <button onclick="FARVAM.Admin.saveSettings()" class="luxury-btn">ذخیره</button>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Gemini API Key</label>
+                        <input type="password" id="cfg-ai-key" class="luxury-input en-font text-left" dir="ltr">
+                        <p class="text-[11px] text-amber-500/80 mt-1 leading-relaxed">⚠️ این کلید در مرورگر ذخیره و مستقیماً فراخوانی می‌شود؛ برای محیط عملیاتی واقعی باید از یک سرور واسط (proxy) استفاده شود تا کلید افشا نگردد.</p>
+                    </div>
+                    <button onclick="FARVAM.Admin.saveSettings()" class="luxury-btn">ذخیره تنظیمات</button>
+                </div>
+                <div class="bg-[#080808] p-6 rounded-2xl border border-[#222] mt-6">
+                    <h3 class="text-sm font-bold text-[#D4AF37] mb-3">امنیت حساب من</h3>
+                    <button onclick="FARVAM.Utils.openPwdModal()" class="luxury-btn !w-auto !py-3 !px-6 text-sm">تغییر رمز عبور ادمین</button>
+                </div>
+                <div class="bg-[#080808] p-6 rounded-2xl border border-[#222] mt-6 border-amber-900/40">
+                    <p class="text-xs text-amber-500/80 leading-relaxed">⚠️ توجه: این نسخه به‌عنوان دمو با ذخیره‌سازی محلی (localStorage) مرورگر پیاده شده و جایگزین یک بک‌اند و پایگاه‌داده امن واقعی نیست. برای بهره‌برداری واقعی، احراز هویت، OTP و ذخیره داده باید روی سرور امن پیاده‌سازی شود.</p>
                 </div>
             </div>
         </main>
@@ -468,18 +776,79 @@
         <div id="sub-overlay" class="sidebar-overlay" onclick="FARVAM.Sub.toggleSidebar()"></div>
 
         <aside id="sub-sidebar" class="admin-sidebar">
-            <div class="sidebar-header"><h2 class="text-[#D4AF37] font-bold text-xl tracking-widest en-font">FARVAM</h2><p class="text-xs text-gray-500 mt-1">پنل همکار</p></div>
+            <div class="sidebar-header"><h2 class="text-[#D4AF37] font-bold text-xl tracking-widest en-font">FARVAM</h2><p class="text-xs text-gray-500 mt-1">پنل همکار</p>
+                <button onclick="FARVAM.Utils.openPwdModal()" class="mt-3 bg-[#111] border border-[#333] rounded-full w-9 h-9 flex items-center justify-center text-gray-300 hover:text-[#D4AF37] hover:border-[#D4AF37] transition cursor-pointer mx-auto" aria-label="تغییر رمز عبور">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"></path></svg>
+                </button>
+            </div>
             <nav class="admin-nav">
                 <div class="nav-item"><button class="nav-btn active" onclick="FARVAM.Sub.switchTab('prods', this)"><span>محصولات من</span></button></div>
-                <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Sub.switchTab('trade', this)"><span>ثبت سفارش</span></button></div>
+                <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Sub.switchTab('trade', this)"><span>ثبت معامله</span></button></div>
+                <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Sub.switchTab('orders', this)"><span>سفارشات من</span></button></div>
                 <div class="nav-item"><button class="nav-btn" onclick="FARVAM.Sub.switchTab('tick', this)"><span>پشتیبانی</span></button></div>
             </nav>
             <div class="p-4 border-t border-[#1a1a1a]"><button onclick="FARVAM.Auth.logout()" class="w-full bg-red-900/20 text-red-400 py-2 rounded-lg border border-red-900/50 hover:bg-red-900/40 transition text-sm cursor-pointer">خروج</button></div>
         </aside>
 
         <main class="admin-content" id="sub-content-area">
-            <div id="s-tab-prods" class="s-tab"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">موجودی دفتر کل</h2><div class="overflow-x-auto"><table><thead><tr><th>سریال</th><th>محصول</th><th>مالک فعلی</th><th>عملیات</th></tr></thead><tbody id="tbl-s-prods"></tbody></table></div></div>
-            <div id="s-tab-trade" class="s-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">ثبت معامله</h2><div class="bg-[#080808] p-6 rounded-2xl border border-[#222] mb-8"><input type="text" id="s-tr-link" class="luxury-input" placeholder="شرح کالا"><button onclick="FARVAM.Sub.submitTrade()" class="luxury-btn mt-4">ارسال به میز تأیید</button></div><div class="overflow-x-auto"><table><thead><tr><th>شرح</th><th>وضعیت</th></tr></thead><tbody id="tbl-s-trades"></tbody></table></div></div>
+            <div id="s-tab-prods" class="s-tab"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">موجودی دفتر کل</h2>
+                <div class="flex flex-col md:flex-row gap-3 mb-4"><input type="text" id="srch-s-prods" oninput="FARVAM.Sub.load()" class="luxury-input !mb-0 flex-1 en-font" placeholder="Search serial or product..."></div>
+                <div class="overflow-x-auto"><table><thead><tr><th>سریال</th><th>محصول</th><th>مالک فعلی</th><th>عملیات</th></tr></thead><tbody id="tbl-s-prods"></tbody></table></div>
+            </div>
+            <div id="s-tab-trade" class="s-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">ثبت معامله</h2>
+                <div class="bg-[#080808] p-6 rounded-2xl border border-[#222] mb-8">
+                    <div class="flex gap-3 mb-5">
+                        <button id="tr-op-buy" onclick="FARVAM.Transactions.setOp('buy')" class="flex-1 py-3 rounded-xl border border-green-900/50 bg-green-900/10 text-green-400 font-bold text-sm cursor-pointer transition">خرید از همکار</button>
+                        <button id="tr-op-sell" onclick="FARVAM.Transactions.setOp('sell')" class="flex-1 py-3 rounded-xl border border-[#333] bg-[#111] text-gray-400 font-bold text-sm cursor-pointer transition">فروش به همکار</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <select id="tr-cat" class="glass-select !mb-0" onchange="FARVAM.Transactions.onCatChange()"><option value="">انتخاب دسته...</option></select>
+                        <select id="tr-sub" class="glass-select !mb-0" onchange="FARVAM.Transactions.onSubChange()" disabled><option value="">انتخاب زیردسته...</option></select>
+                        <select id="tr-prod" class="glass-select !mb-0" onchange="FARVAM.Transactions.onProdChange()" disabled><option value="">انتخاب محصول...</option></select>
+                    </div>
+                    <div id="tr-qty-box" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hide">
+                        <div id="tr-qty-wrap" class="hide"><label class="text-xs text-gray-500 mb-1 block">تعداد</label><input type="number" id="tr-qty" min="1" class="luxury-input !mb-0 en-font" oninput="FARVAM.Transactions.recalc()"></div>
+                        <div id="tr-weight-wrap" class="hide"><label class="text-xs text-gray-500 mb-1 block">وزن (گرم)</label><input type="number" id="tr-weight" min="0" step="0.01" class="luxury-input !mb-0 en-font" oninput="FARVAM.Transactions.recalc()"></div>
+                    </div>
+                    <div id="tr-dyn-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
+
+                    <div id="tr-price-preview" class="hide bg-[#050505] border border-[#D4AF37]/30 rounded-xl p-4 mb-4">
+                        <p class="text-xs text-gray-500 mb-3">پیش‌نمایش محاسبه قیمت (زنده)</p>
+                        <div id="tr-chain-html" class="space-y-2"></div>
+                        <div class="dreamy-divider my-3"></div>
+                        <div class="flex justify-between items-center"><span class="text-sm text-gray-400">قیمت نهایی</span><span id="tr-final-price" class="text-2xl font-bold text-[#D4AF37] en-font">—</span></div>
+                    </div>
+
+                    <button onclick="FARVAM.Transactions.submit()" class="luxury-btn !py-3">ارسال معامله برای تأیید ادمین اصلی</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>محصول</th><th>نوع</th><th>مقدار</th><th>قیمت نهایی</th><th>وضعیت</th></tr></thead><tbody id="tbl-s-trades"></tbody></table></div>
+            </div>
+
+            <div id="s-tab-orders" class="s-tab hide">
+                <h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">ثبت سفارش</h2>
+                <p class="text-xs text-gray-500 mb-4">سفارش فقط درخواست دریافت محصول است و شامل خرید، فروش یا قیمت‌گذاری نمی‌شود.</p>
+                <div class="bg-[#080808] p-6 rounded-2xl border border-[#222] mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <select id="or-cat" class="glass-select !mb-0" onchange="FARVAM.Orders.onCatChange()"><option value="">انتخاب دسته...</option></select>
+                        <select id="or-sub" class="glass-select !mb-0" onchange="FARVAM.Orders.onSubChange()" disabled><option value="">انتخاب زیردسته...</option></select>
+                        <select id="or-prod" class="glass-select !mb-0" onchange="FARVAM.Orders.onProdChange()" disabled><option value="">انتخاب محصول...</option></select>
+                    </div>
+                    <div id="or-qty-box" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hide">
+                        <div id="or-qty-wrap" class="hide"><label class="text-xs text-gray-500 mb-1 block">تعداد</label><input type="number" id="or-qty" min="1" class="luxury-input !mb-0 en-font"></div>
+                        <div id="or-weight-wrap" class="hide"><label class="text-xs text-gray-500 mb-1 block">وزن (گرم)</label><input type="number" id="or-weight" min="0" step="0.01" class="luxury-input !mb-0 en-font"></div>
+                    </div>
+                    <div id="or-dyn-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div><label class="text-xs text-gray-500 mb-1 block">تاریخ موردنظر برای دریافت</label><input type="date" id="or-date" class="luxury-input !mb-0 en-font"></div>
+                        <div><label class="text-xs text-gray-500 mb-1 block">زمان موردنظر</label><input type="time" id="or-time" class="luxury-input !mb-0 en-font"></div>
+                    </div>
+                    <textarea id="or-desc" class="luxury-input mb-4 h-24 resize-none" placeholder="شرح سفارش برای ادمین اصلی (اختیاری)..."></textarea>
+                    <button onclick="FARVAM.Orders.submit()" class="luxury-btn !py-3">ثبت سفارش</button>
+                </div>
+                <div class="overflow-x-auto"><table><thead><tr><th>محصول</th><th>مقدار</th><th>وضعیت</th><th>زمان دریافت</th><th>عملیات</th></tr></thead><tbody id="tbl-s-orders"></tbody></table></div>
+            </div>
+
             <div id="s-tab-tick" class="s-tab hide"><h2 class="text-2xl font-bold text-[#D4AF37] mb-6 border-b border-[#222] pb-2">ارتباط با مرکز</h2><div class="max-w-3xl flex flex-col gap-4"><div id="chat-box-sub" class="chat-container"></div><form onsubmit="event.preventDefault(); FARVAM.Sub.sendTicket();" class="flex gap-2"><input type="text" id="chat-inp-sub" class="luxury-input !mb-0 flex-1" placeholder="پیام شما..."><button type="submit" class="luxury-btn !w-auto !py-0 !px-8">ارسال</button></form></div></div>
         </main>
     </div>
@@ -492,9 +861,16 @@
             <div class="space-y-4 text-sm text-gray-300">
                 <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="rb-prod" class="w-4 h-4 accent-[#D4AF37]"> مدیریت محصولات</label>
                 <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="rb-trade" class="w-4 h-4 accent-[#D4AF37]"> ثبت معامله</label>
+                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="rb-ord" class="w-4 h-4 accent-[#D4AF37]"> ثبت سفارش</label>
                 <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="rb-tick" class="w-4 h-4 accent-[#D4AF37]"> پشتیبانی</label>
+                <div class="pt-2 border-t border-[#222]"><label class="text-xs text-gray-500 block mb-1">نوع همکار (برای قیمت‌گذاری معاملات)</label><select id="rbac-agent-type" class="glass-select !mb-0 text-sm"></select></div>
             </div>
-            <button onclick="FARVAM.Admin.saveRBAC()" class="luxury-btn !py-2 mt-6">ذخیره</button>
+            <button onclick="FARVAM.Admin.saveRBAC()" class="luxury-btn !py-2 mt-6">ذخیره دسترسی‌ها</button>
+            <div class="flex gap-2 mt-3">
+                <button onclick="FARVAM.Admin.resetSubPassword()" class="flex-1 bg-[#1a1a1a] border border-[#333] text-gray-300 py-2 rounded-xl hover:bg-[#222] transition cursor-pointer text-xs">تولید رمز جدید</button>
+                <button onclick="FARVAM.Admin.toggleSubActive()" id="rbac-toggle-btn" class="flex-1 bg-amber-900/20 border border-amber-900/50 text-amber-400 py-2 rounded-xl hover:bg-amber-900/40 transition cursor-pointer text-xs">غیرفعال‌سازی</button>
+            </div>
+            <button onclick="FARVAM.Admin.deleteSubAccount()" class="w-full bg-red-900/20 border border-red-900/50 text-red-400 py-2 rounded-xl hover:bg-red-900/40 transition cursor-pointer text-xs mt-2">حذف حساب همکار</button>
         </div>
     </div>
     
@@ -511,6 +887,84 @@
         </div>
     </div>
 
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-content w-full max-w-sm p-6 text-center relative">
+            <div class="w-14 h-14 mx-auto rounded-full bg-red-500/10 border border-red-500/40 flex items-center justify-center mb-4 text-red-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
+            </div>
+            <h3 id="confirm-title" class="text-lg font-bold text-white mb-2">تأیید عملیات</h3>
+            <p id="confirm-msg" class="text-sm text-gray-400 mb-6">آیا از انجام این عملیات مطمئن هستید؟</p>
+            <div class="flex gap-3">
+                <button onclick="FARVAM.Utils.confirmNo()" class="flex-1 bg-[#1a1a1a] border border-[#333] text-gray-300 py-3 rounded-xl hover:bg-[#222] transition cursor-pointer">انصراف</button>
+                <button id="confirm-yes-btn" onclick="FARVAM.Utils.confirmYes()" class="flex-1 bg-red-600 text-white py-3 rounded-xl hover:bg-red-500 transition cursor-pointer font-bold">تأیید</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-pwd" class="modal-overlay" onclick="if(event.target===this) FARVAM.Utils.hideModal('modal-pwd')">
+        <div class="modal-content w-full max-w-sm p-6 relative">
+            <button onclick="FARVAM.Utils.hideModal('modal-pwd')" class="absolute top-4 left-4 text-gray-500 hover:text-white bg-transparent border-none cursor-pointer">✕</button>
+            <h3 class="text-xl font-bold mb-4 text-[#D4AF37]">تغییر رمز عبور</h3>
+            <input type="hidden" id="pwd-uid">
+            <div class="flex flex-col gap-3">
+                <input type="password" id="pwd-old" class="luxury-input en-font" placeholder="رمز فعلی" autocomplete="current-password">
+                <input type="password" id="pwd-new" class="luxury-input en-font" placeholder="رمز جدید (حداقل ۶ کاراکتر)" autocomplete="new-password">
+                <input type="password" id="pwd-new2" class="luxury-input en-font" placeholder="تکرار رمز جدید" autocomplete="new-password">
+                <button onclick="FARVAM.Auth.changePassword()" class="luxury-btn !py-3">ذخیره رمز جدید</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-tx-detail" class="modal-overlay" onclick="if(event.target===this) FARVAM.Utils.hideModal('modal-tx-detail')">
+        <div class="modal-content w-full max-w-2xl p-8 relative">
+            <button onclick="FARVAM.Utils.hideModal('modal-tx-detail')" class="absolute top-4 left-4 text-gray-500 hover:text-white bg-transparent border-none cursor-pointer">✕</button>
+            <h3 class="text-xl font-bold mb-4 text-[#D4AF37]">جزئیات کامل معامله</h3>
+            <input type="hidden" id="txd-id">
+            <div id="txd-body" class="space-y-3 text-sm mb-6 max-h-[50vh] overflow-y-auto"></div>
+            <div id="txd-actions" class="flex flex-col gap-3">
+                <div class="flex gap-3">
+                    <button onclick="FARVAM.Transactions.approve()" class="flex-1 bg-green-900/20 border border-green-900/50 text-green-400 py-3 rounded-xl hover:bg-green-900/40 transition cursor-pointer font-bold">تأیید معامله</button>
+                    <button onclick="FARVAM.Transactions.showRejectBox()" class="flex-1 bg-red-900/20 border border-red-900/50 text-red-400 py-3 rounded-xl hover:bg-red-900/40 transition cursor-pointer font-bold">رد معامله</button>
+                </div>
+                <div id="txd-reject-box" class="hide flex gap-2">
+                    <select id="txd-reject-reason" class="glass-select !mb-0 flex-1"></select>
+                    <button onclick="FARVAM.Transactions.reject()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap">ثبت رد</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-order-detail" class="modal-overlay" onclick="if(event.target===this) FARVAM.Utils.hideModal('modal-order-detail')">
+        <div class="modal-content w-full max-w-2xl p-8 relative">
+            <button onclick="FARVAM.Utils.hideModal('modal-order-detail')" class="absolute top-4 left-4 text-gray-500 hover:text-white bg-transparent border-none cursor-pointer">✕</button>
+            <h3 class="text-xl font-bold mb-4 text-[#D4AF37]">جزئیات کامل سفارش</h3>
+            <input type="hidden" id="ordd-id">
+            <div id="ordd-body" class="space-y-3 text-sm mb-6 max-h-[42vh] overflow-y-auto"></div>
+            <div class="bg-[#050505] border border-[#222] rounded-xl p-4 mb-4">
+                <p class="text-xs text-gray-500 mb-2">تعیین تاریخ و ساعت دریافت</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="date" id="ordd-date" class="luxury-input !mb-0 en-font">
+                    <input type="time" id="ordd-time" class="luxury-input !mb-0 en-font">
+                </div>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div class="flex gap-3">
+                    <button onclick="FARVAM.Orders.approve()" class="flex-1 bg-green-900/20 border border-green-900/50 text-green-400 py-3 rounded-xl hover:bg-green-900/40 transition cursor-pointer font-bold">تأیید سفارش</button>
+                    <button onclick="FARVAM.Orders.showRejectBox()" class="flex-1 bg-red-900/20 border border-red-900/50 text-red-400 py-3 rounded-xl hover:bg-red-900/40 transition cursor-pointer font-bold">رد سفارش</button>
+                </div>
+                <div id="ordd-reject-box" class="hide flex gap-2">
+                    <select id="ordd-reject-reason" class="glass-select !mb-0 flex-1"></select>
+                    <button onclick="FARVAM.Orders.reject()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap">ثبت رد</button>
+                </div>
+                <div class="flex gap-3 mt-2 pt-3 border-t border-[#222]">
+                    <select id="ordd-status-select" class="glass-select !mb-0 flex-1"></select>
+                    <button onclick="FARVAM.Orders.setStatus()" class="luxury-btn !w-auto !py-2 !px-6 text-xs whitespace-nowrap">اعمال وضعیت</button>
+                </div>
+                <button onclick="FARVAM.Orders.cancel(true)" class="w-full bg-[#1a1a1a] border border-[#333] text-gray-300 py-2 rounded-xl hover:bg-[#222] transition cursor-pointer text-xs">لغو سفارش</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const FARVAM = (function() {
             'use strict';
@@ -518,7 +972,7 @@
             // --- Utility & UI Functions ---
             const Utils = {
                 $: id => document.getElementById(id),
-                san: str => typeof str === 'string' ? str.replace(/[&<>'"]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t])) : '',
+                san: str => typeof str === 'string' ? str.replace(/[&<>'"]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t])) : (str===0?'0':(str||'')),
                 toast: (msg, type='success') => {
                     const c = Utils.$('toast-container'); const t = document.createElement('div');
                     t.className = `luxury-toast ${type}`;
@@ -531,310 +985,28 @@
                 hideModal: id => { Utils.$(id).classList.remove('show'); setTimeout(()=>Utils.$(id).classList.add('hide'), 300); },
                 hideAll: () => { Utils.$('view-public').classList.add('hide'); Utils.$('view-admin').classList.add('hide'); Utils.$('view-sub').classList.add('hide'); document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('show')); },
                 togglePwd: id => { const e = Utils.$(id); e.type = e.type === 'password' ? 'text' : 'password'; },
-                fakeLoading: (el, time, cb) => { el.innerHTML = `<div class="w-full flex justify-center py-10"><div class="w-10 h-10 border-4 border-[#333] border-t-[#D4AF37] rounded-full animate-spin"></div></div>`; setTimeout(cb, time); }
-            };
+                fakeLoading: (el, time, cb) => { el.innerHTML = `<div class="w-full flex justify-center py-10"><div class="w-10 h-10 border-4 border-[#333] border-t-[#D4AF37] rounded-full animate-spin"></div></div>`; setTimeout(cb, time); },
 
-            // --- Database Simulation ---
-            const defs = {
-                set: { banPubTxt: 'به کلوپ امنیتی FARVAM خوش آمدید', aiKey: '', aiPrm: 'شما مشاور لوکس برند هستید', adUsr: 'admin', adPw: 'admin123' },
-                usr: [{id:'u_main', phone:'admin', pass:'admin123', role:'main', name:'مدیریت فرماندهی'}],
-                cwT: ['ویترین دار', 'کارگاه دار', 'بنکدار'],
-                cat: [{id:'c1', name:'شمش طلا', fields:['وزن','عیار','کد استاندارد']}],
-                trR: ['بازار پرنوسان است'],
-                srl: [{id:'s_1', serial:'FS-123456', assignedTo:'u_main', name:'شمش طلای ۲۴ عیار', dyn:{'وزن':'100g', 'عیار':'999'}, status:'active', ownerPhone:'09120000000', scans:12, media: ''}], 
-                trd: [], req: [], cus: [], trn: [], sec: [], tck: []
-            };
-            const DB = {
-                get: k => JSON.parse(localStorage.getItem('f8_'+k)) || defs[k] || [],
-                set: (k, v) => localStorage.setItem('f8_'+k, JSON.stringify(v)),
-                init: () => { Object.keys(defs).forEach(k => { if(!localStorage.getItem('f8_'+k)) DB.set(k, defs[k]); }); }
-            };
+                // --- Custom confirm dialog (replaces native confirm()) ---
+                _confirmCb: null,
+                confirm: (msg, cb, title) => {
+                    Utils.$('confirm-title').innerText = title || 'تأیید عملیات';
+                    Utils.$('confirm-msg').innerText = msg;
+                    Utils._confirmCb = cb;
+                    Utils.showModal('modal-confirm');
+                },
+                confirmYes: () => { const cb = Utils._confirmCb; Utils.hideModal('modal-confirm'); Utils._confirmCb = null; if(cb) cb(); },
+                confirmNo: () => { Utils._confirmCb = null; Utils.hideModal('modal-confirm'); },
 
-            let currU = null; let chInst = {};
-
-            // --- Public UI Flow ---
-            const UI = {
-                init: () => {
-                    DB.init(); const s = DB.get('set');
-                    if(s.banPubTxt) { Utils.$('pub-banner-txt').innerText = s.banPubTxt; setTimeout(()=>Utils.$('pub-banner').classList.add('show'), 1500); }
-                    
-                    const cwSel = Utils.$('cw-t'); cwSel.innerHTML = '<option value="">انتخاب رسته شغلی...</option>';
-                    DB.get('cwT').forEach(t => cwSel.innerHTML += `<option value="${t}">${t}</option>`);
-
-                    UI.particles();
-                    UI.observers();
-                    
-                    window.addEventListener('scroll', () => {
-                        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                        if(height > 0) Utils.$('scroll-progress').style.width = (winScroll / height) * 100 + "%";
-                        if(winScroll > 50) Utils.$('main-nav').classList.add('scrolled'); else Utils.$('main-nav').classList.remove('scrolled');
-                    });
+                // --- Iranian national code validation (checksum) ---
+                validNationalCode: nc => {
+                    if(!/^\d{10}$/.test(nc)) return false;
+                    if(/^(\d)\1{9}$/.test(nc)) return false;
+                    const check = +nc[9];
+                    let sum = 0;
+                    for(let i=0;i<9;i++) sum += (+nc[i]) * (10-i);
+                    const r = sum % 11;
+                    return (r < 2 && check === r) || (r >= 2 && check === 11-r);
                 },
-                particles: () => {
-                    const c = Utils.$('particle-canvas'); if(!c) return; const ctx = c.getContext('2d');
-                    const r = () => { c.width = window.innerWidth; c.height = window.innerHeight; }; window.addEventListener('resize', r); r();
-                    let p = Array.from({length: 40}, ()=>({x:Math.random()*c.width, y:Math.random()*c.height, v:Math.random()*0.3+0.1, s:Math.random()*1.5+0.5}));
-                    const draw = () => { ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle='rgba(212,175,55,0.4)'; p.forEach(i=>{ctx.beginPath(); ctx.arc(i.x, i.y, i.s, 0, Math.PI*2); ctx.fill(); i.y-=i.v; if(i.y<0) i.y=c.height;}); requestAnimationFrame(draw); }; draw();
-                },
-                observers: () => {
-                    const ob = new IntersectionObserver((es) => {
-                        es.forEach(e => {
-                            if(e.isIntersecting) {
-                                e.target.classList.add('active');
-                                if(e.target.id === 'stats-section') {
-                                    e.target.querySelectorAll('.counter').forEach(c => {
-                                        const updateCount = () => {
-                                            const target = +c.getAttribute('data-target'), count = +c.innerText.replace(/,/g,''), inc = target / 50;
-                                            if (count < target) { c.innerText = Math.ceil(count + inc).toLocaleString('en-US'); setTimeout(updateCount, 40); } else c.innerText = target.toLocaleString('en-US') + "+";
-                                        }; updateCount();
-                                    });
-                                }
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    document.querySelectorAll('.reveal').forEach(el => ob.observe(el));
-                }
-            };
-
-            const Auth = {
-                reqOTP: () => {
-                    const n = Utils.$('c-name').value, p = Utils.$('c-phone').value; if(!n||!p) return Utils.toast('فیلدها الزامی است','error');
-                    Utils.$('btn-otp-req').disabled=true; Utils.$('btn-otp-req').innerText='درحال اتصال...';
-                    setTimeout(()=>{ Utils.$('form-otp-1').classList.add('hide'); Utils.$('form-otp-2').classList.remove('hide'); Utils.toast('کد تست: 1234'); }, 800);
-                },
-                verifyOTP: () => {
-                    if(Utils.$('c-otp').value !== '1234') return Utils.toast('کد اشتباه است','error');
-                    const n = Utils.$('c-name').value, p = Utils.$('c-phone').value;
-                    let c = DB.get('cus'); if(!c.find(x=>x.phone===p)) { c.push({id:Date.now(), name:n, phone:p, date:new Date().toLocaleDateString('fa-IR'), scans:0}); DB.set('cus', c); }
-                    currU = p; Utils.$('cert-lock-overlay').style.opacity='0'; setTimeout(()=>Utils.$('cert-lock-overlay').classList.add('hide'),400); Utils.toast('هویت شما تأیید شد');
-                },
-                loginAdmin: () => {
-                    const u = Utils.$('l-user').value, p = Utils.$('l-pass').value; const s = DB.get('set');
-                    let usr = DB.get('usr').find(x=>x.phone===u && x.pass===p);
-                    if(u===s.adUsr && p===s.adPw) usr = {id:'u_main', role:'main', name:'مدیریت مرکزی'};
-                    if(!usr) return Utils.toast('دسترسی رد شد','error');
-                    currU = usr; Utils.hideAll();
-                    if(usr.role==='main') { Utils.$('view-admin').classList.remove('hide'); Admin.init(); } else { Utils.$('view-sub').classList.remove('hide'); Sub.init(); }
-                    Utils.toast(`خوش آمدید ${usr.name}`);
-                },
-                logout: () => { currU = null; Utils.hideAll(); Utils.$('view-public').classList.remove('hide'); Utils.toast('خروج امن انجام شد'); }
-            };
-
-            const Public = {
-                checkCert: () => {
-                    if(!currU || typeof currU !== 'string') return Utils.toast('ابتدا هویت خود را تأیید کنید','error');
-                    const srl = Utils.$('search-serial').value.toUpperCase(); if(!srl) return;
-                    Utils.showModal('modal-cert'); const c = Utils.$('cert-container');
-                    
-                    Utils.fakeLoading(c, 800, () => {
-                        const d = DB.get('srl').find(x=>x.serial===srl);
-                        if(!d || !d.name) return c.innerHTML = `<div class="glass-panel text-center p-8"><h3 class="text-2xl text-red-400 mb-2">❌ یافت نشد</h3><p>گواهی ${Utils.san(srl)} در شبکه بلاکچین FARVAM ثبت نشده است.</p></div>`;
-                        
-                        if(d.status==='stolen') {
-                            let sl = DB.get('sec'), cus = DB.get('cus').find(x=>x.phone===currU);
-                            sl.push({date:new Date().toLocaleString('fa-IR'), serial:srl, user:cus?cus.name:'', phone:currU, agent:navigator.userAgent}); DB.set('sec',sl);
-                            return c.innerHTML = `<div class="bg-[#110000] border border-red-900 rounded-3xl p-10 text-center animate-[pulseRed_2s_infinite] shadow-[0_0_50px_rgba(255,0,0,0.3)]"><h2 class="text-3xl font-bold text-red-500 mb-4">⚠️ هشدار: کالای سرقتی</h2><p class="text-red-200">کد ${srl} مفقودی است. آی‌پی و هویت شما در سیستم مانیتورینگ ثبت شد.</p></div>`;
-                        }
-
-                        d.scans = (d.scans||0)+1; let sList = DB.get('srl'); sList[sList.findIndex(x=>x.id===d.id)] = d; DB.set('srl', sList);
-                        let cus = DB.get('cus'); let cuIdx = cus.findIndex(x=>x.phone===currU); if(cuIdx>-1){ cus[cuIdx].scans=(cus[cuIdx].scans||0)+1; DB.set('cus',cus); }
-
-                        const center = DB.get('usr').find(u=>u.id===d.assignedTo)?.name || 'مرکزی';
-                        let dynH = ''; if(d.dyn) Object.entries(d.dyn).forEach(([k,v])=>dynH+=`<li class="flex justify-between border-b border-[#222] pb-3"><span class="text-gray-500">${k}</span><span class="text-white">${v}</span></li>`);
-                        let trBtn = d.ownerPhone === currU ? `<button onclick="FARVAM.Public.reqTrans('${d.id}')" class="w-full bg-[#222] hover:bg-[#333] text-white border border-[#444] py-3 rounded-xl mt-6 transition">ثبت درخواست انتقال مالکیت کالا</button>` : '';
-                        
-                        let mediaHtml = '';
-                        if(d.media) {
-                            if(d.media.toLowerCase().endsWith('.mp4')) mediaHtml = `<video class="w-full aspect-video object-cover rounded-xl mb-6" autoplay muted loop playsinline src="${Utils.san(d.media)}"></video>`;
-                            else mediaHtml = `<img class="w-full aspect-video object-cover rounded-xl mb-6" src="${Utils.san(d.media)}" onerror="this.style.display='none'">`;
-                        }
-
-                        c.innerHTML = `
-                            <div class="glass-panel !p-1 bg-gradient-to-br from-[#D4AF37] via-[#000] to-[#8A6D1C] max-w-xl mx-auto rounded-3xl">
-                                <div class="bg-[#050505] rounded-[1.4rem] p-8 relative">
-                                    <div class="absolute top-4 right-4 bg-green-900/30 text-green-500 text-xs px-3 py-1 rounded-full border border-green-900">VERIFIED</div>
-                                    <div class="text-center mb-6"><span class="px-6 py-2 border border-[#D4AF37] rounded-full text-[#D4AF37] text-xs tracking-widest font-bold shadow-[0_0_15px_rgba(212,175,55,0.2)]">OFFICIAL CERTIFICATE</span></div>
-                                    ${mediaHtml}
-                                    <ul class="space-y-4 text-sm mt-4">
-                                        <li class="flex justify-between border-b border-[#222] pb-3"><span class="text-gray-500">شماره سریال</span><span class="font-mono text-[#D4AF37] text-xl">${srl}</span></li>
-                                        <li class="flex justify-between border-b border-[#222] pb-3"><span class="text-gray-500">نام کالا</span><span class="font-bold text-lg">${d.name}</span></li>
-                                        ${dynH}
-                                        <li class="flex justify-between border-b border-[#222] pb-3"><span class="text-gray-500">سنتر مجاز فروش</span><span>${center}</span></li>
-                                        <li class="flex justify-between pt-2"><span class="text-gray-500">تعداد دفعات استعلام</span><span class="en-font">${d.scans}</span></li>
-                                    </ul>
-                                    ${trBtn}
-                                </div>
-                            </div>`;
-                    });
-                },
-                reqTrans: id => { Utils.hideModal('modal-cert'); Utils.$('trans-val').value=id; Utils.$('trans-lbl').innerText=DB.get('srl').find(x=>x.id===id).serial; Utils.showModal('modal-transfer'); },
-                submitTransfer: () => {
-                    const id = Utils.$('trans-val').value, n = Utils.$('t-name').value, p = Utils.$('t-phone').value;
-                    const s = DB.get('srl').find(x=>x.id===id); if(!s) return;
-                    let t = DB.get('trn'); t.push({id:Date.now(), serial:s.serial, sId:id, fromPhone:currU, toName:n, toPhone:p, targetAdmin:s.assignedTo}); DB.set('trn', t);
-                    Utils.hideModal('modal-transfer'); Utils.toast('درخواست انتقال به کارتابل سنتر ارسال شد');
-                },
-                submitCollab: () => {
-                    let r = DB.get('req'); r.push({id:Date.now(), name:Utils.$('cw-n').value, family:Utils.$('cw-f').value, national:Utils.$('cw-nc').value, phone:Utils.$('cw-p').value, type:Utils.$('cw-t').value, status:'pending'}); DB.set('req', r);
-                    Utils.toast('درخواست شما با موفقیت ثبت شد'); Utils.$('form-collab-modal').reset(); Utils.hideModal('modal-collab');
-                }
-            };
-
-            const Admin = {
-                init: () => { Admin.switchTab('dashboard', Utils.$('nav-main').querySelector('.nav-btn')); },
-                toggleSidebar: () => { Utils.$('admin-sidebar').classList.toggle('open'); Utils.$('sidebar-overlay').classList.toggle('show'); },
-                toggleAcc: btn => { btn.classList.toggle('active'); const c = btn.nextElementSibling; if(c) c.style.maxHeight = btn.classList.contains('active') ? c.scrollHeight + "px" : null; },
-                switchTab: (tab, btn) => {
-                    document.querySelectorAll('.a-tab').forEach(t=>t.classList.add('hide')); document.querySelectorAll('.nav-submenu li, .admin-nav > .nav-item > .nav-btn').forEach(l=>l.classList.remove('active', 'sub-active'));
-                    Utils.$(`tab-${tab}`).classList.remove('hide'); if(btn) { if(btn.tagName==='LI') btn.classList.add('sub-active'); else btn.classList.add('active'); }
-                    if(window.innerWidth < 992) { Utils.$('admin-sidebar').classList.remove('open'); Utils.$('sidebar-overlay').classList.remove('show'); }
-                    Admin.load(); if(tab === 'dashboard') setTimeout(Admin.charts, 200);
-                },
-                load: () => {
-                    const usr = DB.get('usr').filter(u=>u.role==='sub'), srl = DB.get('srl'), trd = DB.get('trd'), req = DB.get('req'), trn = DB.get('trn'), sec = DB.get('sec'), cat = DB.get('cat');
-                    Utils.$('kpi-prods').innerText = srl.length; Utils.$('kpi-cws').innerText = usr.length; Utils.$('kpi-trades').innerText = trd.filter(t=>t.status==='pending').length; Utils.$('kpi-sec').innerText = sec.length;
-                    
-                    Utils.$('bdg-trd').innerText=trd.filter(t=>t.status==='pending').length; Utils.$('bdg-trd').classList.toggle('hide', Utils.$('bdg-trd').innerText==='0');
-                    Utils.$('bdg-trn').innerText=trn.length; Utils.$('bdg-trn').classList.toggle('hide', trn.length===0);
-                    Utils.$('bdg-sec').innerText=sec.length; Utils.$('bdg-sec').classList.toggle('hide', sec.length===0);
-
-                    Utils.$('tbl-reqs').innerHTML = req.filter(r=>r.status==='pending').map(r=>`<tr><td>${r.name} ${r.family}</td><td>${r.national}</td><td class="en-font">${r.phone}</td><td>${r.type}</td><td><button onclick="FARVAM.Admin.actReq(${r.id},'app')" class="badge badge-green cursor-pointer">تأیید</button><button onclick="FARVAM.Admin.actReq(${r.id},'rej')" class="badge badge-red cursor-pointer ml-1">رد</button></td></tr>`).join('');
-                    Utils.$('tbl-cws').innerHTML = usr.map(u=>`<tr><td>${u.name}</td><td class="en-font">${u.phone}</td><td class="en-font text-xs text-gray-500">${u.pass}</td><td><button onclick="FARVAM.Admin.openRBAC('${u.id}')" class="badge badge-gold cursor-pointer">دسترسی (RBAC)</button></td></tr>`).join('');
-                    Utils.$('tbl-custs').innerHTML = DB.get('cus').map(c=>`<tr><td>${c.name}</td><td class="en-font">${c.phone}</td><td class="en-font">${c.scans||0}</td></tr>`).join('');
-                    
-                    let aSel = Utils.$('leg-cw'); aSel.innerHTML = '<option value="u_main">مرکزی (خودم)</option>'; usr.forEach(u=>aSel.innerHTML+=`<option value="${u.id}">${u.name}</option>`);
-                    let cSel = Utils.$('leg-cat'); cSel.innerHTML = '<option value="">بدون دسته (تکمیل با همکار)</option>'; cat.forEach(c=>cSel.innerHTML+=`<option value="${c.id}">${c.name}</option>`);
-                    Utils.$('tbl-ledger').innerHTML = srl.map(s=>`<tr><td class="en-font text-[#D4AF37]">${s.serial}</td><td>${s.name||'-'}</td><td>${DB.get('usr').find(u=>u.id===s.assignedTo)?.name||'مرکزی'}</td><td><span class="badge ${s.status==='stolen'?'badge-red':'badge-green'} cursor-pointer" onclick="FARVAM.Admin.togS('${s.id}')">${s.status}</span></td></tr>`).join('');
-
-                    Utils.$('tbl-cats').innerHTML = cat.map(c=>`<tr><td>${c.name}</td><td class="text-xs text-gray-400">${c.fields.join(' | ')}</td></tr>`).join('');
-                    Utils.$('tbl-trades').innerHTML = trd.map(t=>`<tr><td>${DB.get('usr').find(u=>u.id===t.creator)?.name||''}</td><td>${t.info}</td><td>${t.status}</td><td>${t.status==='pending'?`<button onclick="FARVAM.Admin.actTrd(${t.id},'app')" class="badge badge-green cursor-pointer">تأیید</button><button onclick="FARVAM.Admin.actTrd(${t.id},'rej')" class="badge badge-red cursor-pointer ml-1">رد</button>`:'-'}</td></tr>`).join('');
-                    Utils.$('tbl-transfers').innerHTML = trn.map(t=>`<tr><td class="en-font text-[#D4AF37]">${t.serial}</td><td class="en-font">${t.fromPhone}</td><td>${t.toName} <span class="en-font text-xs">(${t.toPhone})</span></td><td><button onclick="FARVAM.Admin.actTrn(${t.id},'app')" class="badge badge-green cursor-pointer">تأیید</button><button onclick="FARVAM.Admin.actTrn(${t.id},'rej')" class="badge badge-red cursor-pointer ml-1">رد</button></td></tr>`).join('');
-                    Utils.$('tbl-sec').innerHTML = sec.map(s=>`<tr><td class="text-xs">${s.date}</td><td class="en-font text-red-500 font-bold">${s.serial}</td><td><div class="text-[#D4AF37] font-bold">${s.user}</div></td><td class="text-xs en-font truncate max-w-[150px]" title="${s.agent}">${s.agent}</td></tr>`).join('');
-
-                    const set = DB.get('set');
-                    if(Utils.$('cfg-pub-ban-txt')) Utils.$('cfg-pub-ban-txt').value = set.banPubTxt || '';
-                    if(Utils.$('cfg-ai-key')) Utils.$('cfg-ai-key').value = set.aiKey || '';
-
-                    Ticketing.load('main');
-                },
-                charts: () => {
-                    const crt = (id, typ, lbls, dat, lbl, col) => { if(!Utils.$(id)) return; if(chInst[id]) chInst[id].destroy(); chInst[id] = new Chart(Utils.$(id), { type: typ, data: { labels: lbls, datasets: [{ label: lbl, data: dat, backgroundColor: col, borderColor: col, borderWidth: 1 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#aaa' } } } } }); };
-                    crt('ch-sales', 'line', ['W1','W2','W3','W4'], [10,25,15,40], 'روند استعلام‌ها', '#D4AF37');
-                    crt('ch-assets', 'doughnut', ['طلا','نقره','الماس'], [60,25,15], 'ترکیب دارایی ثبت شده', ['#D4AF37', '#777', '#fff']);
-                },
-                actReq: (id, act) => {
-                    let r = DB.get('req'); let idx = r.findIndex(x=>x.id===id); if(idx===-1) return;
-                    if(act==='app') { let u = DB.get('usr'); const p = Math.floor(1000+Math.random()*9000).toString(); u.push({id:'sub_'+id, role:'sub', phone:r[idx].phone, pass:p, name:r[idx].name+' '+r[idx].family, type:r[idx].type, rbac:{prod:true,trd:true,tck:true}}); DB.set('usr', u); Utils.toast('رمز تولید شد: '+p); }
-                    r.splice(idx,1); DB.set('req', r); Admin.load();
-                },
-                openRBAC: id => {
-                    const u = DB.get('usr').find(x=>x.id===id); if(!u) return; Utils.$('rbac-name').innerText = u.name; Utils.$('rbac-id').value = id;
-                    Utils.$('rb-prod').checked = u.rbac?.prod || false; Utils.$('rb-trade').checked = u.rbac?.trd || false; Utils.$('rb-tick').checked = u.rbac?.tck || false; Utils.showModal('modal-rbac');
-                },
-                saveRBAC: () => {
-                    const id = Utils.$('rbac-id').value; let u = DB.get('usr'); let idx = u.findIndex(x=>x.id===id);
-                    if(idx>-1) { u[idx].rbac = {prod:Utils.$('rb-prod').checked, trd:Utils.$('rb-trade').checked, tck:Utils.$('rb-tick').checked}; DB.set('usr',u); Utils.hideModal('modal-rbac'); Utils.toast('ذخیره شد'); }
-                },
-                renderLegFields: () => {
-                    const cId = Utils.$('leg-cat').value, cont = Utils.$('leg-dyn-container'); cont.innerHTML = ''; if(!cId) return;
-                    DB.get('cat').find(x=>x.id===cId).fields.forEach(f => cont.innerHTML += `<div><label class="text-xs text-gray-500 mb-1 block">${f}</label><input type="text" class="luxury-input !mb-0 leg-df" data-key="${f}"></div>`);
-                },
-                issueSerials: () => {
-                    const pfx = Utils.$('leg-pfx').value.toUpperCase(), cnt = parseInt(Utils.$('leg-cnt').value), cw = Utils.$('leg-cw').value, name = Utils.$('leg-name').value, med = Utils.$('leg-media').value;
-                    if(!pfx||!cnt||!cw) return Utils.toast('خطا: فیلدهای اصلی خالی است','error');
-                    let dyn = {}; document.querySelectorAll('.leg-df').forEach(i=>dyn[i.getAttribute('data-key')]=i.value);
-                    let srl = DB.get('srl'); for(let i=0; i<cnt; i++) srl.push({id:'s_'+Date.now()+i, serial:pfx+'-'+(Math.floor(100000+Math.random()*900000)), assignedTo:cw, name, media:med, dyn, owner:'', ownerPhone:'', status:'active', scans:0});
-                    DB.set('srl', srl); Admin.load(); Utils.toast('باموفقیت در دفتر کل ثبت شد'); Utils.$('leg-name').value=''; Utils.$('leg-media').value='';
-                },
-                addCategory: () => { const n=Utils.$('eav-c-name').value, f=Utils.$('eav-c-fields').value.split(',').filter(x=>x); if(n&&f.length>0){ let c=DB.get('cat'); c.push({id:'c_'+Date.now(), name:n, fields:f}); DB.set('cat',c); Admin.load(); Utils.$('eav-c-name').value=''; Utils.$('eav-c-fields').value=''; Utils.toast('دسته‌بندی افزوده شد');} },
-                togS: (id) => { let s=DB.get('srl'); let x=s.find(i=>i.id===id); if(x){ x.status = x.status==='active'?'stolen':'active'; DB.set('srl',s); Admin.load(); } },
-                actTrd: (id, act) => { let t = DB.get('trd'); let idx = t.findIndex(x=>x.id===id); if(idx>-1){ t[idx].status=act; DB.set('trd',t); Admin.load(); } },
-                actTrn: (id, act) => {
-                    let t = DB.get('trn'); let idx = t.findIndex(x=>x.id===id); if(idx===-1) return;
-                    if(act==='app') { let s=DB.get('srl'); let sIdx = s.findIndex(x=>x.serial===t[idx].serial); if(sIdx>-1) { s[sIdx].owner = t[idx].toName; s[sIdx].ownerPhone = t[idx].toPhone; DB.set('srl',s); } }
-                    t.splice(idx,1); DB.set('trn',t); Admin.load(); Utils.toast('عملیات نهایی شد');
-                },
-                saveSettings: () => {
-                    let set = DB.get('set'); set.banPubTxt = Utils.$('cfg-pub-ban-txt').value; set.aiKey = Utils.$('cfg-ai-key').value;
-                    DB.set('set', set); Utils.toast('تنظیمات بروزرسانی شد');
-                }
-            };
-
-            const Sub = {
-                init: () => { Sub.switchTab('prods', Utils.$('sub-sidebar').querySelector('.nav-btn')); },
-                toggleSidebar: () => { Utils.$('sub-sidebar').classList.toggle('open'); Utils.$('sub-overlay').classList.toggle('show'); },
-                switchTab: (tab, btn) => {
-                    if(currU.rbac && !currU.rbac[{'prods':'prod','trade':'trd','tick':'tck'}[tab]]) return Utils.toast('دسترسی مسدود است','error');
-                    document.querySelectorAll('.s-tab').forEach(t=>t.classList.add('hide')); document.querySelectorAll('#sub-sidebar .nav-btn').forEach(l=>l.classList.remove('active')); Utils.$(`s-tab-${tab}`).classList.remove('hide'); if(btn) btn.classList.add('active');
-                    if(window.innerWidth < 992) { Utils.$('sub-sidebar').classList.remove('open'); Utils.$('sub-overlay').classList.remove('show'); }
-                    Sub.load();
-                },
-                load: () => {
-                    Utils.$('tbl-s-prods').innerHTML = DB.get('srl').filter(s=>s.assignedTo===currU.id).map(s=>{
-                        let act = s.name ? `<span class="badge badge-green">کامل</span>` : `<button onclick="FARVAM.Sub.openFill('${s.id}')" class="badge badge-gold cursor-pointer">تکمیل فیلدها</button>`;
-                        return `<tr><td class="en-font text-[#D4AF37]">${s.serial}</td><td>${s.name||'-'}</td><td>${s.owner||'-'}</td><td>${act}</td></tr>`;
-                    }).join('');
-
-                    Utils.$('tbl-s-trades').innerHTML = DB.get('trd').filter(t=>t.creator===currU.id).map(t=>`<tr><td>${t.info}</td><td><span class="badge">${t.status}</span></td></tr>`).join('');
-                    Ticketing.load('sub');
-                },
-                openFill: id => {
-                    const s = DB.get('srl').find(x=>x.id===id); if(!s) return; Utils.$('f-sid').value = id;
-                    let cSel = Utils.$('f-cat'); cSel.innerHTML = '<option value="">انتخاب دسته EAV</option>'; DB.get('cat').forEach(c=>cSel.innerHTML+=`<option value="${c.id}">${c.name}</option>`);
-                    Utils.showModal('modal-fill');
-                },
-                renderFill: () => {
-                    const cId = Utils.$('f-cat').value, cont = Utils.$('f-dyn'); cont.innerHTML = ''; if(!cId) return;
-                    DB.get('cat').find(x=>x.id===cId).fields.forEach(f => cont.innerHTML += `<input type="text" class="luxury-input !mb-0 f-df" data-key="${f}" placeholder="${f}">`);
-                },
-                saveFill: () => {
-                    const id = Utils.$('f-sid').value, name = Utils.$('f-name').value, med = Utils.$('f-med').value; if(!name) return;
-                    let dyn = {}; document.querySelectorAll('.f-df').forEach(i=>dyn[i.getAttribute('data-key')]=i.value);
-                    let s = DB.get('srl'); let idx = s.findIndex(x=>x.id===id); if(idx>-1){ s[idx].name=name; s[idx].media=med; s[idx].dyn=dyn; DB.set('srl',s); Utils.hideModal('modal-fill'); Sub.load(); Utils.toast('دیتای محصول قفل شد'); }
-                },
-                submitTrade: () => {
-                    const info = Utils.$('s-tr-link').value; if(!info) return Utils.toast('شرح الزامی است','error');
-                    let t = DB.get('trd'); t.push({id:Date.now(), creator:currU.id, info, status:'pending'}); DB.set('trd',t); Utils.$('s-tr-link').value=''; Sub.load(); Utils.toast('با موفقیت ارسال شد');
-                }
-            };
-
-            const Ticketing = {
-                load: (panel) => {
-                    const b = Utils.$(panel==='main'?'chat-box-main':'chat-box-sub'), tU = panel==='main' ? Utils.$('sel-tick-user') : null; b.innerHTML = '';
-                    if(panel==='main' && tU.options.length===0) { DB.get('usr').filter(u=>u.role==='sub').forEach(u=>tU.innerHTML+=`<option value="${u.id}">${u.name}</option>`); }
-                    let target = panel==='main' ? tU.value : currU.id; if(!target) return;
-                    DB.get('tck').filter(t=>(t.f===target && t.t==='main')||(t.t===target && t.f==='main')).forEach(t=>{
-                        let m = (panel==='main' && t.f==='main') || (panel==='sub' && t.f===currU.id);
-                        b.innerHTML += `<div class="msg-bubble ${m?'msg-mine':'msg-other'}">${t.m}</div>`;
-                    }); b.scrollTop = b.scrollHeight;
-                },
-                send: (panel) => {
-                    const msg = Utils.$(panel==='main'?'chat-inp-main':'chat-inp-sub').value; if(!msg) return;
-                    let target = panel==='main' ? Utils.$('sel-tick-user').value : 'main'; if(!target) return;
-                    let t = DB.get('tck'); t.push({id:Date.now(), f:panel==='main'?'main':currU.id, t:target, m:msg}); DB.set('tck',t);
-                    Utils.$(panel==='main'?'chat-inp-main':'chat-inp-sub').value=''; Ticketing.load(panel);
-                }
-            };
-
-            const Concierge = {
-                toggle: () => Utils.$('concierge-win').classList.toggle('opacity-0'),
-                send: async () => {
-                    const inp = Utils.$('ai-inp'), t = inp.value; if(!t) return; inp.value=''; const c = Utils.$('ai-chat');
-                    c.innerHTML += `<div class="self-start bg-white/10 text-white p-3 rounded-2xl rounded-tl-none max-w-[85%] mb-2">${Utils.san(t)}</div>`; c.scrollTop = c.scrollHeight;
-                    const s = DB.get('set'); if(!s.aiKey) { setTimeout(()=>{ c.innerHTML+=`<div class="self-end bg-red-900/40 text-red-200 border border-red-900 p-3 rounded-2xl max-w-[85%] text-xs mb-2">دمو: ادمین API را تنظیم نکرده است.</div>`; c.scrollTop = c.scrollHeight; },500); return; }
-                    try {
-                        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${s.aiKey}`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:`${s.aiPrm}\nکاربر: ${t}`}]}]})});
-                        const d = await res.json(); c.innerHTML += `<div class="self-end bg-gradient-to-br from-[#1a1505] to-[#332805] border border-[#D4AF37]/30 text-[#F9F1CC] p-3 rounded-2xl rounded-tr-none max-w-[85%] mb-2 leading-relaxed">${Utils.san(d.candidates[0].content.parts[0].text)}</div>`;
-                    } catch(e) { c.innerHTML += `<div class="self-end bg-red-900/40 text-red-200 border border-red-900 p-3 rounded-2xl text-xs mb-2">خطا در پردازش هوش مصنوعی</div>`; }
-                    c.scrollTop = c.scrollHeight;
-                }
-            };
-
-            window.onload = UI.init;
-
-            return { Utils, Auth, Public, Admin, Sub, Ticketing, Concierge };
-        })();
-    </script>
-</body>
-</html>
+                liveValidateNC: el => {
+     
